@@ -11,11 +11,11 @@ class Remittance extends Model
 
     protected $fillable = [
         'remittance_number',
-        'company_id'
+        'product_id'
     ];
 
-    public function company(){
-        return $this->hasOne('App\Models\Company', 'id', 'company_id');
+    public function product(){
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
 
     public function repayments()

@@ -6,7 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Permission;
-use App\Models\Company;
+use App\Models\Product;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Mail\ActivatedMail;
@@ -34,12 +34,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // Start the query with eager loading
-        $query = User::with(['company']); 
+        $query = User::with(['product']); 
 
         $user = Auth::user();
 
         if ($user->role_id != 1) {
-            $query->where('company_id', '=', $user->company_id);
+            $query->where('product_id', '=', $user->product_id);
         }
     
     
@@ -72,10 +72,10 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $companies = Company::all();
+        $products = Product::all();
         return Inertia::render('Users/Create', [
             'users' => $users,
-            'companies' => $companies,
+            'products' => $products,
         ]);
     }
 
@@ -123,7 +123,7 @@ class UserController extends Controller
     {
         $permissions = Permission::all();
 
-        $user->load('role', 'company'); 
+        $user->load('role', 'product'); 
         $user->append('simple_permissions');        
 
         return Inertia::render('Users/Show', [
@@ -135,12 +135,12 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $users = User::all();
-        $companies = Company::all();
+        $products = Product::all();
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
             'users' => $users,
-            'companies' => $companies,
+            'products' => $products,
         ]);
     }
 

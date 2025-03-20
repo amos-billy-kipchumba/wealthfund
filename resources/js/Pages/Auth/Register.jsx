@@ -13,7 +13,7 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const { company, er } = usePage().props; 
+    const { product, er } = usePage().props; 
     
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -24,7 +24,7 @@ export default function Register() {
         role_id: 3,
         phone: '',
         password_confirmation: '',
-        company_id: company ? company.id : null,
+        product_id: product ? product.id : null,
     });
 
     useEffect(() => {
@@ -33,15 +33,15 @@ export default function Register() {
         };
     }, []);
 
-    const searchCompany = () => {
+    const searchProduct = () => {
         if (!data.unique_number) {
-            toast.error('Please enter a company number');
+            toast.error('Please enter a product number');
             return;
         }
 
         setIsSearching(true);
         router.get(
-            route('companies.search', data.unique_number),
+            route('products.search', data.unique_number),
             {}
         );
     };
@@ -61,11 +61,11 @@ export default function Register() {
     }, [er]);
 
     useEffect(() => {
-        if (company) {
-            setData('company_id', company.id);
+        if (product) {
+            setData('product_id', product.id);
             setShowForm(true)
         }
-    }, [company]);
+    }, [product]);
 
     const renderPasswordInput = (name, label, placeholder, showPass, setShowPass) => (
         <div key={name}>
@@ -133,11 +133,11 @@ export default function Register() {
                     </ol>
 
                     <div className="bg-white shadow-md rounded-lg p-8">
-                        <h2 className="text-center text-3xl font-bold mb-6">{!company ? 'Enter your company unique number and search' : 'Proceed to set up your account'}</h2>
+                        <h2 className="text-center text-3xl font-bold mb-6">{!product ? 'Enter your product unique number and search' : 'Proceed to set up your account'}</h2>
                         
                         <div className="mb-6">
                             <label htmlFor="unique_number" className="block text-sm font-medium text-gray-700 mb-2">
-                                Company number
+                                Product number
                             </label>
                             <div className="flex gap-4">
                                 <input
@@ -145,12 +145,12 @@ export default function Register() {
                                     type="text"
                                     value={data.unique_number}
                                     onChange={(e) => setData('unique_number', e.target.value)}
-                                    placeholder="Enter company unique number"
+                                    placeholder="Enter product unique number"
                                     className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                                 <button
                                     type="button"
-                                    onClick={searchCompany}
+                                    onClick={searchProduct}
                                     disabled={isSearching}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                                 >

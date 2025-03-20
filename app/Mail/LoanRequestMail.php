@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class LoanRequestMail extends Mailable
+class AssetRequestMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -32,8 +32,8 @@ class LoanRequestMail extends Mailable
     public function build()
     {
 
-        return $this->subject('Your Loan is Under Review')
-                    ->view('emails.loan_request')
+        return $this->subject('Your Asset is Under Review')
+                    ->view('emails.asset_request')
                     ->with([
                         'employee' => $this->employee
                     ]);

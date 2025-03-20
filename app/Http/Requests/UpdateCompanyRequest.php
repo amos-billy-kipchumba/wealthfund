@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCompanyRequest extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,10 +31,10 @@ class UpdateCompanyRequest extends FormRequest
             'sub_county' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:companies,email',
+            'email' => 'nullable|email|unique:products,email',
             'phone' => 'nullable|string|max:15',
             'percentage' => 'nullable|numeric',
-            'loan_limit' => 'nullable',
+            'asset_limit' => 'nullable',
             'unique_number'=> 'nullable|string|max:255',
             'certificate_of_incorporation' => 'nullable|string|max:255',
             'kra_pin' => 'nullable|string|max:255',

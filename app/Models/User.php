@@ -29,7 +29,7 @@ class User extends Authenticatable
         'staff_number',
         'status',
         'kyc',
-        'company_id'
+        'product_id'
     ];
 
     public function permissions()
@@ -48,8 +48,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function company(){
-        return $this->hasOne('App\Models\Company', 'id', 'company_id');
+    public function product(){
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
 
     public function role(){

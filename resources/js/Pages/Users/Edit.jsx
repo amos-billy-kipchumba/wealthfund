@@ -4,13 +4,13 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';
 
 const EditUser = ({ errors }) => {
-  const { companies, user, auth } = usePage().props; 
+  const { products, user, auth } = usePage().props; 
   
   const roleId = auth.user?.role_id;
   
   const roleOptions = [
       { value: 1, label: 'Super Admin' },
-      { value: 2, label: 'Company Admin' },
+      { value: 2, label: 'Product Admin' },
       { value: 3, label: 'Employee' },
       { value: 4, label: 'Office Admin' },
       { value: 5, label: 'Hr' },
@@ -18,7 +18,7 @@ const EditUser = ({ errors }) => {
   ];
 
   const cRoleOptions = [
-      { value: 2, label: 'Company Admin' },
+      { value: 2, label: 'Product Admin' },
       { value: 3, label: 'Employee' },
       { value: 5, label: 'Hr' },
       { value: 6, label: 'Finance' }
@@ -29,27 +29,27 @@ const EditUser = ({ errors }) => {
     name: user.name,
     email: user.email,
     phone: user.phone,
-    company_id: user.company_id, 
+    product_id: user.product_id, 
     role_id: user.role_id,
   });
 
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    if (user.company_id) {
-      const defaultCompany = companies.find((c) => c.id === user?.company_id);
-      setSelectedCompany(defaultCompany);
+    if (user.product_id) {
+      const defaultProduct = products.find((c) => c.id === user?.product_id);
+      setSelectedProduct(defaultProduct);
     }
-  }, [user, companies]);
+  }, [user, products]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     put(route('users.update', { user: user.id })); 
   };
 
-  const handleCompanyChange = (selectedOption) => {
-    setData('company_id', selectedOption ? selectedOption.value : '');
-    setSelectedCompany(selectedOption);
+  const handleProductChange = (selectedOption) => {
+    setData('product_id', selectedOption ? selectedOption.value : '');
+    setSelectedProduct(selectedOption);
   };
 
   const handleRoleChange = (selectedOption) => {
@@ -111,20 +111,20 @@ const EditUser = ({ errors }) => {
               {errors.role_id && <div className="text-sm text-red-500 mt-1">{errors.role_id}</div>}
           </div>
 
-          {/* Company Select */}
+          {/* Product Select */}
           {roleId === 1 &&
           <div>
-            <label className="block text-sm font-medium text-gray-700">Company</label>
+            <label className="block text-sm font-medium text-gray-700">Product</label>
             <Select
-              value={selectedCompany}
-              onChange={handleCompanyChange}
-              options={companies.map((company) => ({
-                value: company.id,
-                label: company.name
+              value={selectedProduct}
+              onChange={handleProductChange}
+              options={products.map((product) => ({
+                value: product.id,
+                label: product.name
               }))}
-              placeholder="Select a company"
+              placeholder="Select a product"
             />
-            {errors.company_id && <div className="text-sm text-red-500 mt-1">{errors.company_id}</div>}
+            {errors.product_id && <div className="text-sm text-red-500 mt-1">{errors.product_id}</div>}
           </div>}
 
           {/* Submit Button */}

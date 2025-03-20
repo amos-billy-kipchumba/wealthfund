@@ -2,24 +2,24 @@
 
 namespace App\Mail;
 
-use App\Models\Loan;
+use App\Models\Asset;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class LoanDeclinedMail extends Mailable
+class AssetDeclinedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $loan;
+    public $asset;
     public $reason;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Loan $loan, $reason)
+    public function __construct(Asset $asset, $reason)
     {
-        $this->loan = $loan;
+        $this->asset = $asset;
         $this->reason = $reason;
     }
 
@@ -28,10 +28,10 @@ class LoanDeclinedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Loan Application Status: Declined')
-                    ->view('emails.loan_declined')
+        return $this->subject('Asset Application Status: Declined')
+                    ->view('emails.asset_declined')
                     ->with([
-                        'loan' => $this->loan,
+                        'asset' => $this->asset,
                         'reason' => $this->reason,
                     ]);
     }

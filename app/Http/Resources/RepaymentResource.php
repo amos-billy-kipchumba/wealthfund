@@ -18,8 +18,8 @@ class RepaymentResource extends JsonResource
             'id'=>$this->id,
             'amount'=>$this->amount,
             'payment_date' => $this->payment_date,
-            'loan_id' => $this->loan_id,
-            'loan' => $this->loan
+            'asset_id' => $this->asset_id,
+            'asset' => $this->asset
         ];
     }
 }

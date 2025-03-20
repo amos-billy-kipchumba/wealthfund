@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('passport_front')->nullable();
             $table->string('passport_back')->nullable();
             $table->string('approved')->nullable();
-            $table->double('loan_limit')->nullable();
+            $table->double('asset_limit')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

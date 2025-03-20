@@ -5,10 +5,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\LoanController;
-use App\Http\Controllers\LoanProviderController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetProviderController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RepaymentController;
 use App\Http\Controllers\UserController;
@@ -57,8 +57,8 @@ Route::get('/', function () {
 })->name('home');
 
 
-Route::get('/companies/search/{uniqueNumber}', [CompanyController::class, 'search'])
-    ->name('companies.search');
+Route::get('/products/search/{uniqueNumber}', [ProductController::class, 'search'])
+    ->name('products.search');
 
 
 Route::middleware('auth')->group(function () {
@@ -66,20 +66,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('companies', CompanyController::class);
+    Route::resource('products', ProductController::class);
     
-    Route::get('/companies/list', [CompanyController::class, 'list'])->name('companies.list');
+    Route::get('/products/list', [ProductController::class, 'list'])->name('products.list');
 
     Route::resource('employees', EmployeeController::class);
-    Route::get('/companies/{company}/employees', [EmployeeController::class, 'getEmployeesByCompany'])
-    ->name('company.employees');
+    Route::get('/products/{product}/employees', [EmployeeController::class, 'getEmployeesByProduct'])
+    ->name('product.employees');
     
-    Route::resource('loans', LoanController::class);
-    Route::get('/loans/{loan}/approve', [LoanController::class, 'approve'])->name('loans.approval');
-    Route::post('/loans/{loan}/loanApproval', [LoanController::class, 'approveLoan'])->name('loans.approveLoan');
-    Route::post('/loans/bulk-update', [LoanController::class, 'bulkUpdate'])->name('loans.bulkUpdate');
-    Route::post('/loans/bulk-repayment', [LoanController::class, 'bulkRepayment'])->name('loans.bulkRepayment');
-    Route::resource('loanProviders', LoanProviderController::class);
+    Route::resource('assets', AssetController::class);
+    Route::get('/assets/{asset}/approve', [AssetController::class, 'approve'])->name('assets.approval');
+    Route::post('/assets/{asset}/assetApproval', [AssetController::class, 'approveAsset'])->name('assets.approveAsset');
+    Route::post('/assets/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
+    Route::post('/assets/bulk-repayment', [AssetController::class, 'bulkRepayment'])->name('assets.bulkRepayment');
+    Route::resource('assetProviders', AssetProviderController::class);
     Route::resource('notifications', NotificationController::class);
     Route::resource('repayments', RepaymentController::class);
     Route::resource('remittances', RemittanceController::class);
@@ -108,10 +108,10 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::post('/mpesa/result', [LoanController::class, 'handleMpesaCallback']);
+Route::post('/mpesa/result', [AssetController::class, 'handleMpesaCallback']);
 
 
-Route::post('/mpesa/timeout', [LoanController::class, 'handleTimeout'])->name('mpesa.timeout');
+Route::post('/mpesa/timeout', [AssetController::class, 'handleTimeout'])->name('mpesa.timeout');
 
 
 Route::get('/uikit/button', function () {

@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
             'role_id' => 'nullable',
             'email' => 'required',
             'password' => 'required',
-            'company_id' => 'nullable',
+            'product_id' => 'nullable',
             'status' => 'nullable',
             'staff_number' => 'nullable',
             'kyc'=> 'nullable'

@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRepaymentRequest;
 use App\Http\Requests\UpdateRepaymentRequest;
 use App\Models\Repayment;
-use App\Models\Loan;
+use App\Models\Asset;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Mail\LoanRepaymentMail;
+use App\Mail\AssetRepaymentMail;
 use Illuminate\Support\Facades\Mail;
 
 class RepaymentController extends Controller
@@ -25,19 +25,19 @@ class RepaymentController extends Controller
         }
     
         $query = Repayment::with([
-            'loan',
-            'loan.loanProvider',
-            'loan.employee.user',
-            'loan.employee.company',
+            'asset',
+            'asset.assetProvider',
+            'asset.employee.user',
+            'asset.employee.product',
         ]);
     
         // Filter based on role
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $query->whereHas('loan.employee.user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+            $query->whereHas('asset.employee.user', function ($q) use ($user) {
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $query->whereHas('loan.employee.user', function ($q) use ($user) {
+            $query->whereHas('asset.employee.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -49,17 +49,17 @@ class RepaymentController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('number', 'LIKE', "%$search%") // Search the 'number' field
                   ->orWhere('amount', 'LIKE', "%$search%") // Repayment amount
-                  ->orWhereHas('loan', function ($q) use ($search) { // Loan fields
+                  ->orWhereHas('asset', function ($q) use ($search) { // Asset fields
                       $q->where('amount', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%");
                   })
-                  ->orWhereHas('loan.employee', function ($q) use ($search) { // Employee and related fields
-                      $q->where('loan_limit', 'LIKE', "%$search%")
+                  ->orWhereHas('asset.employee', function ($q) use ($search) { // Employee and related fields
+                      $q->where('asset_limit', 'LIKE', "%$search%")
                         ->orWhereHas('user', function ($q) use ($search) { // User fields
                             $q->where('name', 'LIKE', "%$search%")
                               ->orWhere('email', 'LIKE', "%$search%");
                         })
-                        ->orWhereHas('company', function ($q) use ($search) { // Company name
+                        ->orWhereHas('product', function ($q) use ($search) { // Product name
                             $q->where('name', 'LIKE', "%$search%");
                         });
                   });
@@ -87,10 +87,10 @@ class RepaymentController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $loans = Loan::all();
+        $assets = Asset::all();
 
         return Inertia::render('Repayments/Create', [
-            'loans' => $loans,
+            'assets' => $assets,
         ]);
     }
 
@@ -107,15 +107,15 @@ class RepaymentController extends Controller
     
         // Ensure related data is loaded
         $repayment->load([
-            'loan',
-            'loan.loanProvider',
-            'loan.employee.user',
-            'loan.employee.company',
+            'asset',
+            'asset.assetProvider',
+            'asset.employee.user',
+            'asset.employee.product',
         ]);
     
         // Send the repayment email
-        Mail::to($repayment->loan->employee->user->email)
-            ->send(new LoanRepaymentMail($repayment));
+        Mail::to($repayment->asset->employee->user->email)
+            ->send(new AssetRepaymentMail($repayment));
     
         return redirect()->route('repayments.index')->with('success', 'Repayment created successfully.');
     }
@@ -129,10 +129,10 @@ class RepaymentController extends Controller
         }
 
         $repayment->load([
-            'loan',
-            'loan.loanProvider',
-            'loan.employee.user',
-            'loan.employee.company'
+            'asset',
+            'asset.assetProvider',
+            'asset.employee.user',
+            'asset.employee.product'
         ]);
 
         return Inertia::render('Repayments/Show', [
@@ -148,11 +148,11 @@ class RepaymentController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $loans = Loan::all();
+        $assets = Asset::all();
 
         return Inertia::render('Repayments/Edit', [
             'repayment' => $repayment,
-            'loans' => $loans,
+            'assets' => $assets,
         ]);
     }
 

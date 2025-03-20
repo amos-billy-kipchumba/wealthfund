@@ -24,12 +24,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'Delete user', 'guard_name' => 'web']);
         Permission::create(['name' => 'Export user', 'guard_name' => 'web']);
 
-        Permission::create(['name' => 'Index company', 'guard_name' => 'web']);
-        Permission::create(['name' => 'View company', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Create company', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Edit company', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Delete company', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Export company', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Index product', 'guard_name' => 'web']);
+        Permission::create(['name' => 'View product', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Create product', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Edit product', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Delete product', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Export product', 'guard_name' => 'web']);
 
         Permission::create(['name' => 'Index employee', 'guard_name' => 'web']);
         Permission::create(['name' => 'View employee', 'guard_name' => 'web']);
@@ -38,19 +38,19 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'Delete employee', 'guard_name' => 'web']);
         Permission::create(['name' => 'Export employee', 'guard_name' => 'web']);
 
-        Permission::create(['name' => 'Index loan', 'guard_name' => 'web']);
-        Permission::create(['name' => 'View loan', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Create loan', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Edit loan', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Delete loan', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Export loan', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Index asset', 'guard_name' => 'web']);
+        Permission::create(['name' => 'View asset', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Create asset', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Edit asset', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Delete asset', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Export asset', 'guard_name' => 'web']);
 
-        Permission::create(['name' => 'Index loan provider', 'guard_name' => 'web']);
-        Permission::create(['name' => 'View loan provider', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Create loan provider', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Edit loan provider', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Delete loan provider', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Export loan provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Index asset provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'View asset provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Create asset provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Edit asset provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Delete asset provider', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Export asset provider', 'guard_name' => 'web']);
 
         Permission::create(['name' => 'Index notification', 'guard_name' => 'web']);
         Permission::create(['name' => 'View notification', 'guard_name' => 'web']);

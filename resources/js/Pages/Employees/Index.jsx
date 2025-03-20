@@ -32,16 +32,16 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     doc.setFontSize(14);
     doc.text(`Employees Report`, 14, 50);
     
-    const columns = ["Name", "Email", "Phone", "Salary", "Loan Limit","Unpaid loans","Total Loan Balance"];
+    const columns = ["Name", "Email", "Phone", "Salary", "Asset Limit","Unpaid assets","Total Asset Balance"];
     
     const rows = employees.map(data => [
       data.user?.name, 
       data.user?.email, 
       data.user?.phone || 'N/A', 
       data.salary,
-      data.loan_limit,
-      data.unpaid_loans_count,
-      data.total_loan_balance
+      data.asset_limit,
+      data.unpaid_assets_count,
+      data.total_asset_balance
     ]);
     
     doc.autoTable({
@@ -59,9 +59,9 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
       Email: data.user?.email,
       Phone: data.user?.phone || 'N/A',
       Salary: data.salary,
-      Loan_Limit: data.loan_limit,
-      Unpaid_loans: data.unpaid_loans_count,
-      Total_Loan_Balance: data.total_loan_balance,
+      Asset_Limit: data.asset_limit,
+      Unpaid_assets: data.unpaid_assets_count,
+      Total_Asset_Balance: data.total_asset_balance,
     })));
   
     const wb = XLSX.utils.book_new();
@@ -162,7 +162,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
               <tr>
-                {["Name", "Email", "Phone", "Salary", "Loan Limit","Unpaid loans","Total Loan Balance", "Actions"].map((header) => (
+                {["Name", "Email", "Phone", "Salary", "Asset Limit","Unpaid assets","Total Asset Balance", "Actions"].map((header) => (
                   <th 
                     key={header} 
                     className={`
@@ -183,9 +183,9 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                     <td className="px-4 py-4">{employee.user?.email}</td>
                     <td className="px-4 py-4">{employee.user?.phone || 'N/A'}</td>
                     <td className="px-4 py-4">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee.salary)}</td>
-                    <td className="px-4 py-4">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee.loan_limit)}</td>
-                    <td className="px-4 py-4">{employee.unpaid_loans_count}</td>
-                    <td className="px-4 py-4">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee.total_loan_balance)}</td>
+                    <td className="px-4 py-4">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee.asset_limit)}</td>
+                    <td className="px-4 py-4">{employee.unpaid_assets_count}</td>
+                    <td className="px-4 py-4">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee.total_asset_balance)}</td>
                     <td className="px-4 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         {userPermission.includes('View employee') &&

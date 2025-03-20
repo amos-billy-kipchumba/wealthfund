@@ -71,7 +71,7 @@ function Footer() {
                               </a>
                             </li>
                             <li className="elementor-icon-list-item elementor-inline-item">
-                              <a href="https://twitter.com/Moneycloudloans">
+                              <a href="https://twitter.com/Moneycloudassets">
                                 <span className="elementor-icon-list-icon">
                                   <i
                                     aria-hidden="true"

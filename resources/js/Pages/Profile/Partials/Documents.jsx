@@ -18,7 +18,7 @@ const Documents = ({ employee }) => {
                             <p><strong>ID Number:</strong> {employee.id_number}</p>
                             <p><strong>Passport Number:</strong> {employee.passport_number}</p>
                             <p><strong>Salary:</strong> {employee.salary}</p>
-                            <p><strong>Loan Limit:</strong> {employee.loan_limit}</p>
+                            <p><strong>Asset Limit:</strong> {employee.asset_limit}</p>
                         </div>
 
                         {/* Document Previews */}

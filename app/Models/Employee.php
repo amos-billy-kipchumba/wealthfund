@@ -11,9 +11,9 @@ class Employee extends Model
 
     protected $fillable = [
         'salary',
-        'loan_limit',
+        'asset_limit',
         'user_id',
-        'company_id',
+        'product_id',
         'passport_number',
         'id_number',
         'id_front',
@@ -23,10 +23,10 @@ class Employee extends Model
         'approved',
     ];
 
-    // Relationship with Company
-    public function company()
+    // Relationship with Product
+    public function product()
     {
-        return $this->hasOne('App\Models\Company', 'id', 'company_id');
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
 
     // Relationship with User
@@ -35,30 +35,30 @@ class Employee extends Model
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
-    // Relationship with Loan
-    public function loans()
+    // Relationship with Asset
+    public function assets()
     {
-        return $this->hasMany('App\Models\Loan', 'employee_id');
+        return $this->hasMany('App\Models\Asset', 'employee_id');
     }
 
-    // Accessor for the number of unpaid loans
-    public function getUnpaidLoansCountAttribute()
+    // Accessor for the number of unpaid assets
+    public function getUnpaidAssetsCountAttribute()
     {
-        return $this->loans()
+        return $this->assets()
             ->where('status', '!=', 'paid')
             ->where('status', '!=', 'rejected')
             ->count();
     }
 
-    public function getTotalLoanBalanceAttribute()
+    public function getTotalAssetBalanceAttribute()
     {
         return round(
-            $this->loans()
+            $this->assets()
                 ->where('status', '!=', 'paid')
                 ->where('status', '!=', 'rejected')
                 ->get()
-                ->sum(function ($loan) {
-                    return $loan->currentBalance;
+                ->sum(function ($asset) {
+                    return $asset->currentBalance;
                 }),
             2 
         );

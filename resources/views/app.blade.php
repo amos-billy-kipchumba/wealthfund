@@ -7,7 +7,7 @@
         <title inertia>{{ config('app.name', 'Nyotafund') }}</title>
 
         <!-- Meta Description -->
-        <meta name="description" content="Nyotafund is a company that provides advance loans to employees, helping them access funds before their paychecks.">
+        <meta name="description" content="Nyotafund is a product that provides advance assets to employees, helping them access funds before their paychecks.">
 
         <!-- Favicon Links -->
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">

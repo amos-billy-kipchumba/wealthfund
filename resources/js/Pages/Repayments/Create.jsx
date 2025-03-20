@@ -5,10 +5,10 @@ import Select from 'react-select';
 
 const Create = () => {
 
-   const { loans } = usePage().props; 
+   const { assets } = usePage().props; 
 
   const { data, setData, post, errors } = useForm({
-    loan_id: '',
+    asset_id: '',
     amount: '',
     payment_date: new Date().toISOString().slice(0, 19).replace('T', ' '),
   });
@@ -18,13 +18,13 @@ const Create = () => {
     post(route('repayments.store'));
   };
 
-  const loanOptions = loans.map(loan => ({
-    value: loan.id,
-    label: loan.number
+  const assetOptions = assets.map(asset => ({
+    value: asset.id,
+    label: asset.number
   }));
 
-  const handleLoanChange = (selectedOption) => {
-      setData('loan_id', selectedOption ? selectedOption.value : ''); 
+  const handleAssetChange = (selectedOption) => {
+      setData('asset_id', selectedOption ? selectedOption.value : ''); 
   };
 
   return (
@@ -46,15 +46,15 @@ const Create = () => {
           </div>
 
           <div>
-              <label className="block text-sm font-medium text-gray-700">Loan</label>
+              <label className="block text-sm font-medium text-gray-700">Asset</label>
               <Select
-                  options={loanOptions}
-                  value={loanOptions.find(option => option.value === data.loan_id)} 
-                  onChange={handleLoanChange}
+                  options={assetOptions}
+                  value={assetOptions.find(option => option.value === data.asset_id)} 
+                  onChange={handleAssetChange}
                   className="mt-1 block w-full py-2"
-                  placeholder="Select a loan"
+                  placeholder="Select a asset"
               />
-              {errors.loan_id && <div className="text-sm text-red-500 mt-1">{errors.loan_id}</div>}
+              {errors.asset_id && <div className="text-sm text-red-500 mt-1">{errors.asset_id}</div>}
           </div>
 
           <button

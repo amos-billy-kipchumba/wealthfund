@@ -4,12 +4,12 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';  
 
 const Create = () => {
-    const { companies, users, auth } = usePage().props; 
+    const { products, users, auth } = usePage().props; 
     const roleId = auth.user?.role_id;
 
-    const companyOptions = companies.map(company => ({
-        value: company.id,
-        label: company.name
+    const productOptions = products.map(product => ({
+        value: product.id,
+        label: product.name
     }));
 
     const userOptions = users.map(user => ({
@@ -19,9 +19,9 @@ const Create = () => {
 
     const { data, setData, post, errors } = useForm({
       salary: '',
-      loan_limit: '',
+      asset_limit: '',
       user_id: '',
-      company_id: roleId === 2 ? auth.user?.company_id : '',
+      product_id: roleId === 2 ? auth.user?.product_id : '',
       approved: '',   
     });
 
@@ -30,8 +30,8 @@ const Create = () => {
         post(route('employees.store'));
     };
 
-    const handleCompanyChange = (selectedOption) => {
-        setData('company_id', selectedOption ? selectedOption.value : ''); 
+    const handleProductChange = (selectedOption) => {
+        setData('product_id', selectedOption ? selectedOption.value : ''); 
     };
 
     const handleUserChange = (selectedOption) => {
@@ -60,7 +60,7 @@ const Create = () => {
                                 setData({
                                     ...data,
                                     salary: salary,
-                                    loan_limit: (salary * 0.33).toFixed(2) // Setting 33% of salary as loan limit
+                                    asset_limit: (salary * 0.33).toFixed(2) // Setting 33% of salary as asset limit
                                 });
                             }}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -69,27 +69,27 @@ const Create = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Loan Limit (33% of Salary)</label>
+                        <label className="block text-sm font-medium text-gray-700">Asset Limit (33% of Salary)</label>
                         <input
                             type="number"
-                            value={data.loan_limit}
+                            value={data.asset_limit}
                             readOnly
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none"
                         />
                     </div>
 
-                    {/* Company Select (React Select) */}
+                    {/* Product Select (React Select) */}
                     {roleId === 1 &&
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Company</label>
+                        <label className="block text-sm font-medium text-gray-700">Product</label>
                         <Select
-                            options={companyOptions}
-                            value={companyOptions.find(option => option.value === data.company_id)}  // Set selected option
-                            onChange={handleCompanyChange}
+                            options={productOptions}
+                            value={productOptions.find(option => option.value === data.product_id)}  // Set selected option
+                            onChange={handleProductChange}
                             className="mt-1 block w-full py-2 rounded-md focus:outline-none"
-                            placeholder="Select a company"
+                            placeholder="Select a product"
                         />
-                        {errors.company_id && <div className="text-sm text-red-500 mt-1">{errors.company_id}</div>}
+                        {errors.product_id && <div className="text-sm text-red-500 mt-1">{errors.product_id}</div>}
                     </div>}
 
                     <div>

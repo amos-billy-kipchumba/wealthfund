@@ -18,9 +18,9 @@ class EmployeeFactory extends Factory
     {
         return [
             'salary' => rand(2, 100099),
-            'loan_limit' => rand(2,  10099),
+            'asset_limit' => rand(2,  10099),
             'user_id' => rand(1, 9),
-            'company_id' => rand(1, 9)
+            'product_id' => rand(1, 9)
         ];
     }
 }

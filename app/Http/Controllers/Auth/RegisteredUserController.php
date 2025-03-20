@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
          $request->validate([
              'name' => 'required|string|max:255',
              'role_id' => 'required',
-             'company_id' => 'nullable',
+             'product_id' => 'nullable',
              'staff_number'=> 'nullable',
              'phone' => 'required',
              'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -62,7 +62,7 @@ class RegisteredUserController extends Controller
              'email' => $request->email,
              'phone' => $request->phone,
              'staff_number' => $request->staff_number ?? null,
-             'company_id'=>$request->company_id,
+             'product_id'=>$request->product_id,
              'role_id' => $request->role_id,
              'password' => Hash::make($request->password),
          ]);

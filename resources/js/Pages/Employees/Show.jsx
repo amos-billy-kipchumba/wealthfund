@@ -4,7 +4,7 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Swal from 'sweetalert2';
 import { Check, XCircle } from 'lucide-react';
 
-const Show = ({ employee, user, company }) => {
+const Show = ({ employee, user, product }) => {
 
     const { auth } = usePage().props;
 
@@ -100,8 +100,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               <span className="text-gray-800">{employee.salary}</span>
             </div>
             <div className="flex justify-between">
-              <strong className="text-gray-600">Loan limit:</strong> 
-              <span className="text-gray-800">{employee.loan_limit}</span>
+              <strong className="text-gray-600">Asset limit:</strong> 
+              <span className="text-gray-800">{employee.asset_limit}</span>
             </div>
             <div className="flex justify-between">
               <strong className="text-gray-600">Email:</strong> 
@@ -116,20 +116,20 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               <span className="text-gray-800">{employee.id_number}</span>
             </div>
             <div className="flex justify-between">
-              <strong className="text-gray-600">Company:</strong> 
-              <span className="text-gray-800">{company.name}</span>
+              <strong className="text-gray-600">Product:</strong> 
+              <span className="text-gray-800">{product.name}</span>
             </div>
             <div className="flex justify-between">
               <strong className="text-gray-600">Approved:</strong> 
               <span className="text-gray-800">{employee.approved}</span>
             </div>
             <div className="flex justify-between">
-              <strong className="text-gray-600">Unpaid loans:</strong> 
-              <span className="text-gray-800">{employee.unpaid_loans_count}</span>
+              <strong className="text-gray-600">Unpaid assets:</strong> 
+              <span className="text-gray-800">{employee.unpaid_assets_count}</span>
             </div>
             <div className="flex justify-between">
-              <strong className="text-gray-600">Total loan balance:</strong> 
-              <span className="text-gray-800">{employee.total_loan_balance}</span>
+              <strong className="text-gray-600">Total asset balance:</strong> 
+              <span className="text-gray-800">{employee.total_asset_balance}</span>
             </div>
           </div>
 
@@ -185,7 +185,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           
           {employee.salary &&
           <>
-          {(employee.approved !== 'Approved' && userPermission.includes('Edit loan')) &&
+          {(employee.approved !== 'Approved' && userPermission.includes('Edit asset')) &&
             <button
               onClick={(e) => handleApprovedUpdate(e, employee.id, 'Approved')}
               disabled={processing}
@@ -194,7 +194,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               <Check className="w-4 h-4 mr-2" /> Approve
             </button>}
 
-            {(employee?.user?.status !== 'Deactivated' && userPermission.includes('Delete loan')) &&
+            {(employee?.user?.status !== 'Deactivated' && userPermission.includes('Delete asset')) &&
             <button
               onClick={(e) => handleApprovedUpdate(e, employee.id, 'Deactivated')}
               disabled={processing}
@@ -203,7 +203,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               <Check className="w-4 h-4 mr-2" /> Deactivate
             </button>}
 
-          {(employee.approved !== 'Declined' && userPermission.includes('Edit loan')) &&
+          {(employee.approved !== 'Declined' && userPermission.includes('Edit asset')) &&
           <button
             onClick={(e) => handleApprovedUpdate(e, employee.id, 'Declined')}
             disabled={processing}

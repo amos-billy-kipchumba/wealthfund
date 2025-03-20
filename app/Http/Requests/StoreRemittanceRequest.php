@@ -23,7 +23,7 @@ class StoreRemittanceRequest extends FormRequest
     {
         return [
             'remittance_number' => 'nullable',
-            'company_id' => 'nullable'
+            'product_id' => 'nullable'
         ];
     }
 }

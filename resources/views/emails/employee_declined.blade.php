@@ -18,8 +18,8 @@
     </style>
 </head>
 <body>
-    <h2>Dear {{ $loan->employee->user->name }},</h2>
-    <p>We regret to inform you that after a review, your salary advance request has been declined.</p>
+    <h2>Dear {{ $asset->employee->user->name }},</h2>
+    <p>We regret to inform you that after a review, your asset request has been declined.</p>
     <p>If you have any questions or need more information regarding this decision, feel free to reach out to us. We are happy to assist you in understanding the reasoning behind our decision.</p>
     <p>We appreciate your understanding and thank you for your time and effort.</p>
     <p>Best regards,</p>

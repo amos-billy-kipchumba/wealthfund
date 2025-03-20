@@ -31,14 +31,14 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     doc.setFontSize(14);
     doc.text(`Users Report`, 14, 50);
     
-    const columns = ["Name", "Email", "Phone", "Company Email", "Company Phone"];
+    const columns = ["Name", "Email", "Phone", "Product Email", "Product Phone"];
     
     const rows = users.map(data => [
       data.name, 
       data.email, 
       data.phone, 
-      data.company?.email,
-      data.company?.phone
+      data.product?.email,
+      data.product?.phone
     ]);
     
     doc.autoTable({
@@ -55,8 +55,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
       Name:data.name, 
       Email:data.email, 
       Phone:data.phone, 
-      Company_Email:data.company?.email,
-      Company_Phone:data.company?.phone
+      Product_Email:data.product?.email,
+      Product_Phone:data.product?.phone
     })));
   
     const wb = XLSX.utils.book_new();
@@ -162,8 +162,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Name</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Email</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Phone</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Company Email</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Company Phone</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Product Email</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Product Phone</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -174,8 +174,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                     <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{user.phone}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.company?.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.company?.phone}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{user.product?.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{user.product?.phone}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex justify-end gap-3">
                         {userPermission.includes('View user') &&

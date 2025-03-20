@@ -35,13 +35,13 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     doc.setFontSize(14);
     doc.text(`Repayments Report`, 14, 50);
     
-    const columns = ["Loan number", "Employee name", "Amount", "Status"];
+    const columns = ["Asset number", "Employee name", "Amount", "Status"];
     
     const rows = repayments?.map(data => [
-      data.loan?.number, 
-      data.loan?.employee?.user?.name, 
+      data.asset?.number, 
+      data.asset?.employee?.user?.name, 
       new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount), 
-      data.loan?.status
+      data.asset?.status
     ]);
     
     doc.autoTable({
@@ -55,14 +55,14 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
   const generateExcel = () => {
     const ws = XLSX.utils.json_to_sheet(repayments?.map((data) => ({
-      Loan_Number:data.loan?.number, 
-      Employee_Name:data.loan?.employee?.user?.name, 
+      Asset_Number:data.asset?.number, 
+      Employee_Name:data.asset?.employee?.user?.name, 
       Amount:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount), 
-      Status:data.loan?.status
+      Status:data.asset?.status
     })));
   
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Loans');
+    XLSX.utils.book_append_sheet(wb, ws, 'Assets');
     XLSX.writeFile(wb, 'repayments_report.xlsx');
   };
 
@@ -162,8 +162,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Repayment Number</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Employee Name</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Company Name</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Loan amount</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Product Name</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset amount</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Payment</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
               </tr>
@@ -173,9 +173,9 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 repayments.map((repayment) => (
                   <tr key={repayment.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{repayment.number}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.loan?.employee?.user?.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.loan?.employee?.company?.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.loan?.amount)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.employee?.user?.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.employee?.product?.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.asset?.amount)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment.amount)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex justify-end gap-3">

@@ -2,25 +2,25 @@
 
 namespace App\Mail;
 
-use App\Models\Loan;
+use App\Models\Asset;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Envelope;  // Import Envelope
 use Illuminate\Mail\Mailables\Content;  // Import Content
 use Illuminate\Queue\SerializesModels;
 
-class LoanApprovalMail extends Mailable
+class AssetApprovalMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $loan;
+    public $asset;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Loan $loan)
+    public function __construct(Asset $asset)
     {
-        $this->loan = $loan;
+        $this->asset = $asset;
     }
 
     /**
@@ -29,7 +29,7 @@ class LoanApprovalMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Loan Has Been Approved'
+            subject: 'Your Asset Has Been Approved'
         );
     }
 
@@ -39,7 +39,7 @@ class LoanApprovalMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.loan_approval',
+            view: 'emails.asset_approval',
         );
     }
 

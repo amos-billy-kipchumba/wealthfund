@@ -17,11 +17,11 @@ class EmployeeResource extends JsonResource
         return [
             'id'=>$this->id,
             'salary'=>$this->salary,
-            'loan_limit' => $this->loan_limit,
+            'asset_limit' => $this->asset_limit,
             'user_id' => $this->user_id,
-            'company_id' => $this->company_id,
+            'product_id' => $this->product_id,
             'user'=>$this->user,
-            'company'=>$this->company
+            'product'=>$this->product
         ];
     }
 }

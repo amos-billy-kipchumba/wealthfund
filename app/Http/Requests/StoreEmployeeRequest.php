@@ -23,9 +23,9 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'salary' => 'nullable',
-            'loan_limit' => 'nullable',
+            'asset_limit' => 'nullable',
             'user_id' => 'nullable',
-            'company_id' => 'nullable',
+            'product_id' => 'nullable',
             'passport_number' => 'nullable',
             'id_number' => 'nullable',
             'id_front' => 'nullable',

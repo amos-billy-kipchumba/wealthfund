@@ -9,7 +9,7 @@ import { Plus } from 'lucide-react';
 
 const Dashboard = ({ auth }) => {
     // Get data from the page props
-    const { companyCount, activeLoansCount, inactiveLoansCount, pendingLoansCount, pendingLoansValue, repaidLoansValue,activeLoansValue, inactiveLoansValue, loanTrends, repaymentTrends, employee, motherCompany } = usePage().props;
+    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, employee, motherProduct } = usePage().props;
     
     const [lineOptions, setLineOptions] = useState({});
     const { layoutConfig } = useContext(LayoutContext);
@@ -88,16 +88,16 @@ const Dashboard = ({ auth }) => {
     }, [layoutConfig.colorScheme]);
 
     // Ensure data is available before rendering
-    if (!loanTrends || !repaymentTrends) {
+    if (!assetTrends || !repaymentTrends) {
         return <div>Loading...</div>;
     }
 
     const lineData = {
-        labels: loanTrends.map(trend => trend.month),
+        labels: assetTrends.map(trend => trend.month),
         datasets: [
             {
-                label: 'Salary advances',
-                data: loanTrends.map(trend => trend.loan_count),
+                label: 'Assets',
+                data: assetTrends.map(trend => trend.asset_count),
                 fill: false,
                 backgroundColor: '#2f4860',
                 borderColor: '#2f4860',
@@ -120,15 +120,15 @@ const Dashboard = ({ auth }) => {
             <Head title="Dashboard" />
              {roleId === 2 && 
             <div className='flex gap-8 items-center'>
-                <h4 className='font-bold flex items-center my-auto'>Company: {motherCompany?.name} - {motherCompany?.unique_number}</h4>
+                <h4 className='font-bold flex items-center my-auto'>Product: {motherProduct?.name} - {motherProduct?.unique_number}</h4>
             </div>}
 
             {roleId === 3 && 
             <div className='flex gap-8 items-center'>
                 <h4 className='font-bold flex items-center my-auto'>Phone number: {auth.user?.phone}</h4>
-                {userPermission.includes('Create loan') &&
+                {userPermission.includes('Create asset') &&
                 <Link
-                  href={route('loans.create')}
+                  href={route('assets.create')}
                   className="flex items-center mt-auto justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm min-w-fit"
                 >
                   <Plus className="w-4 h-4 mr-2 my-auto" />
@@ -141,11 +141,11 @@ const Dashboard = ({ auth }) => {
             <div className="grid pt-4">
                 {roleId === 1 && 
                 <DashboardInfoCard
-                    title="Companies"
-                    value={companyCount}
+                    title="Products"
+                    value={productCount}
                     icon="map-marker"
                     iconColor="blue"
-                    descriptionValue="Total Companies"
+                    descriptionValue="Total Products"
                     descriptionText="in the system"
                 />}
                  {roleId === 3 && 
@@ -159,51 +159,51 @@ const Dashboard = ({ auth }) => {
                 />}
                 {roleId === 3 && 
                 <DashboardInfoCard
-                    title="Salary advance limit"
-                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee?.loan_limit)}
+                    title="Asset limit"
+                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee?.asset_limit)}
                     icon="map-marker"
                     iconColor="blue"
                     descriptionValue="The maximum amount"
                     descriptionText="you can borrow"
                 />}
                 <DashboardInfoCard
-                    title="Active salary advances"
-                    value={`${activeLoansCount} (${activeLoansValue})`}
+                    title="Active assets"
+                    value={`${activeAssetsCount} (${activeAssetsValue})`}
                     icon="map-marker"
                     iconColor="orange"
-                    descriptionValue="Active salary advances"
+                    descriptionValue="Active assets"
                     descriptionText="currently active"
                 />
                 <DashboardInfoCard
-                    title="Pending salary advances"
-                    value={`${pendingLoansCount} (${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(pendingLoansValue)})`}
+                    title="Pending assets"
+                    value={`${pendingAssetsCount} (${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(pendingAssetsValue)})`}
                     icon="map-marker"
                     iconColor="orange"
-                    descriptionValue="Active salary advances"
+                    descriptionValue="Active assets"
                     descriptionText="currently active"
                 />
                 <DashboardInfoCard
-                    title="Declined salary advances"
-                    value={`${inactiveLoansCount} (${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(inactiveLoansValue)})`}
+                    title="Declined assets"
+                    value={`${inactiveAssetsCount} (${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(inactiveAssetsValue)})`}
                     icon="inbox"
                     iconColor="cyan"
-                    descriptionValue="Inactive salary advances"
+                    descriptionValue="Inactive assets"
                     descriptionText="currently inactive"
                 />
                 <DashboardInfoCard
-                    title="Repaid salary advances"
-                    value={`${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repaidLoansValue)}`}
+                    title="Repaid assets"
+                    value={`${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repaidAssetsValue)}`}
                     icon="comment"
                     iconColor="purple"
                     descriptionValue="Total Repaid"
-                    descriptionText="loan repayments"
+                    descriptionText="asset repayments"
                 />
             </div>
 
             <div className="grid">
                 <div className="col-12 xl:col-6">
                     <div className="card">
-                        <h5>Salary advances and Repayment Trends</h5>
+                        <h5>Assets and Repayment Trends</h5>
                         <Chart type="line" data={lineData} options={lineOptions} />
                     </div>
                 </div>

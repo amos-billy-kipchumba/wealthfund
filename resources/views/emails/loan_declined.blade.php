@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salary Advance Application Status: Declined</title>
+    <title>Asset Application Status: Declined</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,9 +46,9 @@
 <div class="container">
 
     <div class="content">
-        <h2>Dear {{ $loan->employee->user->name }},</h2>
+        <h2>Dear {{ $asset->employee->user->name }},</h2>
 
-        <p>We regret to inform you that your salary advance application has been declined after review because {{$reason}}.</p>
+        <p>We regret to inform you that your asset application has been declined after review because {{$reason}}.</p>
 
         <p>If you would like to discuss the details or have any questions regarding this decision, feel free to reach out to us.</p>
 

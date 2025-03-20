@@ -21,8 +21,8 @@ class UserResource extends JsonResource
             'role_id' => $this->role_id,
             'email' => $this->email,
             'password' => $this->password,
-            'company_id'=>$this->company_id,
-            'company'=>$this->company
+            'product_id'=>$this->product_id,
+            'product'=>$this->product
         ];
     }
 }

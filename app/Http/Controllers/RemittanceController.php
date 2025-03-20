@@ -19,17 +19,17 @@ class RemittanceController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $query = Remittance::with('company');
+        $query = Remittance::with('product');
 
         // Filter based on user role
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $query->whereHas('company', fn($q) => $q->where('id', $user->company_id));
+            $query->whereHas('product', fn($q) => $q->where('id', $user->product_id));
         }
 
-        // Search by company name only
+        // Search by product name only
         if ($request->has('search')) {
             $search = trim($request->input('search'));
-            $query->whereHas('company', fn($q) => $q->where('name', 'LIKE', "%$search%"));
+            $query->whereHas('product', fn($q) => $q->where('name', 'LIKE', "%$search%"));
         }
 
         $remittances = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -74,8 +74,8 @@ class RemittanceController extends Controller
         }
 
         $remittance->load([
-            'company', 
-            'repayments.loan.employee.user'
+            'product', 
+            'repayments.asset.employee.user'
         ]);
         
         $totalRepayments = $remittance->repayments->sum('amount');

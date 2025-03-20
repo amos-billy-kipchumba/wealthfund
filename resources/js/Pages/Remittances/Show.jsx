@@ -8,7 +8,7 @@ import * as XLSX from 'xlsx';
 import { jsPDF } from "jspdf";
 
 const Show = ({ remittance }) => {
-    const [selectedLoans, setSelectedLoans] = useState([]);
+    const [selectedAssets, setSelectedAssets] = useState([]);
 
     const { flash, pagination, auth, totalRepayments } = usePage().props; 
 
@@ -20,28 +20,28 @@ const Show = ({ remittance }) => {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
     const handleSelectAll = () => {
-        if (selectedLoans.length === remittance?.repayments?.length) {
-            setSelectedLoans([]);
+        if (selectedAssets.length === remittance?.repayments?.length) {
+            setSelectedAssets([]);
         } else {
-            setSelectedLoans(remittance?.repayments?.map((data) => data?.loan?.id));
+            setSelectedAssets(remittance?.repayments?.map((data) => data?.asset?.id));
         }
     };
 
-    const handleSelectLoan = (id) => {
-        setSelectedLoans((prev) =>
-            prev.includes(id) ? prev.filter((loanId) => loanId !== id) : [...prev, id]
+    const handleSelectAsset = (id) => {
+        setSelectedAssets((prev) =>
+            prev.includes(id) ? prev.filter((assetId) => assetId !== id) : [...prev, id]
         );
     };
 
     const handleBulkAction = () => {
-          if (selectedLoans.length === 0) {
-            Swal.fire('No loans selected', 'Please select at least one loan.', 'warning');
+          if (selectedAssets.length === 0) {
+            Swal.fire('No assets selected', 'Please select at least one asset.', 'warning');
             return;
           }
       
           Swal.fire({
             title: 'Are you sure?',
-            text: `This will mark ${selectedLoans.length} loan(s) as Paid and create repayment records.`,
+            text: `This will mark ${selectedAssets.length} asset(s) as Paid and create repayment records.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -49,14 +49,14 @@ const Show = ({ remittance }) => {
             confirmButtonText: 'Yes, mark as Paid!',
           }).then((result) => {
             if (result.isConfirmed) {
-              router.post(route('loans.bulkRepayment'), { loanIds: selectedLoans }, {
+              router.post(route('assets.bulkRepayment'), { assetIds: selectedAssets }, {
                 onSuccess: () => {
-                  Swal.fire('Success', 'Loans marked as Paid successfully!', 'success');
-                  setSelectedLoans([]);
+                  Swal.fire('Success', 'Assets marked as Paid successfully!', 'success');
+                  setSelectedAssets([]);
                 },
                 onError: (err) => {
                   console.error('Bulk update error:', err);
-                  Swal.fire('Error', 'Failed to update loans.', 'error');
+                  Swal.fire('Error', 'Failed to update assets.', 'error');
                 },
               });
             }
@@ -70,12 +70,12 @@ const Show = ({ remittance }) => {
           doc.setFontSize(14);
           doc.text(`Repayment Remittance Report`, 14, 50);
           
-          const columns = ["Loan number", "Employee name", "Loan amount"];
+          const columns = ["Asset number", "Employee name", "Asset amount"];
           
           const rows = remittance?.repayments.map(data => [
-            data?.loan?.number, 
-            data.loan?.employee?.user?.name,
-            data?.loan?.amount
+            data?.asset?.number, 
+            data.asset?.employee?.user?.name,
+            data?.asset?.amount
           ]);
           
           doc.autoTable({
@@ -84,14 +84,14 @@ const Show = ({ remittance }) => {
             startY: 60,
           });
           
-          doc.save("loans_reports.pdf");
+          doc.save("assets_reports.pdf");
         };
       
         const generateExcel = () => {
           const ws = XLSX.utils.json_to_sheet(remittance?.repayments.map((data) => ({
-            Loan_Number:data?.loan?.number, 
-            Employee_Name:data.loan?.employee?.user?.name,
-            Loan_Amount:data?.loan?.amount
+            Asset_Number:data?.asset?.number, 
+            Employee_Name:data.asset?.employee?.user?.name,
+            Asset_Amount:data?.asset?.amount
           })));
         
           const wb = XLSX.utils.book_new();
@@ -111,8 +111,8 @@ const Show = ({ remittance }) => {
                         <span className="text-gray-800">{remittance?.remittance_number || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
-                        <strong className="text-gray-600">Company:</strong>
-                        <span className="text-gray-800">{remittance?.company?.name || 'N/A'}</span>
+                        <strong className="text-gray-600">Product:</strong>
+                        <span className="text-gray-800">{remittance?.product?.name || 'N/A'}</span>
                     </div>
                 </div>
 
@@ -140,7 +140,7 @@ const Show = ({ remittance }) => {
                 `}>
                   <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                     <h1 className="text-2xl font-semibold text-gray-900 w-full sm:w-auto my-auto">
-                    {status} Loans Directory
+                    {status} Assets Directory
                     </h1>
                     
                     <div className="flex flex-wrap justify-center gap-2 w-full sm:w-auto">
@@ -177,7 +177,7 @@ const Show = ({ remittance }) => {
                 </div>
               </div>
 
-                {/* Loans Table */}
+                {/* Assets Table */}
                 <div className="relative flex flex-col w-full h-full mt-4 text-slate-300 bg-slate-800 shadow-md rounded-lg bg-clip-border">
                     <table className="w-full text-left table-auto min-w-max">
                         <thead>
@@ -185,12 +185,12 @@ const Show = ({ remittance }) => {
                                 <th className="p-4 border-b border-slate-600 bg-slate-700">
                                     <input
                                         type="checkbox"
-                                        checked={selectedLoans.length === remittance?.repayments?.length}
+                                        checked={selectedAssets.length === remittance?.repayments?.length}
                                         onChange={handleSelectAll}
                                     />
                                 </th>
                                 <th className="p-4 border-b border-slate-600 bg-slate-700">Employee</th>
-                                <th className="p-4 border-b border-slate-600 bg-slate-700">Loan number</th>
+                                <th className="p-4 border-b border-slate-600 bg-slate-700">Asset number</th>
                                 <th className="p-4 border-b border-slate-600 bg-slate-700">Amount</th>
                             </tr>
                         </thead>
@@ -201,28 +201,28 @@ const Show = ({ remittance }) => {
                                         <td className="p-4 border-b border-slate-700">
                                             <input
                                                 type="checkbox"
-                                                checked={selectedLoans.includes(data?.loan?.id)}
-                                                onChange={() => handleSelectLoan(data?.loan?.id)}
+                                                checked={selectedAssets.includes(data?.asset?.id)}
+                                                onChange={() => handleSelectAsset(data?.asset?.id)}
                                             />
                                         </td>
                                         <td className="p-4 border-b border-slate-700">
                                             <p className="text-sm text-slate-100 font-semibold">
-                                                {data?.loan?.employee?.user?.name || 'N/A'}
+                                                {data?.asset?.employee?.user?.name || 'N/A'}
                                             </p>
                                         </td>
                                         <td className="p-4 border-b border-slate-700">
-                                            <p className="text-sm text-slate-300">{data?.loan?.number || 'N/A'}</p>
+                                            <p className="text-sm text-slate-300">{data?.asset?.number || 'N/A'}</p>
                                         </td>
                                         <td className="p-4 border-b border-slate-700">
                                             <p className="text-sm text-slate-300">
-                                                {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data?.loan?.amount)}
+                                                {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data?.asset?.amount)}
                                             </p>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="text-center py-4">No loans found.</td>
+                                    <td colSpan="5" className="text-center py-4">No assets found.</td>
                                 </tr>
                             )} 
                         </tbody>

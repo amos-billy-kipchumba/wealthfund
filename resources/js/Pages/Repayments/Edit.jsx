@@ -4,31 +4,31 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';
 
 const EditRepayment = ({ errors }) => {
-  const { repayment, loans } = usePage().props; 
+  const { repayment, assets } = usePage().props; 
 
   const { data, setData, put, processing } = useForm({
-    loan_id: repayment.loan_id,
+    asset_id: repayment.asset_id,
     amount: repayment.amount,
     payment_date: repayment.payment_date,
   });
 
-  const [selectedLoan, setSelectedLoan] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
 
   useEffect(() => {
-    if (repayment.loan_id) {
-      const defaultLoan = loans.find((c) => c.id === repayment?.loan_id);
-      setSelectedLoan(defaultLoan);
+    if (repayment.asset_id) {
+      const defaultAsset = assets.find((c) => c.id === repayment?.asset_id);
+      setSelectedAsset(defaultAsset);
     }
-  }, [repayment, loans]);
+  }, [repayment, assets]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     put(route('repayments.update', { repayment: repayment.id })); 
   };
 
-  const handleLoanChange = (selectedOption) => {
-    setData('loan_id', selectedOption ? selectedOption.value : '');
-    setSelectedLoan(selectedOption);
+  const handleAssetChange = (selectedOption) => {
+    setData('asset_id', selectedOption ? selectedOption.value : '');
+    setSelectedAsset(selectedOption);
   };
 
   return (
@@ -50,17 +50,17 @@ const EditRepayment = ({ errors }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Loan</label>
+            <label className="block text-sm font-medium text-gray-700">Asset</label>
             <Select
-              value={selectedLoan}
-              onChange={handleLoanChange}
-              options={loans.map((loan) => ({
-                value: loan.id,
-                label: loan.number
+              value={selectedAsset}
+              onChange={handleAssetChange}
+              options={assets.map((asset) => ({
+                value: asset.id,
+                label: asset.number
               }))}
-              placeholder="Select a loan"
+              placeholder="Select a asset"
             />
-            {errors.loan_id && <div className="text-sm text-red-500 mt-1">{errors.loan_id}</div>}
+            {errors.asset_id && <div className="text-sm text-red-500 mt-1">{errors.asset_id}</div>}
           </div>
 
           <button

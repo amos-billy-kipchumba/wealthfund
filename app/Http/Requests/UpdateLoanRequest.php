@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLoanRequest extends FormRequest
+class UpdateAssetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class UpdateLoanRequest extends FormRequest
             'otp' => 'nullable',
             'disbursed_at' => 'nullable',
             'employee_id' => 'nullable',
-            'loan_provider_id' => 'nullable',
+            'asset_provider_id' => 'nullable',
             'reason'=>'reason'
         ];
     }

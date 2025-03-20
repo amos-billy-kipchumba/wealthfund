@@ -31,7 +31,7 @@ export default function Login({ status, canResetPassword }) {
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <div className="flex min-h-screen max-w-4xl mx-auto flex-col items-center justify-center py-[200px]">
-                <img src="/images/logo-dark.png" alt="hyper" className="h-14 mb-3" />
+                <img src="/images/logo.png" alt="hyper" className="h-14 mb-3" />
                 <div className="w-full p-6 rounded-lg shadow-md">
                     <div className="text-center mb-5">
                         <h2 className="text-3xl font-medium text-gray-900 mb-3">Welcome Back</h2>

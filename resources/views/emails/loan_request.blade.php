@@ -15,8 +15,8 @@
 </head>
 <body>
     <h2>Dear {{ $employee->user->name }},</h2>
-    <p>We wanted to inform you that your salary advance application is currently under review.</p>
-    <p>We will notify you once your salary advance has been approved. Thank you for your patience, and we appreciate your trust in Nyotafund.</p>
+    <p>We wanted to inform you that your asset application is currently under review.</p>
+    <p>We will notify you once your asset has been approved. Thank you for your patience, and we appreciate your trust in Nyotafund.</p>
     <p>If you have any questions in the meantime, feel free to reach out to us.</p>
     <p>Best regards,</p>
     <p><strong>The Nyotafund Team</strong></p>

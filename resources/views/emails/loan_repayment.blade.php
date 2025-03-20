@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Repayment Received</title>
+    <title>Asset Repayment Received</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,21 +45,21 @@
 
 <div class="container">
     <div class="content">
-        <h2>Dear {{ $repayment->loan->employee->user->name ?? '' }},</h2>
+        <h2>Dear {{ $repayment->asset->employee->user->name ?? '' }},</h2>
 
-        <p>We have received your salary advance repayment of <strong>{{ $repayment->amount }}</strong> for your advance from {{ $repayment->loan->company->name ?? '' }}.</p>
+        <p>We have received your asset repayment of <strong>{{ $repayment->amount }}</strong> for your advance from {{ $repayment->asset->product->name ?? '' }}.</p>
 
-        <p>Details of your salary advance repayment:</p>
+        <p>Details of your asset repayment:</p>
         <ul>
             <li><strong>Repayment Number:</strong> {{ $repayment->number }}</li>
-            <li><strong>Employee Company:</strong> {{ $repayment->loan->employee->company->name ?? '' }}</li>
-            <li><strong>Principle:</strong> {{ round(($repayment->loan->amount - $repayment->loan->charges),2) }}</li>
-            <li><strong>Charges:</strong> {{ round(($repayment->loan->charges),2) }}</li>
-            <li><strong>Amount due:</strong> {{$repayment->loan->amount }}</li>
-            <li><strong>Current balance:</strong> {{ $repayment->loan->currentBalance ?? '' }}</li>
+            <li><strong>Employee Product:</strong> {{ $repayment->asset->employee->product->name ?? '' }}</li>
+            <li><strong>Principle:</strong> {{ round(($repayment->asset->amount - $repayment->asset->charges),2) }}</li>
+            <li><strong>Charges:</strong> {{ round(($repayment->asset->charges),2) }}</li>
+            <li><strong>Amount due:</strong> {{$repayment->asset->amount }}</li>
+            <li><strong>Current balance:</strong> {{ $repayment->asset->currentBalance ?? '' }}</li>
         </ul>
 
-        <p>Your repayment is being processed and will be reflected in your loan balance shortly. Thank you for your timely payment!</p>
+        <p>Your repayment is being processed and will be reflected in your asset balance shortly. Thank you for your timely payment!</p>
 
         <p>If you have any questions about this repayment, feel free to contact us.</p>
     </div>

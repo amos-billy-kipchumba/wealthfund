@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'role_id' => 'nullable',
             'email' => 'nullable',
             'password' => 'nullable',
-            'company_id' => 'nullable',
+            'product_id' => 'nullable',
             'status' => 'nullable',
             'staff_number' => 'nullable',
             'kyc'=> 'nullable'

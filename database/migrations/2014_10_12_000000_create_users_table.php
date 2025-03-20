@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('status')->default('Active');
             $table->string('staff_number')->nullable();
             $table->string('password')->nullable();
-            $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -52,27 +52,27 @@ const Show = ({ repayment }) => {
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Employee Name:</strong>
-            <span className="text-gray-800">{repayment?.loan?.employee?.user?.name || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.asset?.employee?.user?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Company Name:</strong>
-            <span className="text-gray-800">{repayment?.loan?.employee?.company?.name || 'N/A'}</span>
+            <strong className="text-gray-600">Product Name:</strong>
+            <span className="text-gray-800">{repayment?.asset?.employee?.product?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Loan Amount:</strong>
-            <span className="text-gray-800">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.loan?.amount)}</span>
+            <strong className="text-gray-600">Asset Amount:</strong>
+            <span className="text-gray-800">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.asset?.amount)}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Repayment Amount:</strong>
             <span className="text-gray-800">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment.amount)}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Company Phone:</strong>
-            <span className="text-gray-800">{repayment?.loan?.employee?.company?.phone || 'N/A'}</span>
+            <strong className="text-gray-600">Product Phone:</strong>
+            <span className="text-gray-800">{repayment?.asset?.employee?.product?.phone || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Company Email:</strong>
-            <span className="text-gray-800">{repayment?.loan?.employee?.company?.email || 'N/A'}</span>
+            <strong className="text-gray-600">Product Email:</strong>
+            <span className="text-gray-800">{repayment?.asset?.employee?.product?.email || 'N/A'}</span>
           </div>
         </div>
 

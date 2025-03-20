@@ -12,14 +12,14 @@ class Repayment extends Model
     protected $fillable = [
         'amount',
         'payment_date',
-        'loan_id',
+        'asset_id',
         'number',
         'remittance_id',
         'status'
     ];
 
-    public function loan(){
-        return $this->hasOne('App\Models\Loan', 'id', 'loan_id');
+    public function asset(){
+        return $this->hasOne('App\Models\Asset', 'id', 'asset_id');
     }
 
     protected static function boot()
@@ -27,7 +27,7 @@ class Repayment extends Model
         parent::boot();
 
         static::creating(function ($repayment) {
-            // Generate the loan number
+            // Generate the asset number
             $latestRepayment = static::latest('id')->first();
             $nextNumber = $latestRepayment ? ((int) substr($latestRepayment->number, strrpos($latestRepayment->number, '-') + 1)) + 1 : 1;
 

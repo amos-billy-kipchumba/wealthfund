@@ -24,7 +24,7 @@ class StoreRepaymentRequest extends FormRequest
         return [
             'amount' => 'required',
             'payment_date' => 'required',
-            'loan_id' => 'nullable',
+            'asset_id' => 'nullable',
             'remittance_id' => 'nullable',
             'status' => 'nullable'
         ];

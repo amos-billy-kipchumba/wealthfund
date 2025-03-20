@@ -114,8 +114,8 @@ const Show = ({ user }) => {
             <span className="text-gray-800">{user.phone}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Company:</strong> 
-            <span className="text-gray-800">{user.company ? user.company.name : 'No company assigned'}</span>
+            <strong className="text-gray-600">Product:</strong> 
+            <span className="text-gray-800">{user.product ? user.product.name : 'No product assigned'}</span>
           </div>
         </div>
 

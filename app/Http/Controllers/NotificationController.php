@@ -25,7 +25,7 @@ class NotificationController extends Controller
     
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
             $query->whereHas('user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
             $query->where('user_id', '=', $user->id);

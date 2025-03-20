@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     {
         $roleMap = [
             1 => 'Super Admin',
-            2 => 'Company Admin',
+            2 => 'Product Admin',
             3 => 'Employee',
             4 => 'Office Admin',
             5 => 'HR',

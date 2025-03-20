@@ -4,43 +4,43 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';
 
 const EditEmployee = ({ errors }) => {
-  const { companies, employee, users, auth } = usePage().props; 
+  const { products, employee, users, auth } = usePage().props; 
   const roleId = auth.user?.role_id;
 
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const { data, setData, put, processing } = useForm({
     salary: employee.salary,
-    loan_limit: selectedCompany 
-      ? Number((employee.salary * selectedCompany.loan_limit / 100).toFixed(2)) 
+    asset_limit: selectedProduct 
+      ? Number((employee.salary * selectedProduct.asset_limit / 100).toFixed(2)) 
       : 0, 
     user_id: employee.user_id,
-    company_id: roleId === 2 ? auth.user?.company_id ?? '' : '',
+    product_id: roleId === 2 ? auth.user?.product_id ?? '' : '',
     approved: employee.approved ?? '', 
   });
   
 
   useEffect(() => {
-    if (employee.company_id) {
-      const defaultCompany = companies.find((c) => c.id === employee?.company_id);
-      setSelectedCompany(defaultCompany);
+    if (employee.product_id) {
+      const defaultProduct = products.find((c) => c.id === employee?.product_id);
+      setSelectedProduct(defaultProduct);
     }
 
     if (employee.user_id) {
       const defaultUser = users.find((c) => c.id === employee?.user_id);
       setSelectedUser(defaultUser);
     }
-  }, [employee, companies, users]);
+  }, [employee, products, users]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     put(route('employees.update', { employee: employee.id })); 
   };
 
-  const handleCompanyChange = (selectedOption) => {
-    setData('company_id', selectedOption ? selectedOption.value : '');
-    setSelectedCompany(selectedOption);
+  const handleProductChange = (selectedOption) => {
+    setData('product_id', selectedOption ? selectedOption.value : '');
+    setSelectedProduct(selectedOption);
   };
 
   const handleUserChange = (selectedOption) => {
@@ -69,8 +69,8 @@ const EditEmployee = ({ errors }) => {
                       setData({
                           ...data,
                           salary: salary,
-                          loan_limit: selectedCompany 
-                          ? Number((salary * selectedCompany.loan_limit / 100).toFixed(2)) 
+                          asset_limit: selectedProduct 
+                          ? Number((salary * selectedProduct.asset_limit / 100).toFixed(2)) 
                           : 0, 
                       });
                   }}
@@ -80,10 +80,10 @@ const EditEmployee = ({ errors }) => {
           </div>
 
           <div>
-              <label className="block text-sm font-medium text-gray-700">Loan Limit (67% of Salary)</label>
+              <label className="block text-sm font-medium text-gray-700">Asset Limit (67% of Salary)</label>
               <input
                   type="number"
-                  value={data.loan_limit}
+                  value={data.asset_limit}
                   readOnly
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none"
               />
@@ -91,18 +91,18 @@ const EditEmployee = ({ errors }) => {
 
           {roleId === 1 &&
           <div>
-            <label className="block text-sm font-medium text-gray-700">Company</label>
+            <label className="block text-sm font-medium text-gray-700">Product</label>
             <Select
-              value={selectedCompany}
-              onChange={handleCompanyChange}
+              value={selectedProduct}
+              onChange={handleProductChange}
               className='outline-none'
-              options={companies.map((company) => ({
-                value: company.id,
-                label: company.name
+              options={products.map((product) => ({
+                value: product.id,
+                label: product.name
               }))}
-              placeholder="Select a company"
+              placeholder="Select a product"
             />
-            {errors.company_id && <div className="text-sm text-red-500 mt-1">{errors.company_id}</div>}
+            {errors.product_id && <div className="text-sm text-red-500 mt-1">{errors.product_id}</div>}
           </div>}
 
           {roleId === 1 &&

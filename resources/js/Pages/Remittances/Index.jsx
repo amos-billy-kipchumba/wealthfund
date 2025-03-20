@@ -51,10 +51,10 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     doc.setFontSize(14);
     doc.text(`Remittances Report`, 14, 20);
     
-    const columns = ["Remittance Number", "Company Name"];
+    const columns = ["Remittance Number", "Product Name"];
     const rows = remittances.map(data => [
       data.remittance_number, 
-      data.company?.name
+      data.product?.name
     ]);
     
     doc.autoTable({
@@ -69,7 +69,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
   const generateExcel = () => {
     const ws = XLSX.utils.json_to_sheet(remittances.map((data) => ({
       Remittance_Number: data.remittance_number,
-      Company_Name: data.company?.name
+      Product_Name: data.product?.name
     })));
   
     const wb = XLSX.utils.book_new();
@@ -90,7 +90,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           value={searchTerm}
           onChange={handleSearchChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4"
-          placeholder="Search by company name..."
+          placeholder="Search by product name..."
         />
         {loading && <p className="text-sm text-gray-500">Searching...</p>}
         
@@ -105,7 +105,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Remittance Number</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Company Name</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Product Name</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Actions</th>
               </tr>
             </thead>
@@ -114,7 +114,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 remittances.map((remittance) => (
                   <tr key={remittance.id}>
                     <td className="px-6 py-4">{remittance.remittance_number}</td>
-                    <td className="px-6 py-4">{remittance.company?.name}</td>
+                    <td className="px-6 py-4">{remittance.product?.name}</td>
                     <td className="px-6 py-4 text-right">
                       {userPermission.includes('View remittance') &&
                       <Link href={route('remittances.show', remittance.id)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">View</Link>}

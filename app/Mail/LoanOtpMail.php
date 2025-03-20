@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 
-class LoanOtpMail extends Mailable
+class AssetOtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class LoanOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Loan OTP Code'
+            subject: 'Your Asset OTP Code'
         );
     }
 
@@ -40,7 +40,7 @@ class LoanOtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.loan_otp',
+            view: 'emails.asset_otp',
         );
     }
 

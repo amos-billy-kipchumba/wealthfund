@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
-use App\Models\Loan;
+use App\Models\Product;
+use App\Models\Asset;
 use App\Models\Employee;
 use App\Models\Repayment;
 use Carbon\Carbon;
@@ -15,139 +15,139 @@ class DashboardController extends Controller
     public function index()
     {
         // Fetching basic statistics
-        $companyCount = Company::count();
+        $productCount = Product::count();
 
         $currentYear = Carbon::now()->year;
 
-        $companies = Company::all();
+        $products = Product::all();
 
         $user = Auth::user();
 
-        if($user->company_id != null){
-            $motherCompany = Company::where('id','=', $user->company_id)->first();
+        if($user->product_id != null){
+            $motherProduct = Product::where('id','=', $user->product_id)->first();
         }
 
         if ($user->role_id == 3 && $user->email_verified_at == null) {
             return Inertia::render('Auth/VerifyEmail', [
-                'companies' => $companies,
+                'products' => $products,
                 'user' => $user
             ]);
         }
 
 
-        $activeLoansQuery = Loan::with(['loanProvider', 'employee.user', 'employee.company'])
+        $activeAssetsQuery = Asset::with(['assetProvider', 'employee.user', 'employee.product'])
         ->where('status', '=', 'Approved');
     
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $activeLoansQuery->whereHas('employee.user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+            $activeAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $activeLoansQuery->whereHas('employee.user', function ($q) use ($user) {
+            $activeAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
         
-        // Fetch the loans and append the currentBalance
-        $activeLoans = $activeLoansQuery->get();
-        $activeLoansValue = $activeLoans->sum(function ($loan) {
-            return $loan->currentBalance;
+        // Fetch the assets and append the currentBalance
+        $activeAssets = $activeAssetsQuery->get();
+        $activeAssetsValue = $activeAssets->sum(function ($asset) {
+            return $asset->currentBalance;
         });
         
-        $activeLoansCount = $activeLoans->count();
+        $activeAssetsCount = $activeAssets->count();
 
 
-        $pendingLoanQuery = Loan::with(['loanProvider', 'employee.user', 'employee.company'])
+        $pendingAssetQuery = Asset::with(['assetProvider', 'employee.user', 'employee.product'])
         ->where('status', '=', 'Pending');
     
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $pendingLoanQuery->whereHas('employee.user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+            $pendingAssetQuery->whereHas('employee.user', function ($q) use ($user) {
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $pendingLoanQuery->whereHas('employee.user', function ($q) use ($user) {
+            $pendingAssetQuery->whereHas('employee.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
         
-        // Fetch the loans and append the currentBalance
-        $pendingLoans = $pendingLoanQuery->get();
-        $pendingLoansValue = $pendingLoans->sum(function ($loan) {
-            return $loan->currentBalance;
+        // Fetch the assets and append the currentBalance
+        $pendingAssets = $pendingAssetQuery->get();
+        $pendingAssetsValue = $pendingAssets->sum(function ($asset) {
+            return $asset->currentBalance;
         });
         
-        $pendingLoansCount = $pendingLoans->count();
+        $pendingAssetsCount = $pendingAssets->count();
         
     
-        $inactiveLoansQuery = Loan::where('status', '=', 'Declined');
+        $inactiveAssetsQuery = Asset::where('status', '=', 'Declined');
 
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $inactiveLoansQuery->whereHas('employee.user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+            $inactiveAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $inactiveLoansQuery->whereHas('employee.user', function ($q) use ($user) {
+            $inactiveAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
         
-        // Fetch the declined loans and append the currentBalance
-        $inactiveLoans = $inactiveLoansQuery->get();
-        $inactiveLoansCount = $inactiveLoans->count();
+        // Fetch the declined assets and append the currentBalance
+        $inactiveAssets = $inactiveAssetsQuery->get();
+        $inactiveAssetsCount = $inactiveAssets->count();
         
-        $inactiveLoansValue = $inactiveLoans->sum(function ($loan) {
-            return $loan->currentBalance;
+        $inactiveAssetsValue = $inactiveAssets->sum(function ($asset) {
+            return $asset->currentBalance;
         });
         
         
-        $repaidLoansQuery = Repayment::with([
-            'loan',
-            'loan.loanProvider',
-            'loan.employee.user',
-            'loan.employee.company',
+        $repaidAssetsQuery = Repayment::with([
+            'asset',
+            'asset.assetProvider',
+            'asset.employee.user',
+            'asset.employee.product',
         ]);
         
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $repaidLoansQuery->whereHas('loan.employee.user', function ($q) use ($user) {
-                $q->where('company_id', '=', $user->company_id);
+            $repaidAssetsQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+                $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $repaidLoansQuery->whereHas('loan.employee.user', function ($q) use ($user) {
+            $repaidAssetsQuery->whereHas('asset.employee.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
         
-        $repaidLoansValue = $repaidLoansQuery->sum('amount');
+        $repaidAssetsValue = $repaidAssetsQuery->sum('amount');
         
 
         $currentYear = Carbon::now()->year;
 
-        // Get loan trends for all months
-        $loanTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
-            $loanQuery = Loan::with(['employee.user', 'employee.company'])
+        // Get asset trends for all months
+        $assetTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
+            $assetQuery = Asset::with(['employee.user', 'employee.product'])
                 ->whereYear('created_at', $currentYear)
                 ->where('status', '!=', 'Declined')
                 ->whereMonth('created_at', $month);
 
                if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $loanQuery->whereHas('employee.user', function ($q) use ($user) {
-                    $q->where('company_id', '=', $user->company_id);
+                $assetQuery->whereHas('employee.user', function ($q) use ($user) {
+                    $q->where('product_id', '=', $user->product_id);
                 });
             } elseif ($user->role_id == 3) {
-                $loanQuery->whereHas('employee.user', function ($q) use ($user) {
+                $assetQuery->whereHas('employee.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
         
-            // Fetch loans and compute the total of eventualPay
-            $loans = $loanQuery->get();
-            $eventualPaySum = $loans->sum(function ($loan) {
-                return $loan->amount; // Access the computed attribute
+            // Fetch assets and compute the total of eventualPay
+            $assets = $assetQuery->get();
+            $eventualPaySum = $assets->sum(function ($asset) {
+                return $asset->amount; // Access the computed attribute
             });
         
             return [
                 'month' => Carbon::create($currentYear, $month, 1)->format('M'), // Convert to month name
-                'loan_count' => $eventualPaySum
+                'asset_count' => $eventualPaySum
             ];
         });
         
@@ -155,19 +155,19 @@ class DashboardController extends Controller
         // Get repayment trends for all months
         $repaymentTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
             $repaymentQuery = Repayment::with([
-                'loan',
-                'loan.loanProvider',
-                'loan.employee.user',
-                'loan.employee.company',
+                'asset',
+                'asset.assetProvider',
+                'asset.employee.user',
+                'asset.employee.product',
             ])->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $month);
 
                if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $repaymentQuery->whereHas('loan.employee.user', function ($q) use ($user) {
-                    $q->where('company_id', '=', $user->company_id);
+                $repaymentQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+                    $q->where('product_id', '=', $user->product_id);
                 });
             } elseif ($user->role_id == 3) {
-                $repaymentQuery->whereHas('loan.employee.user', function ($q) use ($user) {
+                $repaymentQuery->whereHas('asset.employee.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
@@ -182,7 +182,7 @@ class DashboardController extends Controller
 
         if($user->role_id == "3" && $user->kyc == null) {
             $er = '';
-            return Inertia::render('Employees/SelectCompany', [
+            return Inertia::render('Employees/SelectProduct', [
                 'user'=>$user,
                 'er'=>$er
             ]);
@@ -193,7 +193,7 @@ class DashboardController extends Controller
 
             if (($employee && $user->role_id != "1" && $user->role_id != "2" && $employee->approved != 'Approved') || $user->status === 'Deactivated') {
                 return Inertia::render('Employees/ProcessedRequest', [
-                    'companies' => $companies,
+                    'products' => $products,
                     'user' => $user,
                 ]);
             }
@@ -201,7 +201,7 @@ class DashboardController extends Controller
             $employeesCount = 0; 
 
             if ($user->role_id == "2") {
-                $employeesCount = Employee::where('company_id', $user->company_id)->count();
+                $employeesCount = Employee::where('product_id', $user->product_id)->count();
             }
             
             if ($user->role_id == "1") {
@@ -209,19 +209,19 @@ class DashboardController extends Controller
             }
             
             return Inertia::render('Dashboard', [
-                'companyCount' => $companyCount,
-                'activeLoansCount' => $activeLoansCount,
-                'activeLoansValue'=> $activeLoansValue,
-                'pendingLoansCount' => $pendingLoansCount,
-                'pendingLoansValue'=> $pendingLoansValue,
-                'inactiveLoansCount' => $inactiveLoansCount,
-                'inactiveLoansValue'=> $inactiveLoansValue,
-                'repaidLoansValue' => $repaidLoansValue,
-                'loanTrends' => $loanTrends,
+                'productCount' => $productCount,
+                'activeAssetsCount' => $activeAssetsCount,
+                'activeAssetsValue'=> $activeAssetsValue,
+                'pendingAssetsCount' => $pendingAssetsCount,
+                'pendingAssetsValue'=> $pendingAssetsValue,
+                'inactiveAssetsCount' => $inactiveAssetsCount,
+                'inactiveAssetsValue'=> $inactiveAssetsValue,
+                'repaidAssetsValue' => $repaidAssetsValue,
+                'assetTrends' => $assetTrends,
                 'repaymentTrends' => $repaymentTrends,
                 'employeesCount' => $employeesCount,
                 'employee'=>$employee,
-                'motherCompany'=>$motherCompany ?? null
+                'motherProduct'=>$motherProduct ?? null
             ]);
             
         }

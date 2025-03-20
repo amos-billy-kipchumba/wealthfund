@@ -29,10 +29,10 @@ class UpdatePermissions extends Command
      */
     protected array $permissions = [
         'Index user', 'View user', 'Create user', 'Edit user', 'Delete user', 'Export user',
-        'Index company', 'View company', 'Create company', 'Edit company', 'Delete company', 'Export company',
+        'Index product', 'View product', 'Create product', 'Edit product', 'Delete product', 'Export product',
         'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Delete employee', 'Export employee',
-        'Index loan', 'View loan', 'Create loan', 'Edit loan', 'Delete loan', 'Export loan',
-        'Index loan provider', 'View loan provider', 'Create loan provider', 'Edit loan provider', 'Delete loan provider', 'Export loan provider',
+        'Index asset', 'View asset', 'Create asset', 'Edit asset', 'Delete asset', 'Export asset',
+        'Index asset provider', 'View asset provider', 'Create asset provider', 'Edit asset provider', 'Delete asset provider', 'Export asset provider',
         'Index notification', 'View notification', 'Create notification', 'Edit notification', 'Delete notification', 'Export notification',
         'Index remittance', 'View remittance', 'Create remittance', 'Edit remittance', 'Delete remittance', 'Export remittance',
         'Index repayments', 'View repayments', 'Create repayments', 'Edit repayments', 'Delete repayments', 'Export repayments',
@@ -45,17 +45,17 @@ class UpdatePermissions extends Command
      */
     protected array $rolePermissions = [
         'Nyotafund Admin' => '*', 
-        'Company Admin' => [
-            'user', 'employee', 'loan', 'notification', 'remittance', 'repayments'
+        'Product Admin' => [
+            'user', 'employee', 'asset', 'notification', 'remittance', 'repayments'
         ],
         'HR' => [
-            'user', 'employee', 'loan', 'notification', 'remittance', 'repayments'
+            'user', 'employee', 'asset', 'notification', 'remittance', 'repayments'
         ],
         'Finance' => [
-            'user', 'loan', 'loan provider', 'remittance', 'repayments', 'notification'
+            'user', 'asset', 'asset provider', 'remittance', 'repayments', 'notification'
         ],
         'Employee' => [
-            'user', 'loan', 'notification', 'remittance', 'repayments'
+            'user', 'asset', 'notification', 'remittance', 'repayments'
         ],
     ];
 
