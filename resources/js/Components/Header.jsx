@@ -24,7 +24,6 @@ function Header() {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   return (
     <div className="boxed">
@@ -75,7 +74,7 @@ function Header() {
               <div className="col-md-10">
                 <div className="nav-wrap">
                   <div className={`btn-menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}><span /></div>
-                  <nav id="mainnav" className={`mainnav ${isMenuOpen ? 'open' : ''}`}>
+                  <nav id="mainnav" className={`mainnav ${isMenuOpen && 'open'}`}>
                     <ul className="menu">
                       <li><Link href={route('home')} className="ekit-menu-nav-link">Home</Link></li>
                       <li><Link href={route('about')} className="ekit-menu-nav-link">About</Link></li>

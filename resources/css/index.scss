@@ -1,0 +1,18 @@
+.mainnav {
+    display: none; // Hide by default
+  
+    &.open {
+      display: block; // Show when active
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .mainnav {
+      display: flex !important; // Ensure it’s visible on larger screens
+    }
+  }
+  
+
+  .mainnav.open {
+    display: block !important;
+}
