@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->string('otp')->nullable();
             $table->dateTime('disbursed_at')->nullable();
-            $table->unsignedBigInteger('employee_id');
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->unsignedBigInteger('investor_id');
+            $table->foreign('investor_id')->references('id')->on('investors')->onDelete('cascade');
             $table->unsignedBigInteger('asset_provider_id');
             $table->foreign('asset_provider_id')->references('id')->on('asset_providers')->onDelete('cascade');
             $table->timestamps();

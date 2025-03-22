@@ -4,34 +4,34 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';
 
 const EditAsset = ({ errors }) => {
-  const { asset, employees } = usePage().props; 
+  const { asset, investors } = usePage().props; 
 
   const { data, setData, put, processing } = useForm({
     amount: asset.amount,
     status: asset.status,
     disbursed_at: asset.disbursed_at,
-    employee_id: asset.employee_id,
+    investor_id: asset.investor_id,
     asset_provider_id: asset.asset_provider_id
   });
 
 
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
 
   useEffect(() => {
-    if (asset.employee_id) {
-      const defaultEmployee = employees.find((c) => c.id === asset?.employee_id);
-      setSelectedEmployee(defaultEmployee);
+    if (asset.investor_id) {
+      const defaultInvestor = investors.find((c) => c.id === asset?.investor_id);
+      setSelectedInvestor(defaultInvestor);
     }
-  }, [asset, employees]);
+  }, [asset, investors]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     put(route('assets.update', { asset: asset.id })); 
   };
 
-  const handleEmployeeChange = (selectedOption) => {
-    setData('employee_id', selectedOption ? selectedOption.value : '');
-    setSelectedEmployee(selectedOption);
+  const handleInvestorChange = (selectedOption) => {
+    setData('investor_id', selectedOption ? selectedOption.value : '');
+    setSelectedInvestor(selectedOption);
   };
 
   return (
@@ -53,17 +53,17 @@ const EditAsset = ({ errors }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Employee</label>
+            <label className="block text-sm font-medium text-gray-700">Investor</label>
             <Select
-              value={selectedEmployee}
-              onChange={handleEmployeeChange}
-              options={employees.map((employee) => ({
-                value: employee.id,
-                label: employee.user?.name
+              value={selectedInvestor}
+              onChange={handleInvestorChange}
+              options={investors.map((investor) => ({
+                value: investor.id,
+                label: investor.user?.name
               }))}
-              placeholder="Select a employee"
+              placeholder="Select a investor"
             />
-            {errors.employee_id && <div className="text-sm text-red-500 mt-1">{errors.employee_id}</div>}
+            {errors.investor_id && <div className="text-sm text-red-500 mt-1">{errors.investor_id}</div>}
           </div>
 
           <button

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAssetRequest;
 use App\Http\Requests\UpdateAssetRequest;
 use App\Models\Asset;
-use App\Models\Employee;
+use App\Models\Investor;
 use App\Models\Remittance;
 use App\Models\Product;
 use App\Models\Repayment;
@@ -50,15 +50,15 @@ class AssetController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $query = Asset::with(['employee.user', 'employee.product']);
+        $query = Asset::with(['investor.user', 'investor.product']);
     
         // Filter based on role
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $query->whereHas('employee.user', function ($q) use ($user) {
+            $query->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $query->whereHas('employee.user', function ($q) use ($user) {
+            $query->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -79,8 +79,8 @@ class AssetController extends Controller
                   ->orWhere('number', 'LIKE', "%$search%")
                   ->orWhere('status', 'LIKE', "%$search%");
     
-                // Search within employee and related fields
-                $q->orWhereHas('employee', function ($q) use ($search) {
+                // Search within investor and related fields
+                $q->orWhereHas('investor', function ($q) use ($search) {
                     $q->where('asset_limit', 'LIKE', "%$search%")
                       ->orWhereHas('user', function ($q) use ($search) {
                           $q->where('name', 'LIKE', "%$search%")
@@ -117,16 +117,16 @@ class AssetController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $employees = Employee::with(['user', 'assets'])->get()
-            ->map(function ($employee) {
-                return $employee->append('unpaid_assets_count', 'total_asset_balance');
+        $investors = Investor::with(['user', 'assets'])->get()
+            ->map(function ($investor) {
+                return $investor->append('unpaid_assets_count', 'total_asset_balance');
             });
     
         $assetProviders = AssetProvider::all();
         $products = Product::all();
     
         return Inertia::render('Assets/Create', [
-            'employees' => $employees,
+            'investors' => $investors,
             'assetProviders' => $assetProviders,
             'products' => $products
         ]);
@@ -144,10 +144,10 @@ class AssetController extends Controller
         $asset = Asset::create($request->validated());
     
         if ($asset->status === 'Pending') {
-            $employee = Employee::find($asset->employee_id); 
+            $investor = Investor::find($asset->investor_id); 
     
-            if ($employee) {
-                Mail::to($employee->user->email)->send(new AssetRequestMail($employee));
+            if ($investor) {
+                Mail::to($investor->user->email)->send(new AssetRequestMail($investor));
             }
         }
 
@@ -170,7 +170,7 @@ class AssetController extends Controller
         $assetIds = $validated['assetIds'];
     
         DB::transaction(function () use ($assetIds) {
-            $assets = Asset::with(['employee.product'])->whereIn('id', $assetIds)->get();
+            $assets = Asset::with(['investor.product'])->whereIn('id', $assetIds)->get();
     
             foreach ($assets as $asset) {
             
@@ -186,7 +186,7 @@ class AssetController extends Controller
                     // Create the Remittance record
                     $remittance = Remittance::create([
                         'remittance_number' => $uniqueNumber,
-                        'product_id' => $asset->employee->product->id ?? null,
+                        'product_id' => $asset->investor->product->id ?? null,
                     ]);
             
                     // Create the Repayment record
@@ -201,8 +201,8 @@ class AssetController extends Controller
                     $repayment->load([
                         'asset',
                         'asset.assetProvider',
-                        'asset.employee.user',
-                        'asset.employee.product',
+                        'asset.investor.user',
+                        'asset.investor.product',
                     ]);
                 }
             }
@@ -253,7 +253,7 @@ class AssetController extends Controller
         $assetIds = $validated['assetIds'];
 
         DB::transaction(function () use ($assetIds) {
-            $assets = Asset::with(['employee.product'])->whereIn('id', $assetIds)->get();
+            $assets = Asset::with(['investor.product'])->whereIn('id', $assetIds)->get();
     
             foreach ($assets as $asset) {
 
@@ -272,12 +272,12 @@ class AssetController extends Controller
                 $repayment->load([
                     'asset',
                     'asset.assetProvider',
-                    'asset.employee.user',
-                    'asset.employee.product',
+                    'asset.investor.user',
+                    'asset.investor.product',
                 ]);
         
                 // Send email notification
-                Mail::to($repayment->asset->employee->user->email)
+                Mail::to($repayment->asset->investor->user->email)
                     ->send(new AssetRepaymentMail($repayment));
             }
             
@@ -296,7 +296,7 @@ class AssetController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $asset->load(['employee.user', 'assetProvider']);
+        $asset->load(['investor.user', 'assetProvider']);
 
         return Inertia::render('Assets/Show', [
             'asset' => $asset,
@@ -311,12 +311,12 @@ class AssetController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $employees = Employee::with(['user'])->get();
+        $investors = Investor::with(['user'])->get();
         $assetProviders = AssetProvider::all();
 
         return Inertia::render('Assets/Edit', [
             'asset' => $asset,
-            'employees' => $employees,
+            'investors' => $investors,
             'assetProviders'=> $assetProviders
         ]);
     }
@@ -334,7 +334,7 @@ class AssetController extends Controller
 
         $oldStatus = $asset->status;
     
-        $asset->load(['assetProvider', 'employee.user', 'employee.product']);
+        $asset->load(['assetProvider', 'investor.user', 'investor.product']);
     
         // Update the asset with validated request data
         $asset->update($request->validated());
@@ -342,15 +342,15 @@ class AssetController extends Controller
         // Send email notifications if the status has changed
         if ($asset->status !== $oldStatus) {
             if ($asset->status === 'Approved') {
-                Mail::to($asset->employee->user->email)->send(new AssetApprovalMail($asset));
+                Mail::to($asset->investor->user->email)->send(new AssetApprovalMail($asset));
 
             } elseif ($asset->status === 'Declined') {
                 $reason = $validated['reason'] ?? 'No reason provided';
-                Mail::to($asset->employee->user->email)->send(new AssetDeclinedMail($asset, $reason));
+                Mail::to($asset->investor->user->email)->send(new AssetDeclinedMail($asset, $reason));
             }
         }
         $reason = $validated['reason'] ?? 'No reason provided';
-        Mail::to($asset->employee->user->email)->send(new AssetDeclinedMail($asset, $reason));
+        Mail::to($asset->investor->user->email)->send(new AssetDeclinedMail($asset, $reason));
         return redirect()->route('assets.index')->with('success', 'Asset updated successfully.');
     }
 
@@ -400,7 +400,7 @@ class AssetController extends Controller
             // Handle status change events
             if ($asset->status !== $oldStatus) {
                 if ($asset->status === 'Approved') {
-                    $phone = $asset->employee->user->phone;
+                    $phone = $asset->investor->user->phone;
 
                             
                     // Get the asset amount and product percentage
@@ -420,11 +420,11 @@ class AssetController extends Controller
                     }
     
                     // Send approval email
-                    Mail::to($asset->employee->user->email)->send(new AssetApprovalMail($asset));
+                    Mail::to($asset->investor->user->email)->send(new AssetApprovalMail($asset));
                 
                 } elseif ($asset->status === 'Declined') {
                     $reason = $validated['reason'] ?? 'No reason provided';
-                    Mail::to($asset->employee->user->email)->send(new AssetDeclinedMail($asset, $reason));
+                    Mail::to($asset->investor->user->email)->send(new AssetDeclinedMail($asset, $reason));
                 }
             }
     
@@ -473,7 +473,7 @@ class AssetController extends Controller
 
         $otp = rand(100000, 999999);
 
-        $asset->load(['assetProvider', 'employee.user', 'employee.product']);
+        $asset->load(['assetProvider', 'investor.user', 'investor.product']);
 
         $asset->update([
             'otp'=>$otp

@@ -9,7 +9,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Asset;
-use App\Models\Employee;
+use App\Models\Investor;
 use App\Models\Repayment;
 use App\Models\Remittance;
 use Illuminate\Support\Facades\Hash;
@@ -213,8 +213,8 @@ class ProductController extends Controller
         // Ensure both dates are not null and not empty
         $filterByDate = !empty($startDate) && !empty($endDate);
 
-        // Employees Filter
-        $employees = Employee::with(['user', 'assets', 'product'])
+        // Investors Filter
+        $investors = Investor::with(['user', 'assets', 'product'])
             ->where('product_id', $product->id)
             ->whereHas('user', function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
@@ -228,8 +228,8 @@ class ProductController extends Controller
             ->withQueryString();
 
         // Assets Filter
-        $assets = Asset::with(['assetProvider', 'employee.user', 'employee.product'])
-            ->whereHas('employee', function ($q) use ($search, $product) {
+        $assets = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
+            ->whereHas('investor', function ($q) use ($search, $product) {
                 $q->where('product_id', $product->id)
                 ->whereHas('user', function ($q) use ($search) {
                     $q->where('name', 'LIKE', "%$search%")
@@ -259,10 +259,10 @@ class ProductController extends Controller
         $repayments = Repayment::with([
             'asset',
             'asset.assetProvider',
-            'asset.employee.user',
-            'asset.employee.product',
+            'asset.investor.user',
+            'asset.investor.product',
         ])
-        ->whereHas('asset.employee.user', function ($q) use ($search, $product) {
+        ->whereHas('asset.investor.user', function ($q) use ($search, $product) {
             $q->where('product_id', $product->id);
         })
         ->when($filterByDate, function ($query) use ($startDate, $endDate) {
@@ -274,7 +274,7 @@ class ProductController extends Controller
 
         return Inertia::render('Products/Show', [
             'product' => $product,
-            'employees' => $employees,
+            'investors' => $investors,
             'assets' => $assets,
             'remittances' => $remittances,
             'repayments' => $repayments

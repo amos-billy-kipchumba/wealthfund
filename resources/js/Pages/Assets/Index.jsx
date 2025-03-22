@@ -39,11 +39,11 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
       doc.setFontSize(14);
       doc.text(`Assets Report`, 14, 50);
       
-      const columns = ["Asset number", "Employee name", "Principle","Charges","Asset due","Current balance", "Status"];
+      const columns = ["Asset number", "Investor name", "Principle","Charges","Asset due","Current balance", "Status"];
       
       const rows = assets.map(data => [
         data.number, 
-        data.employee?.user?.name, 
+        data.investor?.user?.name, 
         new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount - data.charges), 
         new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.charges),
         new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount),
@@ -63,7 +63,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     const generateExcel = () => {
       const ws = XLSX.utils.json_to_sheet(assets.map((data) => ({
         Asset_Number:data.number, 
-        Employee_Name:data.employee?.user?.name, 
+        Investor_Name:data.investor?.user?.name, 
         Principle:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount - data.charges), 
         Charges:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.charges), 
         Asset_due: new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount),
@@ -232,7 +232,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 </th>}
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset number</th>
                 {roleId !== 3 &&
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Employee Name</th>}
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Investor Name</th>}
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Principle</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Charges</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset due</th>
@@ -255,7 +255,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                     </td>}
                     <td className="px-6 py-4 whitespace-nowrap">{asset.number}</td>
                     {roleId !== 3 &&
-                    <td className="px-6 py-4 whitespace-nowrap">{asset.employee?.user?.name}</td>}
+                    <td className="px-6 py-4 whitespace-nowrap">{asset.investor?.user?.name}</td>}
                     <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount - asset.charges)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.charges)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount)}</td>

@@ -5,7 +5,7 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import {InputText} from "primereact/inputtext";
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', employee }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', investor }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -15,7 +15,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     });
 
     const [previews] = useState({
-        passport_front: employee?.passport_front ? `/storage/${employee?.passport_front}` : null
+        passport_front: investor?.passport_front ? `/storage/${investor?.passport_front}` : null
     });
 
     const submit = (e) => {

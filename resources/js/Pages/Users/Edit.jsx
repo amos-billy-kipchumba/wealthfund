@@ -11,7 +11,7 @@ const EditUser = ({ errors }) => {
   const roleOptions = [
       { value: 1, label: 'Super Admin' },
       { value: 2, label: 'Product Admin' },
-      { value: 3, label: 'Employee' },
+      { value: 3, label: 'Investor' },
       { value: 4, label: 'Office Admin' },
       { value: 5, label: 'Hr' },
       { value: 6, label: 'Finance' }
@@ -19,7 +19,7 @@ const EditUser = ({ errors }) => {
 
   const cRoleOptions = [
       { value: 2, label: 'Product Admin' },
-      { value: 3, label: 'Employee' },
+      { value: 3, label: 'Investor' },
       { value: 5, label: 'Hr' },
       { value: 6, label: 'Finance' }
   ];

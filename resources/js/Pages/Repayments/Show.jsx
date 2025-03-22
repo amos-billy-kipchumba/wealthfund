@@ -51,12 +51,12 @@ const Show = ({ repayment }) => {
             <span className="text-gray-800">{repayment.number}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Employee Name:</strong>
-            <span className="text-gray-800">{repayment?.asset?.employee?.user?.name || 'N/A'}</span>
+            <strong className="text-gray-600">Investor Name:</strong>
+            <span className="text-gray-800">{repayment?.asset?.investor?.user?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Name:</strong>
-            <span className="text-gray-800">{repayment?.asset?.employee?.product?.name || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.asset?.investor?.product?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Asset Amount:</strong>
@@ -68,11 +68,11 @@ const Show = ({ repayment }) => {
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Phone:</strong>
-            <span className="text-gray-800">{repayment?.asset?.employee?.product?.phone || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.asset?.investor?.product?.phone || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Email:</strong>
-            <span className="text-gray-800">{repayment?.asset?.employee?.product?.email || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.asset?.investor?.product?.email || 'N/A'}</span>
           </div>
         </div>
 

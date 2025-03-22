@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Asset;
-use App\Models\Employee;
+use App\Models\Investor;
 use App\Models\Repayment;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -35,15 +35,15 @@ class DashboardController extends Controller
         }
 
 
-        $activeAssetsQuery = Asset::with(['assetProvider', 'employee.user', 'employee.product'])
+        $activeAssetsQuery = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
         ->where('status', '=', 'Approved');
     
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $activeAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+            $activeAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $activeAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+            $activeAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -57,15 +57,15 @@ class DashboardController extends Controller
         $activeAssetsCount = $activeAssets->count();
 
 
-        $pendingAssetQuery = Asset::with(['assetProvider', 'employee.user', 'employee.product'])
+        $pendingAssetQuery = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
         ->where('status', '=', 'Pending');
     
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $pendingAssetQuery->whereHas('employee.user', function ($q) use ($user) {
+            $pendingAssetQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $pendingAssetQuery->whereHas('employee.user', function ($q) use ($user) {
+            $pendingAssetQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -82,11 +82,11 @@ class DashboardController extends Controller
         $inactiveAssetsQuery = Asset::where('status', '=', 'Declined');
 
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $inactiveAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+            $inactiveAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $inactiveAssetsQuery->whereHas('employee.user', function ($q) use ($user) {
+            $inactiveAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -103,16 +103,16 @@ class DashboardController extends Controller
         $repaidAssetsQuery = Repayment::with([
             'asset',
             'asset.assetProvider',
-            'asset.employee.user',
-            'asset.employee.product',
+            'asset.investor.user',
+            'asset.investor.product',
         ]);
         
            if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $repaidAssetsQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $repaidAssetsQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -124,17 +124,17 @@ class DashboardController extends Controller
 
         // Get asset trends for all months
         $assetTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
-            $assetQuery = Asset::with(['employee.user', 'employee.product'])
+            $assetQuery = Asset::with(['investor.user', 'investor.product'])
                 ->whereYear('created_at', $currentYear)
                 ->where('status', '!=', 'Declined')
                 ->whereMonth('created_at', $month);
 
                if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $assetQuery->whereHas('employee.user', function ($q) use ($user) {
+                $assetQuery->whereHas('investor.user', function ($q) use ($user) {
                     $q->where('product_id', '=', $user->product_id);
                 });
             } elseif ($user->role_id == 3) {
-                $assetQuery->whereHas('employee.user', function ($q) use ($user) {
+                $assetQuery->whereHas('investor.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
@@ -157,17 +157,17 @@ class DashboardController extends Controller
             $repaymentQuery = Repayment::with([
                 'asset',
                 'asset.assetProvider',
-                'asset.employee.user',
-                'asset.employee.product',
+                'asset.investor.user',
+                'asset.investor.product',
             ])->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $month);
 
                if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $repaymentQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
                     $q->where('product_id', '=', $user->product_id);
                 });
             } elseif ($user->role_id == 3) {
-                $repaymentQuery->whereHas('asset.employee.user', function ($q) use ($user) {
+                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
@@ -182,30 +182,30 @@ class DashboardController extends Controller
 
         if($user->role_id == "3" && $user->kyc == null) {
             $er = '';
-            return Inertia::render('Employees/SelectProduct', [
+            return Inertia::render('Investors/SelectProduct', [
                 'user'=>$user,
                 'er'=>$er
             ]);
 
         }else {
 
-            $employee = Employee::where('user_id', '=', $user->id)->first();
+            $investor = Investor::where('user_id', '=', $user->id)->first();
 
-            if (($employee && $user->role_id != "1" && $user->role_id != "2" && $employee->approved != 'Approved') || $user->status === 'Deactivated') {
-                return Inertia::render('Employees/ProcessedRequest', [
+            if (($investor && $user->role_id != "1" && $user->role_id != "2" && $investor->approved != 'Approved') || $user->status === 'Deactivated') {
+                return Inertia::render('Investors/ProcessedRequest', [
                     'products' => $products,
                     'user' => $user,
                 ]);
             }
 
-            $employeesCount = 0; 
+            $investorsCount = 0; 
 
             if ($user->role_id == "2") {
-                $employeesCount = Employee::where('product_id', $user->product_id)->count();
+                $investorsCount = Investor::where('product_id', $user->product_id)->count();
             }
             
             if ($user->role_id == "1") {
-                $employeesCount = Employee::count();
+                $investorsCount = Investor::count();
             }
             
             return Inertia::render('Dashboard', [
@@ -219,8 +219,8 @@ class DashboardController extends Controller
                 'repaidAssetsValue' => $repaidAssetsValue,
                 'assetTrends' => $assetTrends,
                 'repaymentTrends' => $repaymentTrends,
-                'employeesCount' => $employeesCount,
-                'employee'=>$employee,
+                'investorsCount' => $investorsCount,
+                'investor'=>$investor,
                 'motherProduct'=>$motherProduct ?? null
             ]);
             

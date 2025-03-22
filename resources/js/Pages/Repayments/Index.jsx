@@ -35,11 +35,11 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
     doc.setFontSize(14);
     doc.text(`Repayments Report`, 14, 50);
     
-    const columns = ["Asset number", "Employee name", "Amount", "Status"];
+    const columns = ["Asset number", "Investor name", "Amount", "Status"];
     
     const rows = repayments?.map(data => [
       data.asset?.number, 
-      data.asset?.employee?.user?.name, 
+      data.asset?.investor?.user?.name, 
       new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount), 
       data.asset?.status
     ]);
@@ -56,7 +56,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
   const generateExcel = () => {
     const ws = XLSX.utils.json_to_sheet(repayments?.map((data) => ({
       Asset_Number:data.asset?.number, 
-      Employee_Name:data.asset?.employee?.user?.name, 
+      Investor_Name:data.asset?.investor?.user?.name, 
       Amount:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount), 
       Status:data.asset?.status
     })));
@@ -161,7 +161,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Repayment Number</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Employee Name</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Investor Name</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Product Name</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset amount</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Payment</th>
@@ -173,8 +173,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 repayments.map((repayment) => (
                   <tr key={repayment.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{repayment.number}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.employee?.user?.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.employee?.product?.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.investor?.user?.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{repayment?.asset?.investor?.product?.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.asset?.amount)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment.amount)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">

@@ -11,7 +11,7 @@ const PermissionManager = ({ onUpdate }) => {
   const roleId = auth.user?.role_id;
 
   // Array of permissions to exclude if roleId is 2
-  const permissionsToExclude = ['Delete user', 'Index product', 'Create product', 'Edit product', 'Show product', 'View product', 'Export product', 'Delete product', 'Create employee', 'Delete employee', 'Create asset', 'Edit asset', 'Delete asset', 'Index asset provider', 'View asset provider', 'Create asset provider', 'Index asset provider', 'View asset provider', 'Edit asset provider', 'Delete asset provider', 'Export asset provider', 'Delete remittance', 'Create repayments', 'Edit repayments', 'Delete repayments']; 
+  const permissionsToExclude = ['Delete user', 'Index product', 'Create product', 'Edit product', 'Show product', 'View product', 'Export product', 'Delete product', 'Create investor', 'Delete investor', 'Create asset', 'Edit asset', 'Delete asset', 'Index asset provider', 'View asset provider', 'Create asset provider', 'Index asset provider', 'View asset provider', 'Edit asset provider', 'Delete asset provider', 'Export asset provider', 'Delete remittance', 'Create repayments', 'Edit repayments', 'Delete repayments']; 
 
   // Filter out specific permissions based on roleId using the exclusion array
   const filteredPermissions = roleId === 2

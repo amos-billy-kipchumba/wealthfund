@@ -13,7 +13,7 @@ class Asset extends Model
         'amount',
         'status',
         'disbursed_at',
-        'employee_id',
+        'investor_id',
         'asset_provider_id',
         'asset',
         'otp'
@@ -21,10 +21,10 @@ class Asset extends Model
 
     protected $appends = ['charges', 'currentBalance'];
 
-    // Relationship with Employee
-    public function employee()
+    // Relationship with Investor
+    public function investor()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+        return $this->hasOne('App\Models\Investor', 'id', 'investor_id');
     }
 
     // Relationship with AssetProvider
@@ -41,9 +41,9 @@ class Asset extends Model
 
     public function getChargesAttribute()
     {
-        $employee = $this->employee;
-        if ($employee && $employee->product) {
-            $percentage = $employee->product->percentage;
+        $investor = $this->investor;
+        if ($investor && $investor->product) {
+            $percentage = $investor->product->percentage;
             return round(($this->amount * $percentage / 100), 2);
         }
     

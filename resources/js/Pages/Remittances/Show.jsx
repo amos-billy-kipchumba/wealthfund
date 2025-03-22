@@ -70,11 +70,11 @@ const Show = ({ remittance }) => {
           doc.setFontSize(14);
           doc.text(`Repayment Remittance Report`, 14, 50);
           
-          const columns = ["Asset number", "Employee name", "Asset amount"];
+          const columns = ["Asset number", "Investor name", "Asset amount"];
           
           const rows = remittance?.repayments.map(data => [
             data?.asset?.number, 
-            data.asset?.employee?.user?.name,
+            data.asset?.investor?.user?.name,
             data?.asset?.amount
           ]);
           
@@ -90,7 +90,7 @@ const Show = ({ remittance }) => {
         const generateExcel = () => {
           const ws = XLSX.utils.json_to_sheet(remittance?.repayments.map((data) => ({
             Asset_Number:data?.asset?.number, 
-            Employee_Name:data.asset?.employee?.user?.name,
+            Investor_Name:data.asset?.investor?.user?.name,
             Asset_Amount:data?.asset?.amount
           })));
         
@@ -189,7 +189,7 @@ const Show = ({ remittance }) => {
                                         onChange={handleSelectAll}
                                     />
                                 </th>
-                                <th className="p-4 border-b border-slate-600 bg-slate-700">Employee</th>
+                                <th className="p-4 border-b border-slate-600 bg-slate-700">Investor</th>
                                 <th className="p-4 border-b border-slate-600 bg-slate-700">Asset number</th>
                                 <th className="p-4 border-b border-slate-600 bg-slate-700">Amount</th>
                             </tr>
@@ -207,7 +207,7 @@ const Show = ({ remittance }) => {
                                         </td>
                                         <td className="p-4 border-b border-slate-700">
                                             <p className="text-sm text-slate-100 font-semibold">
-                                                {data?.asset?.employee?.user?.name || 'N/A'}
+                                                {data?.asset?.investor?.user?.name || 'N/A'}
                                             </p>
                                         </td>
                                         <td className="p-4 border-b border-slate-700">

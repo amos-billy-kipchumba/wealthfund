@@ -27,17 +27,17 @@ class RepaymentController extends Controller
         $query = Repayment::with([
             'asset',
             'asset.assetProvider',
-            'asset.employee.user',
-            'asset.employee.product',
+            'asset.investor.user',
+            'asset.investor.product',
         ]);
     
         // Filter based on role
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $query->whereHas('asset.employee.user', function ($q) use ($user) {
+            $query->whereHas('asset.investor.user', function ($q) use ($user) {
                 $q->where('product_id', '=', $user->product_id);
             });
         } elseif ($user->role_id == 3) {
-            $query->whereHas('asset.employee.user', function ($q) use ($user) {
+            $query->whereHas('asset.investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
         }
@@ -53,7 +53,7 @@ class RepaymentController extends Controller
                       $q->where('amount', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%");
                   })
-                  ->orWhereHas('asset.employee', function ($q) use ($search) { // Employee and related fields
+                  ->orWhereHas('asset.investor', function ($q) use ($search) { // Investor and related fields
                       $q->where('asset_limit', 'LIKE', "%$search%")
                         ->orWhereHas('user', function ($q) use ($search) { // User fields
                             $q->where('name', 'LIKE', "%$search%")
@@ -109,12 +109,12 @@ class RepaymentController extends Controller
         $repayment->load([
             'asset',
             'asset.assetProvider',
-            'asset.employee.user',
-            'asset.employee.product',
+            'asset.investor.user',
+            'asset.investor.product',
         ]);
     
         // Send the repayment email
-        Mail::to($repayment->asset->employee->user->email)
+        Mail::to($repayment->asset->investor->user->email)
             ->send(new AssetRepaymentMail($repayment));
     
         return redirect()->route('repayments.index')->with('success', 'Repayment created successfully.');
@@ -131,8 +131,8 @@ class RepaymentController extends Controller
         $repayment->load([
             'asset',
             'asset.assetProvider',
-            'asset.employee.user',
-            'asset.employee.product'
+            'asset.investor.user',
+            'asset.investor.product'
         ]);
 
         return Inertia::render('Repayments/Show', [

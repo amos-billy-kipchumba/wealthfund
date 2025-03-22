@@ -64,7 +64,7 @@ const Approval = ({ asset }) => {
                     </div>
                     <div className="flex justify-between">
                         <strong className="text-gray-600">Name:</strong>
-                        <span className="text-gray-800">{asset.employee?.user?.name}</span>
+                        <span className="text-gray-800">{asset.investor?.user?.name}</span>
                     </div>
                     <div className="flex justify-between">
                         <strong className="text-gray-600">Principle:</strong>
@@ -76,11 +76,11 @@ const Approval = ({ asset }) => {
                     </div>
                     <div className="flex justify-between">
                         <strong className="text-gray-600">Email:</strong>
-                        <span className="text-gray-800">{asset.employee?.user?.email}</span>
+                        <span className="text-gray-800">{asset.investor?.user?.email}</span>
                     </div>
                     <div className="flex justify-between">
                         <strong className="text-gray-600">Phone:</strong>
-                        <span className="text-gray-800">{asset.employee?.user?.phone}</span>
+                        <span className="text-gray-800">{asset.investor?.user?.phone}</span>
                     </div>
                     <div className="flex justify-between">
                         <strong className="text-gray-600">Current balance:</strong>

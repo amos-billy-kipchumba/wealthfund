@@ -18,7 +18,7 @@ const AppMenu = () => {
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') }, // Always visible
                 { label: 'Products', icon: 'pi pi-fw pi-building', to: route('products.index'), permissions: ['Index product'] },
-                { label: 'Employees', icon: 'pi pi-fw pi-users', to: route('employees.index'), permissions: ['Index employee'] },
+                { label: 'Investors', icon: 'pi pi-fw pi-users', to: route('investors.index'), permissions: ['Index investor'] },
                 { label: 'Assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index'), permissions: ['Index asset'] },
                 { label: 'Pending assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Pending' }), permissions: ['Index asset'] },
                 { label: 'Approved assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Approved' }), permissions: ['Index asset'] },

@@ -30,7 +30,7 @@ class UpdatePermissions extends Command
     protected array $permissions = [
         'Index user', 'View user', 'Create user', 'Edit user', 'Delete user', 'Export user',
         'Index product', 'View product', 'Create product', 'Edit product', 'Delete product', 'Export product',
-        'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Delete employee', 'Export employee',
+        'Index investor', 'View investor', 'Create investor', 'Edit investor', 'Delete investor', 'Export investor',
         'Index asset', 'View asset', 'Create asset', 'Edit asset', 'Delete asset', 'Export asset',
         'Index asset provider', 'View asset provider', 'Create asset provider', 'Edit asset provider', 'Delete asset provider', 'Export asset provider',
         'Index notification', 'View notification', 'Create notification', 'Edit notification', 'Delete notification', 'Export notification',
@@ -46,15 +46,15 @@ class UpdatePermissions extends Command
     protected array $rolePermissions = [
         'Nyotafund Admin' => '*', 
         'Product Admin' => [
-            'user', 'employee', 'asset', 'notification', 'remittance', 'repayments'
+            'user', 'investor', 'asset', 'notification', 'remittance', 'repayments'
         ],
         'HR' => [
-            'user', 'employee', 'asset', 'notification', 'remittance', 'repayments'
+            'user', 'investor', 'asset', 'notification', 'remittance', 'repayments'
         ],
         'Finance' => [
             'user', 'asset', 'asset provider', 'remittance', 'repayments', 'notification'
         ],
-        'Employee' => [
+        'Investor' => [
             'user', 'asset', 'notification', 'remittance', 'repayments'
         ],
     ];

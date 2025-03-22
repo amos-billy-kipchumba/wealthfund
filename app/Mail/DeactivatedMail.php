@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Employee;  
+use App\Models\Investor;  
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,17 +11,17 @@ class DeactivatedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $employee;
+    public $investor;
 
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param  \App\Models\Investor  $investor
      * @return void
      */
-    public function __construct(Employee $employee)
+    public function __construct(Investor $investor)
     {
-        $this->employee = $employee;
+        $this->investor = $investor;
     }
 
     /**
@@ -33,9 +33,9 @@ class DeactivatedMail extends Mailable
     { 
 
         return $this->subject('Your Account has been deactivated')
-                    ->view('emails.employee_deactivation')
+                    ->view('emails.investor_deactivation')
                     ->with([
-                        'employee' => $this->employee
+                        'investor' => $this->investor
                     ]);
     }
 }

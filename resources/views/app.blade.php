@@ -7,7 +7,7 @@
         <title inertia>{{ config('app.name', 'Nyotafund') }}</title>
 
         <!-- Meta Description -->
-        <meta name="description" content="Nyotafund is a product that provides advance assets to employees, helping them access funds before their paychecks.">
+        <meta name="description" content="Nyotafund is a product that provides advance assets to investors, helping them access funds before their paychecks.">
 
         <!-- Favicon Links -->
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -28,6 +28,29 @@
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
 
+        <link rel="stylesheet" type="text/css" href="stylesheet/bootstrap.css">
+
+        <!-- REVOLUTION LAYERS STYLES -->
+        <link rel="stylesheet" type="text/css" href="revolution/css/layers.css">
+        <link rel="stylesheet" type="text/css" href="revolution/css/settings.css">
+        
+        <!-- Theme style -->
+        <link rel="stylesheet" type="text/css" href="stylesheet/style.css">
+    
+        <!-- Colors -->
+        <link rel="stylesheet" type="text/css" href="stylesheet/colors/color1.css" id="colors"> 
+          
+        <!-- Reponsive -->
+        <link rel="stylesheet" type="text/css" href="stylesheet/responsive.css">
+    
+        <!-- Animation Style -->
+        <link rel="stylesheet" type="text/css" href="stylesheet/animate.css">
+    
+        <!-- Favicon and touch icons  -->
+        <link href="icon/apple-touch-icon-48-precomposed.png" rel="apple-touch-icon-precomposed">
+        <link href="icon/apple-touch-icon-32-precomposed.png" rel="apple-touch-icon-precomposed">
+        <link href="icon/favicon.png" rel="shortcut icon">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -39,6 +62,34 @@
         @inertiaHead
 
         <link id="theme-css" href={{asset('/themes/tailwind-light/theme.css')}} rel="stylesheet">
+
+        <script type="text/javascript" src="javascript/jquery.min.js"></script>
+    <script type="text/javascript" src="javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/owl.carousel.js"></script>
+    <script type="text/javascript" src="javascript/jquery.easing.js"></script>
+    <script type="text/javascript" src="javascript/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="javascript/waypoints.min.js"></script>
+    
+    <script type="text/javascript" src="javascript/jquery.cookie.js"></script> 
+    <script type="text/javascript" src="javascript/jquery-validate.js"></script>
+    <script type="text/javascript" src="javascript/main.js"></script>
+
+
+    <!-- Revolution Slider -->
+    <script type="text/javascript" src="revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="revolution/js/slider_v1.js"></script>
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->    
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.video.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         @inertia

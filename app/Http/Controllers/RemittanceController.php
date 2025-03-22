@@ -75,7 +75,7 @@ class RemittanceController extends Controller
 
         $remittance->load([
             'product', 
-            'repayments.asset.employee.user'
+            'repayments.asset.investor.user'
         ]);
         
         $totalRepayments = $remittance->repayments->sum('amount');

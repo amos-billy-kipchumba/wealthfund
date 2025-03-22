@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
 
         $productAdminPermissions = [
             'Index user', 'View user', 'Create user', 'Edit user', 'Export user',
-            'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Export employee',
+            'Index investor', 'View investor', 'Create investor', 'Edit investor', 'Export investor',
             'Index asset', 'View asset', 'Edit asset', 'Export asset',
             'Index notification', 'View notification', 'Create notification', 'Edit notification', 'Export notification',
             'Index remittance', 'View remittance', 'Create remittance', 'Edit remittance', 'Export remittance',
@@ -33,17 +33,17 @@ class RoleSeeder extends Seeder
         ];
         $productAdminRole->syncPermissions($productAdminPermissions);
 
-        // Employee Role (Limited access)
-        $employeeRole = Role::create(['name' => 'Employee', 'guard_name' => 'web']);
-        $employeePermissions = [
+        // Investor Role (Limited access)
+        $investorRole = Role::create(['name' => 'Investor', 'guard_name' => 'web']);
+        $investorPermissions = [
             'View user',
-            'View employee', 'Create employee',
+            'View investor', 'Create investor',
             'Create asset', 'Index asset', 'View asset',
             'Index notification', 'View notification',
             'Index remittance', 'View remittance',
             'Index repayments', 'View repayments'
         ];
-        $employeeRole->syncPermissions($employeePermissions);
+        $investorRole->syncPermissions($investorPermissions);
 
 
         // Office Admin Role
@@ -51,7 +51,7 @@ class RoleSeeder extends Seeder
         $officeAdminPermissions = [
             'Index user', 'View user',
             'Index product', 'View product', 'Create product', 'Edit product', 'Export product',
-            'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Export employee',
+            'Index investor', 'View investor', 'Create investor', 'Edit investor', 'Export investor',
             'Index asset', 'View asset', 'Edit asset', 'Export asset',
             'Index asset provider', 'View asset provider', 'Create asset provider', 'Edit asset provider', 'Export asset provider',
             'Index remittance', 'View remittance', 'Create remittance', 'Edit remittance', 'Export remittance',
@@ -64,7 +64,7 @@ class RoleSeeder extends Seeder
         $hrRole = Role::create(['name' => 'HR', 'guard_name' => 'web']);
         $hrPermissions = [
             'Index user', 'View user',
-            'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Export employee',
+            'Index investor', 'View investor', 'Create investor', 'Edit investor', 'Export investor',
             'Index asset', 'View asset', 'Edit asset', 'Export asset',
             'Index notification', 'View notification', 'Create notification',
             'Index remittance', 'View remittance', 'Export remittance',
@@ -76,7 +76,7 @@ class RoleSeeder extends Seeder
         $financeRole = Role::create(['name' => 'Finance', 'guard_name' => 'web']);
         $financePermissions = [
             'Index user', 'View user',
-            'Index employee', 'View employee', 'Create employee', 'Edit employee', 'Export employee',
+            'Index investor', 'View investor', 'Create investor', 'Edit investor', 'Export investor',
             'Index asset', 'View asset', 'Edit asset', 'Export asset',
             'Index asset provider', 'View asset provider', 'Create asset provider', 'Edit asset provider', 'Export asset provider',
             'Index remittance', 'View remittance', 'Create remittance', 'Edit remittance', 'Export remittance',

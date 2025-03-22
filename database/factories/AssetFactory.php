@@ -19,7 +19,7 @@ class AssetFactory extends Factory
         return [
             'amount' => rand(2, 100099),
             'status' => 'Pending',
-            'employee_id' => rand(1, 9),
+            'investor_id' => rand(1, 9),
             'disbursed_at' => now(),
             'asset_provider_id' => 1
         ];

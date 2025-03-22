@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetProviderController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RepaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RemittanceController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
@@ -38,6 +39,10 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/services', [HomeController::class, 'services'])->name('services');
+Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact-us');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -70,9 +75,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/products/list', [ProductController::class, 'list'])->name('products.list');
 
-    Route::resource('employees', EmployeeController::class);
-    Route::get('/products/{product}/employees', [EmployeeController::class, 'getEmployeesByProduct'])
-    ->name('product.employees');
+    Route::resource('investors', InvestorController::class);
+    Route::get('/products/{product}/investors', [InvestorController::class, 'getInvestorsByProduct'])
+    ->name('product.investors');
     
     Route::resource('assets', AssetController::class);
     Route::get('/assets/{asset}/approve', [AssetController::class, 'approve'])->name('assets.approval');

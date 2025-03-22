@@ -9,7 +9,7 @@ import { Plus } from 'lucide-react';
 
 const Dashboard = ({ auth }) => {
     // Get data from the page props
-    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, employee, motherProduct } = usePage().props;
+    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor, motherProduct } = usePage().props;
     
     const [lineOptions, setLineOptions] = useState({});
     const { layoutConfig } = useContext(LayoutContext);
@@ -151,7 +151,7 @@ const Dashboard = ({ auth }) => {
                  {roleId === 3 && 
                 <DashboardInfoCard
                     title="Salary"
-                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee?.salary)}
+                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(investor?.salary)}
                     icon="map-marker"
                     iconColor="blue"
                     descriptionValue="The salary"
@@ -160,7 +160,7 @@ const Dashboard = ({ auth }) => {
                 {roleId === 3 && 
                 <DashboardInfoCard
                     title="Asset limit"
-                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(employee?.asset_limit)}
+                    value={new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(investor?.asset_limit)}
                     icon="map-marker"
                     iconColor="blue"
                     descriptionValue="The maximum amount"

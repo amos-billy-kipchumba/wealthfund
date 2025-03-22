@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react';
 import Layout from "@/Layouts/layout/layout.jsx";
 import Documents from './Partials/Documents';
 
-export default function Edit({ auth, mustVerifyEmail, status, employee }) {
+export default function Edit({ auth, mustVerifyEmail, status, investor }) {
     const roleId = auth.user?.role_id;
     return (
         <Layout>
@@ -16,7 +16,7 @@ export default function Edit({ auth, mustVerifyEmail, status, employee }) {
                     <UpdateProfileInformationForm
                         mustVerifyEmail={mustVerifyEmail}
                         status={status}
-                        employee={employee}
+                        investor={investor}
                         className="max-w-xl"
                     />
                 </div>
@@ -30,9 +30,9 @@ export default function Edit({ auth, mustVerifyEmail, status, employee }) {
                     <DeleteUserForm className="max-w-xl" />
                 </div>}
 
-                {employee &&
+                {investor &&
                 <div className="card">
-                    <Documents employee={employee} />
+                    <Documents investor={investor} />
                 </div>}
             </div>
         </Layout>

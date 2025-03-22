@@ -7,14 +7,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Create = () => {
-    const { employees, auth, products } = usePage().props; 
+    const { investors, auth, products } = usePage().props; 
     const roleId = auth.user?.role_id;
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [selectedInvestor, setSelectedInvestor] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const employeeOptions = employees?.map(employee => ({
-      value: employee.id,
-      label: employee.user?.name
+    const investorOptions = investors?.map(investor => ({
+      value: investor.id,
+      label: investor.user?.name
     }));
 
     const productOptions = products?.map(data => ({
@@ -26,7 +26,7 @@ const Create = () => {
       amount: '',
       status: 'Pending',
       disbursed_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-      employee_id: '',
+      investor_id: '',
       asset_provider_id: 1,
       product_id: '',
     });
@@ -34,7 +34,7 @@ const Create = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        const assetFloat = selectedEmployee?.asset_limit - selectedEmployee?.total_asset_balance;
+        const assetFloat = selectedInvestor?.asset_limit - selectedInvestor?.total_asset_balance;
         const amountToReceive = parseFloat(data.amount) - (parseFloat(data.amount) * (parseFloat(selectedProduct?.percentage) || 0) / 100);
     
         if (parseFloat(data.amount) > assetFloat) {
@@ -51,8 +51,8 @@ const Create = () => {
     };
     
 
-    const handleEmployeeChange = (selectedOption) => {
-        setData('employee_id', selectedOption ? selectedOption.value : ''); 
+    const handleInvestorChange = (selectedOption) => {
+        setData('investor_id', selectedOption ? selectedOption.value : ''); 
     };
 
     const handleProductChange = (selectedOption) => {
@@ -61,18 +61,18 @@ const Create = () => {
 
     useEffect(() => {
         if(roleId === 3) {
-            const employee = employees.find(emp => emp.user_id === auth.user?.id);
-            setSelectedEmployee(employee || null);
+            const investor = investors.find(emp => emp.user_id === auth.user?.id);
+            setSelectedInvestor(investor || null);
             setData((prev) => ({
                 ...prev,
-                employee_id: employee.id,
+                investor_id: investor.id,
             }));
             
         }
 
-        if(data.employee_id !== '') {
-            const employee = employees.find(emp => emp.id === data.employee_id);
-            setSelectedEmployee(employee || null);
+        if(data.investor_id !== '') {
+            const investor = investors.find(emp => emp.id === data.investor_id);
+            setSelectedInvestor(investor || null);
         }
 
         if(data.product_id !== '') {
@@ -84,7 +84,7 @@ const Create = () => {
             const product = products.find(emp => emp.id === auth.user?.product_id);
             setSelectedProduct(product || null);
         }
-    }, [employees, auth, data.employee_id, data.product_id]);
+    }, [investors, auth, data.investor_id, data.product_id]);
 
     return (
         <Layout>
@@ -101,11 +101,11 @@ const Create = () => {
                 pauseOnHover
                 theme="light"
             />
-            {selectedEmployee !== null && 
+            {selectedInvestor !== null && 
             <div className="grid">
                 <DashboardInfoCard
                     title="Advance limit"
-                    value={        new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(selectedEmployee.asset_limit)}
+                    value={        new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(selectedInvestor.asset_limit)}
                     icon="map-marker"
                     iconColor="blue"
                     descriptionValue="The maximum amount"
@@ -113,7 +113,7 @@ const Create = () => {
                 />
                 <DashboardInfoCard
                     title="Advance float"
-                    value={ new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(selectedEmployee.asset_limit - selectedEmployee.total_asset_balance)}
+                    value={ new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(selectedInvestor.asset_limit - selectedInvestor.total_asset_balance)}
                     icon="map-marker"
                     iconColor="blue"
                     descriptionValue="The amount"
@@ -134,7 +134,7 @@ const Create = () => {
                             onChange={(e) => setData('amount', e.target.value)}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
-                        {parseFloat(data.amount) > (selectedEmployee?.asset_limit - selectedEmployee?.total_asset_balance) && (
+                        {parseFloat(data.amount) > (selectedInvestor?.asset_limit - selectedInvestor?.total_asset_balance) && (
                             <div className="text-sm text-red-500 mt-1">
                                 Asset amount cannot exceed the available advance float.
                             </div>
@@ -144,15 +144,15 @@ const Create = () => {
 
                     {roleId !== 3 &&
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Employee</label>
+                        <label className="block text-sm font-medium text-gray-700">Investor</label>
                         <Select
-                            options={employeeOptions}
-                            value={employeeOptions.find(option => option.value === data.employee_id)} 
-                            onChange={handleEmployeeChange}
+                            options={investorOptions}
+                            value={investorOptions.find(option => option.value === data.investor_id)} 
+                            onChange={handleInvestorChange}
                             className="mt-1 block w-full py-2"
-                            placeholder="Select a employee"
+                            placeholder="Select a investor"
                         />
-                        {errors.employee_id && <div className="text-sm text-red-500 mt-1">{errors.employee_id}</div>}
+                        {errors.investor_id && <div className="text-sm text-red-500 mt-1">{errors.investor_id}</div>}
                     </div>}
 
                     {roleId === 1 &&
@@ -165,11 +165,11 @@ const Create = () => {
                             className="mt-1 block w-full py-2"
                             placeholder="Select a product"
                         />
-                        {errors.employee_id && <div className="text-sm text-red-500 mt-1">{errors.employee_id}</div>}
+                        {errors.investor_id && <div className="text-sm text-red-500 mt-1">{errors.investor_id}</div>}
                     </div>}
 
                     {/* Submit Button */}
-                    {parseFloat(data.amount) <= (selectedEmployee?.asset_limit - selectedEmployee?.total_asset_balance) && (
+                    {parseFloat(data.amount) <= (selectedInvestor?.asset_limit - selectedInvestor?.total_asset_balance) && (
                         <button
                             type="submit"
                             className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"

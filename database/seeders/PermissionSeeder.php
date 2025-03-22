@@ -31,12 +31,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'Delete product', 'guard_name' => 'web']);
         Permission::create(['name' => 'Export product', 'guard_name' => 'web']);
 
-        Permission::create(['name' => 'Index employee', 'guard_name' => 'web']);
-        Permission::create(['name' => 'View employee', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Create employee', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Edit employee', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Delete employee', 'guard_name' => 'web']);
-        Permission::create(['name' => 'Export employee', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Index investor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'View investor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Create investor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Edit investor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Delete investor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'Export investor', 'guard_name' => 'web']);
 
         Permission::create(['name' => 'Index asset', 'guard_name' => 'web']);
         Permission::create(['name' => 'View asset', 'guard_name' => 'web']);
