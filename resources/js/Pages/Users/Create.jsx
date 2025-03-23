@@ -4,12 +4,7 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';  
 
 const Create = () => {
-    const { products, auth } = usePage().props; 
-
-    const productOptions = products.map(product => ({
-        value: product.id,
-        label: product.name
-    }));
+    const { auth } = usePage().props; 
     
     const roleId = auth.user?.role_id;
 
@@ -29,18 +24,13 @@ const Create = () => {
         phone: '',
         email: '',
         role_id: 2, 
-        password: '1234boys',  
-        product_id: roleId === 2 ? auth.user?.product_id : '', 
+        password: '1234boys', 
         status: 'Active'
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route('users.store'));
-    };
-
-    const handleProductChange = (selectedOption) => {
-        setData('product_id', selectedOption ? selectedOption.value : ''); 
     };
 
     const handleRoleChange = (selectedOption) => {
@@ -101,20 +91,6 @@ const Create = () => {
                         />
                         {errors.role_id && <div className="text-sm text-red-500 mt-1">{errors.role_id}</div>}
                     </div>
-
-                    {/* Product Select (React Select) */}
-                    {roleId === 1 &&
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Product</label>
-                        <Select
-                            options={productOptions}
-                            value={productOptions.find(option => option.value === data.product_id)}
-                            onChange={handleProductChange}
-                            className="mt-1 block w-full py-2"
-                            placeholder="Select a product"
-                        />
-                        {errors.product_id && <div className="text-sm text-red-500 mt-1">{errors.product_id}</div>}
-                    </div>}
 
                     {/* Submit Button */}
                     <button

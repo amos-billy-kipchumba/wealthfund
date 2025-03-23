@@ -4,7 +4,7 @@ import Layout from "@/Layouts/layout/layout.jsx";
 import Select from 'react-select';
 
 const EditUser = ({ errors }) => {
-  const { products, user, auth } = usePage().props; 
+  const { user, auth } = usePage().props; 
   
   const roleId = auth.user?.role_id;
   
@@ -29,27 +29,13 @@ const EditUser = ({ errors }) => {
     name: user.name,
     email: user.email,
     phone: user.phone,
-    product_id: user.product_id, 
     role_id: user.role_id,
   });
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  useEffect(() => {
-    if (user.product_id) {
-      const defaultProduct = products.find((c) => c.id === user?.product_id);
-      setSelectedProduct(defaultProduct);
-    }
-  }, [user, products]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     put(route('users.update', { user: user.id })); 
-  };
-
-  const handleProductChange = (selectedOption) => {
-    setData('product_id', selectedOption ? selectedOption.value : '');
-    setSelectedProduct(selectedOption);
   };
 
   const handleRoleChange = (selectedOption) => {
@@ -110,22 +96,6 @@ const EditUser = ({ errors }) => {
               />
               {errors.role_id && <div className="text-sm text-red-500 mt-1">{errors.role_id}</div>}
           </div>
-
-          {/* Product Select */}
-          {roleId === 1 &&
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Product</label>
-            <Select
-              value={selectedProduct}
-              onChange={handleProductChange}
-              options={products.map((product) => ({
-                value: product.id,
-                label: product.name
-              }))}
-              placeholder="Select a product"
-            />
-            {errors.product_id && <div className="text-sm text-red-500 mt-1">{errors.product_id}</div>}
-          </div>}
 
           {/* Submit Button */}
           <button

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_number')->nullable();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('kyc')->nullable();
@@ -22,8 +23,6 @@ return new class extends Migration
             $table->string('status')->default('Active');
             $table->string('staff_number')->nullable();
             $table->string('password')->nullable();
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

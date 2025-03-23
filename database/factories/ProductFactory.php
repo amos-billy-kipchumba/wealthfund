@@ -13,12 +13,10 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->company,
-            'industry' => $this->faker->word,
-            'address' => $this->faker->address,
-            'email' => $this->faker->unique()->safeEmail,
-            'phone' => $this->faker->phoneNumber,
-            'percentage' => rand(5, 10),
-            'asset_limit' => 67,
+            'amount' => rand(500, 1000),
+            'days' => rand(30, 40),
+            'payout' => rand(30, 100),
+            'logo' => '/icon/1.jpg'
         ];
     }
 }

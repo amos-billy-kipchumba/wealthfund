@@ -23,10 +23,6 @@ class DashboardController extends Controller
 
         $user = Auth::user();
 
-        if($user->product_id != null){
-            $motherProduct = Product::where('id','=', $user->product_id)->first();
-        }
-
         if ($user->role_id == 3 && $user->email_verified_at == null) {
             return Inertia::render('Auth/VerifyEmail', [
                 'products' => $products,
@@ -220,8 +216,7 @@ class DashboardController extends Controller
                 'assetTrends' => $assetTrends,
                 'repaymentTrends' => $repaymentTrends,
                 'investorsCount' => $investorsCount,
-                'investor'=>$investor,
-                'motherProduct'=>$motherProduct ?? null
+                'investor'=>$investor
             ]);
             
         }

@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use App\Services\SmsService;
 use App\Mail\WelcomeMail;
+use App\Notifications\CustomVerifyEmail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -81,6 +83,11 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+
+        $validatedData = $request->validated();
+        $validatedData['password'] = Str::random(6);
+        $validatedData['remember_token'] = Str::random(10);
+
         $user = User::create($request->validated());
 
         $validated = $request->validated();
@@ -105,9 +112,11 @@ class UserController extends Controller
             
         }
 
-        $pass = '1234boys';
+        $pass = $validatedData['password'];
 
         Mail::to($user->email)->send(new WelcomeMail($user, $pass));
+
+        $user->notify(new CustomVerifyEmail($pass));
 
         $this->smsService->sendSms(
            $user->phone, 

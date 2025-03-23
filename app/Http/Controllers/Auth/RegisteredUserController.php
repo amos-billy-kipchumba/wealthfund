@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use App\Services\SmsService;
 
+use Illuminate\Support\Str;
+use App\Notifications\CustomVerifyEmail;
+
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -50,7 +54,6 @@ class RegisteredUserController extends Controller
          $request->validate([
              'name' => 'required|string|max:255',
              'role_id' => 'required',
-             'product_id' => 'nullable',
              'staff_number'=> 'nullable',
              'phone' => 'required',
              'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -62,7 +65,6 @@ class RegisteredUserController extends Controller
              'email' => $request->email,
              'phone' => $request->phone,
              'staff_number' => $request->staff_number ?? null,
-             'product_id'=>$request->product_id,
              'role_id' => $request->role_id,
              'password' => Hash::make($request->password),
          ]);
@@ -95,12 +97,7 @@ class RegisteredUserController extends Controller
 
          $pass = $request->password;
 
-         Mail::to($user->email)->send(new WelcomeMail($user, $pass));
-
-         $this->smsService->sendSms(
-            $user->phone, 
-            "Hello {$user->name}, welcome to Nyotafund Limited!, this is your login password {$pass}"
-        );
+         $user->notify(new CustomVerifyEmail($pass));
      
          return redirect(RouteServiceProvider::HOME);
      }

@@ -145,7 +145,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
           {/* Top Section - Responsive */}
           <div className={`
-            ${mobileFiltersOpen ? 'block' : 'hidden'} 
+            ${mobileFiltersOpen ? 'sm:block' : 'sm:hidden lg:block'} 
             lg:block bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4
           `}>
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">

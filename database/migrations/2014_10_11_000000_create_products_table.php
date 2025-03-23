@@ -14,23 +14,11 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('registration_number')->nullable();
-            $table->string('industry')->nullable();
-            $table->string('sectors')->nullable();
-            $table->string('county')->nullable();
-            $table->string('sub_county')->nullable();
-            $table->string('location')->nullable();
-            $table->string('address')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('phone')->nullable();
-            $table->double('percentage')->nullable();
-            $table->double('asset_limit')->nullable();
+            $table->double('amount')->nullable();
+            $table->double('days')->nullable();
+            $table->double('payout')->nullable();
+            $table->string('logo')->nullable();
             $table->string('unique_number')->nullable();
-            $table->string('certificate_of_incorporation')->nullable();
-            $table->string('kra_pin')->nullable();
-            $table->string('cr12_cr13')->nullable();
-            $table->string('signed_agreement')->nullable();
-            $table->json('additional_documents')->nullable();
             $table->timestamps();
         });
     }

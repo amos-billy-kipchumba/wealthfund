@@ -24,27 +24,10 @@ class StoreProductRequest extends FormRequest
      {
          return [
              'name' => 'required|string|max:255',
-             'registration_number' => 'nullable|string|max:255',
-             'industry' => 'nullable|string|max:255',
-             'sectors' => 'nullable|string|max:255',
-             'county' => 'nullable|string|max:255',
-             'asset_limit' => 'nullable',
-             'sub_county' => 'nullable|string|max:255',
-             'location' => 'nullable|string|max:255',
-             'address' => 'nullable|string|max:255',
-             'email' => 'required|email|unique:products,email',
-             'phone' => 'required|string|max:15',
-             'percentage' => 'required|numeric',
-             'unique_number' => 'nullable|string|max:255',
-     
-             // Fix: Allow file uploads instead of string
-             'certificate_of_incorporation' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-             'kra_pin' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-             'cr12_cr13' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-             'signed_agreement' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-     
-             // Fix: Allow multiple file uploads for additional documents
-             'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+             'amount' => 'nullable',
+             'days' => 'nullable',
+             'payout' => 'nullable',
+             'logo' => 'nullable'
          ];
      }
      

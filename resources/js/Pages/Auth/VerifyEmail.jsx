@@ -35,8 +35,7 @@ export default function VerifyEmail({ status }) {
                 <div className='w-full flex flex-col py-[200px]'>
 
                     <div className="mb-4 text-sm text-gray-600 max-w-3xl mx-auto">
-                        Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-                        link we will email to you when you click the send verification code button below?.
+                    Thanks for signing up! If you haven't received the verification email, click the button below to request a new one.
                     </div>
 
                     {status === 'verification-link-sent' && (

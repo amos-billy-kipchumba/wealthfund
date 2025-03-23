@@ -96,7 +96,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
         {/* Top Section - Responsive */}
         <div className={`
-          ${mobileFiltersOpen ? 'block' : 'hidden'} 
+          ${mobileFiltersOpen ? 'sm:block' : 'sm:hidden lg:block'} 
           lg:block bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4
         `}>
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -164,25 +164,31 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
               <tr>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase"></th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Name</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Unique number</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Address</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Phone</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Asset percentage</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Amount</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Days</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Payout</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {products.length > 0 ? (
                 products.map((product) => (
-                  <tr key={product.id}>
-                    <td className="px-6 py-4">{product.name}</td>
+                  <tr key={product.id} className=''>
+                    <td className="px-6 py-4">
+                      <img
+                          src={`/storage/${product.logo}`}
+                          alt="ID Front"
+                          className="h-[5vh] object-cover rounded-md"
+                      />
+                    </td>
+                    <td className="px-6 py-4 my-auto">{product.name}</td>
                     <td className="px-6 py-4">{product.unique_number}</td>
-                    <td className="px-6 py-4">{product.address}</td>
-                    <td className="px-6 py-4">{product.email}</td>
-                    <td className="px-6 py-4">{product.phone}</td>
-                    <td className="px-6 py-4">{product.percentage}</td>
+                    <td className="px-6 py-4">{product.amount}</td>
+                    <td className="px-6 py-4">{product.days}</td>
+                    <td className="px-6 py-4">{product.payout}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         {userPermission.includes('View product') &&

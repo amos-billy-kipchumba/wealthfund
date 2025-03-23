@@ -29,7 +29,7 @@ class User extends Authenticatable
         'staff_number',
         'status',
         'kyc',
-        'product_id'
+        'unique_number'
     ];
 
     public function permissions()
@@ -74,4 +74,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            do {
+                $letter = strtoupper(chr(rand(65, 90))); 
+                $randomNumber = rand(10000, 99999);
+                $uniqueNumber = $letter . $randomNumber;
+            } while (self::where('unique_number', $uniqueNumber)->exists()); 
+
+            $product->unique_number = $uniqueNumber;
+        });
+    }
 }

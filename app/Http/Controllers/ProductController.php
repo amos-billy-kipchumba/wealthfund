@@ -106,7 +106,7 @@ class ProductController extends Controller
         $validatedData = $request->all();
 
         // Handle file uploads
-        $fileFields = ['certificate_of_incorporation', 'kra_pin', 'cr12_cr13', 'signed_agreement'];
+        $fileFields = ['logo'];
         $filePaths = [];
     
         foreach ($fileFields as $field) {
@@ -117,81 +117,14 @@ class ProductController extends Controller
             }
         }
     
-        // Handle multiple additional documents
-        $additionalDocs = [];
-        if ($request->hasFile('product.additional_documents')) {
-            foreach ($request->file('product.additional_documents') as $doc) {
-                $fileName = time() . '-' . $doc->getClientOriginalName(); 
-                $additionalDocs[] = $doc->storeAs("product_documents", $fileName, "public");
-            }
-        }
-    
         // Create the product record
         $product = Product::create([
             'name' => $validatedData['product']['name'],
-            'industry' => $validatedData['product']['industry'],
-            'address' => $validatedData['product']['address'],
-            'email' => $validatedData['product']['email'],
-            'phone' => $validatedData['product']['phone'],
-            'percentage' => $validatedData['product']['percentage'],
-            'asset_limit' => $validatedData['product']['asset_limit'],
-            'registration_number' => $validatedData['product']['registration_number'],
-            'sectors' => $validatedData['product']['sectors'],
-            'county' => $validatedData['product']['county'],
-            'sub_county' => $validatedData['product']['sub_county'],
-            'location' => $validatedData['product']['location'],
-            'certificate_of_incorporation' => $filePaths['certificate_of_incorporation'] ?? null,
-            'kra_pin' => $filePaths['kra_pin'] ?? null,
-            'cr12_cr13' => $filePaths['cr12_cr13'] ?? null,
-            'signed_agreement' => $filePaths['signed_agreement'] ?? null,
-            'additional_documents' => json_encode($additionalDocs), 
+            'amount' => $validatedData['product']['amount'],
+            'days' => $validatedData['product']['days'],
+            'payout' => $validatedData['product']['payout'],
+            'logo' => $filePaths['logo'] ?? null
         ]);
-    
-        // Generate a random password
-        $pass = Str::random(6);
-    
-        // Create the associated user
-        $user = User::create([
-            'name' => $validatedData['user']['name'],
-            'phone' => $validatedData['phone'],
-            'email' => $validatedData['user']['email'],
-            'password' => Hash::make($pass),
-            'product_id' => $product->id,
-            'role_id' => 2, 
-        ]);
-
-        // Assign Role and Sync Permissions
-
-        if ($user->role_id) {
-            $role = Role::find($user->role_id);
-
-
-            if ($role) {
-                $user->assignRole($role);
-                
-                DB::table('model_has_roles')->where('model_id', $user->id)->update([
-                    'model_type' => User::class
-                ]);
-            
-                $user->syncPermissions($role->permissions);
-            
-                DB::table('model_has_permissions')->where('model_id', $user->id)->update([
-                    'model_type' => User::class
-                ]);
-            }
-            
-        }
-
-        
-    
-        // Send Email Notification
-        Mail::to($user->email)->send(new WelcomeMail($user, $pass));
-    
-        // Send SMS Notification
-        $this->smsService->sendSms(
-            $user->phone, 
-            "Hello {$user->name}, welcome to Nyotafund Limited! This is your login password: {$pass}"
-        );
     
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
@@ -206,78 +139,8 @@ class ProductController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $search = $request->query('search');
-        $startDate = $request->query('start_date');
-        $endDate = $request->query('end_date');
-
-        // Ensure both dates are not null and not empty
-        $filterByDate = !empty($startDate) && !empty($endDate);
-
-        // Investors Filter
-        $investors = Investor::with(['user', 'assets', 'product'])
-            ->where('product_id', $product->id)
-            ->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'LIKE', "%$search%")
-                ->orWhere('email', 'LIKE', "%$search%");
-            })
-            ->when($filterByDate, function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('created_at', [$startDate, $endDate]);
-            })
-            ->orderBy('created_at', 'desc') // Order by latest
-            ->paginate(5)
-            ->withQueryString();
-
-        // Assets Filter
-        $assets = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
-            ->whereHas('investor', function ($q) use ($search, $product) {
-                $q->where('product_id', $product->id)
-                ->whereHas('user', function ($q) use ($search) {
-                    $q->where('name', 'LIKE', "%$search%")
-                        ->orWhere('email', 'LIKE', "%$search%")
-                        ->orWhere('phone', 'LIKE', "%$search%");
-                });
-            })
-            ->when($filterByDate, function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('created_at', [$startDate, $endDate]);
-            })
-            ->orderBy('created_at', 'desc') // Order by latest
-            ->paginate(5)
-            ->withQueryString();
-
-        // Remittances Filter
-        $remittances = Remittance::with(['product'])
-            ->where('product_id', $product->id)
-            ->where('remittance_number', 'LIKE', "%$search%")
-            ->when($filterByDate, function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('created_at', [$startDate, $endDate]);
-            })
-            ->orderBy('created_at', 'desc') // Order by latest
-            ->paginate(5)
-            ->withQueryString();
-
-        // Repayments Filter
-        $repayments = Repayment::with([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product',
-        ])
-        ->whereHas('asset.investor.user', function ($q) use ($search, $product) {
-            $q->where('product_id', $product->id);
-        })
-        ->when($filterByDate, function ($query) use ($startDate, $endDate) {
-            $query->whereBetween('created_at', [$startDate, $endDate]);
-        })
-        ->orderBy('created_at', 'desc') // Order by latest
-        ->paginate(5)
-        ->withQueryString();
-
         return Inertia::render('Products/Show', [
             'product' => $product,
-            'investors' => $investors,
-            'assets' => $assets,
-            'remittances' => $remittances,
-            'repayments' => $repayments
         ]);
     }
 
@@ -304,48 +167,32 @@ class ProductController extends Controller
         if (!$user->hasPermissionTo('Edit product')) {
             return Inertia::render('Auth/Forbidden');
         }
+    
 
-        $validatedData = $request->all();
+        $validatedData = $request->validate([
+            'name' => 'nullable',
+            'amount' => 'nullable',
+            'days' => 'nullable',
+            'payout' => 'nullable',
+            'logo' => 'nullable',
+        ]);
+
     
-        // File fields that need to be handled
-        $fileFields = ['certificate_of_incorporation', 'kra_pin', 'cr12_cr13', 'signed_agreement'];
-    
-        foreach ($fileFields as $field) {
-            if ($request->hasFile($field)) {
-                // Delete old file if it exists
-                if ($product->$field) {
-                    Storage::disk('public')->delete($product->$field);
-                }
-    
-                // Store new file
-                $file = $request->file($field);
-                $fileName = time() . '-' . $file->getClientOriginalName();
-                $validatedData[$field] = $file->storeAs("product_documents", $fileName, "public");
+        if ($request->hasFile('logo')) {
+            if ($product->logo) {
+                Storage::disk('public')->delete($product->logo);
             }
+
+            $file = $request->file('logo');
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $validatedData['logo'] = $file->storeAs("product_logos", $fileName, "public");
         }
     
-        // Handle multiple additional documents
-        if ($request->hasFile('additional_documents')) {
-            // Delete old additional documents if they exist
-            if ($product->additional_documents) {
-                foreach ($product->additional_documents as $doc) {
-                    Storage::disk('public')->delete($doc);
-                }
-            }
-    
-            $additionalDocs = [];
-            foreach ($request->file('additional_documents') as $doc) {
-                $fileName = time() . '-' . $doc->getClientOriginalName();
-                $additionalDocs[] = $doc->storeAs("product_documents", $fileName, "public");
-            }
-            $validatedData['additional_documents'] = $additionalDocs;
-        }
-    
-        // Update product record
         $product->update($validatedData);
     
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
+
 
     public function destroy(Product $product)
     {

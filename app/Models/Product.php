@@ -11,23 +11,11 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'registration_number',
-        'industry',
-        'sectors',
-        'county',
-        'sub_county',
-        'location',
-        'address',
-        'email',
-        'phone',
-        'percentage',
-        'unique_number',
-        'certificate_of_incorporation',
-        'kra_pin',
-        'cr12_cr13',
-        'signed_agreement',
-        'additional_documents',
-        'asset_limit'
+        'amount',
+        'days',
+        'payout',
+        'logo',
+        'unique_number'
     ];
 
     protected $casts = [

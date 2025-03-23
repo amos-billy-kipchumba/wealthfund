@@ -213,7 +213,6 @@ input[type="submit"] {
     text-transform: uppercase;
     color: #ffffff;
     background: #18ba60;
-    border: 1px solid #18ba60;
     -webkit-border-radius: 20px;
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
@@ -273,13 +272,9 @@ input[type="email"] {
     display: block;
     width: 100%;
     line-height: 24px;
-    padding: 8px 15px;
     color: #222222;
-    border: 1px solid #d0d0d0;
     height: 45px;
-    background-color: #d8e7ef;
     border-radius: 3px;   
-    margin-bottom: 20px;
 	-webkit-transition: all 0.3s ease-in-out;
 	   -moz-transition: all 0.3s ease-in-out;
 	    -ms-transition: all 0.3s ease-in-out;

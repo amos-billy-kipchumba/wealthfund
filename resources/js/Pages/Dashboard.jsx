@@ -9,7 +9,7 @@ import { Plus } from 'lucide-react';
 
 const Dashboard = ({ auth }) => {
     // Get data from the page props
-    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor, motherProduct } = usePage().props;
+    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor } = usePage().props;
     
     const [lineOptions, setLineOptions] = useState({});
     const { layoutConfig } = useContext(LayoutContext);
@@ -118,10 +118,6 @@ const Dashboard = ({ auth }) => {
     return (
         <Layout>
             <Head title="Dashboard" />
-             {roleId === 2 && 
-            <div className='flex gap-8 items-center'>
-                <h4 className='font-bold flex items-center my-auto'>Product: {motherProduct?.name} - {motherProduct?.unique_number}</h4>
-            </div>}
 
             {roleId === 3 && 
             <div className='flex gap-8 items-center'>
