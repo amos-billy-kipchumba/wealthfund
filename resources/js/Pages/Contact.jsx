@@ -41,42 +41,16 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     <div className="contact-info">
                       <div className="info info-address">
                         <div className="title">Address</div>
-                        <p>PO Box 16122 Collins Street West, Victoria 8007, Australia</p>
+                        <p>Khalifa City A, Street 24, Villa 198, Near Adnoc Petrol Station - Abu Dhabi - United Arab Emirates</p>
                       </div>
                       <div className="info info-address">
                         <div className="title">Phone number</div>
-                        <p>Call us: 190 140 2468</p>
+                        <p>Call us: +971 52 726 5884</p>
                       </div>
                       <div className="info info-address">
                         <div className="title">E-mail address</div>
-                        <p>support@themesflat.com</p>
+                        <p>info@nyotafund.com</p>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="col-md-8">
-                    <div className="flat-form-info">
-                      <form id="contactform" method="post" action="https://themesflat.co/html/finance/contact/contact-process.php" noValidate className="form-info">
-                        <div className="one-half v3">
-                          <p className="input-info">
-                            <input type="text" name="name" placeholder="Name" required />
-                          </p>
-                          <p className="input-info">
-                            <input type="email" name="email" placeholder="Email" required />
-                          </p>
-                          <p className="input-info">
-                            <input type="text" name="subject" placeholder="Subject" required />
-                          </p>
-                          <p className="input-info">
-                            <button type="submit" className="submit">Send Message</button>
-                          </p>
-                        </div>
-                        <div className="one-half v4">
-                          <p className="input-info">
-                            <textarea id="message-contact" name="message" placeholder="Message" required />
-                          </p>
-                        </div>
-                      </form>
                     </div>
                   </div>
                 </div>
@@ -87,14 +61,15 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <section className="flat-row pdmap">
               <div className="gm-map">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24191.41880340991!2d-74.005974!3d40.712776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z0KHQqNCQ!5e0!3m2!1sen!2sus!4v1711043543427"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29063.390423578305!2d54.55892717462802!3d24.41871458298452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e462f2e4c5579%3A0xf23be38de105ba6f!2sADNOC%20Service%20Station%20%7C%20Khalifa%20City%20(766)!5e0!3m2!1sen!2ske!4v1742765020954!5m2!1sen!2ske"
                   width="100%"
                   height="454"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
+                />
+
               </div>
             </section>
           </GuestLayout>

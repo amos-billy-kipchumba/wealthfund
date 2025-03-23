@@ -39,7 +39,7 @@ const EditNotification = ({ notification, errors }) => {
               value={data.message}
               onChange={(e) => setData('message', e.target.value)}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              style={{height: '200px'}}
+              style={{height: '200px', border: '1px solid lightgray'}}
             ></textarea>
             {errors.message && <div className="text-sm text-red-500 mt-1">{errors.message}</div>}
           </div>

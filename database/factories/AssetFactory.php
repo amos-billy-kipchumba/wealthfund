@@ -21,7 +21,8 @@ class AssetFactory extends Factory
             'status' => 'Pending',
             'investor_id' => rand(1, 9),
             'disbursed_at' => now(),
-            'asset_provider_id' => 1
+            'asset_provider_id' => 1,
+            'product_id'=> rand(1, 9)
         ];
     }
 }

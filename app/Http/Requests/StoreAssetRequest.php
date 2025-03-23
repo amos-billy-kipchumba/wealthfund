@@ -27,7 +27,8 @@ class StoreAssetRequest extends FormRequest
             'otp' => 'nullable',
             'disbursed_at' => 'nullable',
             'investor_id' => 'nullable',
-            'asset_provider_id' => 'nullable'
+            'asset_provider_id' => 'nullable',
+            'product_id'=> 'nullable'
         ];
     }
 }

@@ -34,8 +34,8 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
     const generatePDF = () => {
       const doc = new jsPDF();
-      const logoUrl = '/images/logo-dark.png';
-      doc.addImage(logoUrl, 'PNG', 10, 10, 80, 30);
+      const logoUrl = '/images/logo.png';
+      doc.addImage(logoUrl, 'PNG', 10, 10, 60, 30);
       doc.setFontSize(14);
       doc.text(`Assets Report`, 14, 50);
       
@@ -154,16 +154,6 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               </h1>
               
               <div className="flex flex-wrap justify-center gap-2 w-full sm:w-auto">
-                {userPermission.includes('Create asset') &&
-                <Link
-                  href={route('assets.create')}
-                  className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                >
-                  <Plus className="w-4 h-4 mr-2 my-auto" />
-                  <span className='my-auto flex items-center'>
-                  Request for an advance
-                  </span>
-                </Link>}
                 {userPermission.includes('Export asset') &&
                 <button
                   onClick={generatePDF}
@@ -189,7 +179,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 {userPermission.includes('Edit asset') &&
                 <button
                   onClick={handleBulkAction}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Mark as Paid
                 </button>}

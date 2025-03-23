@@ -28,7 +28,8 @@ class UpdateAssetRequest extends FormRequest
             'disbursed_at' => 'nullable',
             'investor_id' => 'nullable',
             'asset_provider_id' => 'nullable',
-            'reason'=>'reason'
+            'reason'=>'reason',
+            'product_id'=> 'nullable'
         ];
     }
 }

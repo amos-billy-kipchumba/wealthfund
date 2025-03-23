@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/wallet', [DashboardController::class, 'wallet'])->name('wallet');
+
     Route::post('/update-permissions/{user}', function (Request $request, User $user) {
         $permissions = $request->input('permissions', []);
     

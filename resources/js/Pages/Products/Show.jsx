@@ -84,7 +84,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           {userPermission.includes('Index product') &&
           <Link 
             href={route("products.index")} 
-            className="inline-block px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+            className="inline-block px-6 pt-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
             Back to Products
           </Link>}
 

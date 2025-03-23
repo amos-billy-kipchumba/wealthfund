@@ -44,7 +44,7 @@ const Investors = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    const logoUrl = '/images/logo-dark.png';
+    const logoUrl = '/images/logo.png';
     doc.addImage(logoUrl, 'PNG', 10, 10, 80, 30);
     doc.setFontSize(14);
     doc.text(`Investors Report`, 14, 50);

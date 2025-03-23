@@ -184,7 +184,7 @@ const Create = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className="w-full mt-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-6 rounded-lg font-medium 
+                className="w-full mt-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-1 px-6 rounded-lg font-medium 
                   hover:from-blue-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
                   shadow-md transition-all disabled:opacity-70 disabled:cursor-not-allowed"
               >

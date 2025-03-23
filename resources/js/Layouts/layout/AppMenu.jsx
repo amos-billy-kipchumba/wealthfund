@@ -19,11 +19,9 @@ const AppMenu = () => {
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') }, // Always visible
                 { label: 'Products', icon: 'pi pi-fw pi-building', to: route('products.index'), permissions: ['Index product'] },
                 { label: 'Investors', icon: 'pi pi-fw pi-users', to: route('investors.index'), permissions: ['Index investor'] },
+                { label: 'Wallet', icon: 'pi pi-fw pi-wallet', to: route('wallet'), permissions: ['Index asset'] },
                 { label: 'Assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index'), permissions: ['Index asset'] },
-                { label: 'Pending assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Pending' }), permissions: ['Index asset'] },
-                { label: 'Approved assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Approved' }), permissions: ['Index asset'] },
-                { label: 'Declined assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Declined' }), permissions: ['Index asset'] },
-                { label: 'Pending Paid assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Pending Paid' }), permissions: ['Index asset'] },
+                { label: 'Active assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Approved' }), permissions: ['Index asset'] },
                 { label: 'Paid assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Paid' }), permissions: ['Index asset'] },
                 { label: 'Asset Providers', icon: 'pi pi-fw pi-briefcase', to: route('assetProviders.index'), permissions: ['Index assetProvider'] },
                 { label: 'Notifications', icon: 'pi pi-fw pi-bell', to: route('notifications.index'), permissions: ['Index notification'] },

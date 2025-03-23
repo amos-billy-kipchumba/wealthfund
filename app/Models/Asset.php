@@ -16,7 +16,8 @@ class Asset extends Model
         'investor_id',
         'asset_provider_id',
         'asset',
-        'otp'
+        'otp',
+        'product_id'
     ];
 
     protected $appends = ['charges', 'currentBalance'];
@@ -33,6 +34,11 @@ class Asset extends Model
         return $this->hasOne('App\Models\AssetProvider', 'id', 'asset_provider_id');
     }
 
+    public function product()
+    {
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+    }
+
     // Relationship with Repayment
     public function repayments()
     {
@@ -42,9 +48,10 @@ class Asset extends Model
     public function getChargesAttribute()
     {
         $investor = $this->investor;
-        if ($investor && $investor->product) {
-            $percentage = $investor->product->percentage;
-            return round(($this->amount * $percentage / 100), 2);
+        if ($investor && $this->product) {
+            $payout = $this->product->payout;
+            $days = $this->product->days;
+            return round(($payout * $days - $this->amount), 2);
         }
     
         return round($this->amount, 2);
@@ -52,7 +59,7 @@ class Asset extends Model
     
     public function getCurrentBalanceAttribute()
     {
-        $totalRepayments = $this->repayments()->where('status','!=','Pending Paid')->sum('amount');
+        $totalRepayments = $this->repayments()->where('status','=','Paid')->sum('amount');
     
         return round($this->amount - $totalRepayments, 2);
     }
@@ -66,7 +73,7 @@ class Asset extends Model
             $latestAsset = static::latest('id')->first();
             $nextNumber = $latestAsset ? ((int) substr($latestAsset->number, strrpos($latestAsset->number, '-') + 1)) + 1 : 1;
 
-            $asset->number = '4hB-L-' . $nextNumber;
+            $asset->number = 'NY0TA-L-' . $nextNumber;
         });
     }
 }

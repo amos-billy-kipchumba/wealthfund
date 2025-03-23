@@ -30,7 +30,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    const logoUrl = '/images/logo-dark.png';
+    const logoUrl = '/images/logo.png';
     doc.addImage(logoUrl, 'PNG', 10, 10, 80, 30);
     doc.setFontSize(14);
     doc.text(`Repayments Report`, 14, 50);

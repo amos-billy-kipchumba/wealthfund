@@ -155,7 +155,7 @@ export default function Register() {
                                 </label>
                                 <PhoneInput
                                     international
-                                    defaultCountry="US"
+                                    defaultCountry="KE"
                                     value={data.phone}
                                     onChange={(value) => setData('phone', value)}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -180,7 +180,7 @@ export default function Register() {
                             <button 
                                 type="submit" 
                                 disabled={processing}
-                                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                className="w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                             >
                                 Register
                             </button>

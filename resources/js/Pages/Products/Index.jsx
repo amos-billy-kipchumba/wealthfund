@@ -28,7 +28,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    const logoUrl = '/images/logo-dark.png';
+    const logoUrl = '/images/logo.png';
     doc.addImage(logoUrl, 'PNG', 10, 10, 80, 30);
     doc.setFontSize(14);
     doc.text(`All Products Report`, 14, 50);
@@ -181,7 +181,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                       <img
                           src={`/storage/${product.logo}`}
                           alt="ID Front"
-                          className="h-[5vh] object-cover rounded-md"
+                          className="w-full max-h-[5vh] object-cover rounded-md"
                       />
                     </td>
                     <td className="px-6 py-4 my-auto">{product.name}</td>

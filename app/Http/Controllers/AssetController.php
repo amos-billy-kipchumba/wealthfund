@@ -50,7 +50,7 @@ class AssetController extends Controller
             return Inertia::render('Auth/Forbidden');
         }
 
-        $query = Asset::with(['investor.user', 'investor.product']);
+        $query = Asset::with(['investor.user', 'product']);
     
         // Filter based on role
         if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
@@ -112,6 +112,10 @@ class AssetController extends Controller
     public function create()
     {
         $user = Auth::user();
+
+        $id = request()->route('id');
+
+        $product = Product::find($id);
 
         if (!$user->hasPermissionTo('Create asset')) {
             return Inertia::render('Auth/Forbidden');

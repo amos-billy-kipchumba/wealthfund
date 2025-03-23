@@ -133,6 +133,8 @@ class InvestorController extends Controller
         }
 
        $validatedData = $request->validated();
+
+       $validatedData['approved'] = 'Approved';
     
        $fileFields = ['id_front', 'id_back', 'passport_front', 'passport_back'];
        

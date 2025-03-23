@@ -64,23 +64,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                       {/* /.widget_nav_menu */}
                       <aside className="widget widget-brochure services">
                         <div className="brochure-box-title">
-                          <h5 className="brochure-title">Our Brochure</h5>
+                          <h5 className="brochure-title">Our History</h5>
                           <p>
-                            View our 2016 financial prospectus brochure for an easy to
-                            read guide on all of the services offered.
+                            We started our financial prospectus since 2012
                           </p>
                         </div>
-                        {/* /.brochure-box-title */}
-                        <p className="btn-download">
-                          <a href="#" title="" className="pdf">
-                            Download .PDF
-                          </a>
-                        </p>
-                        <p className="btn-download doc">
-                          <a href="#" title="" className="doc">
-                            Download .DOC
-                          </a>
-                        </p>
                       </aside>
                       {/* /.widget-brochure */}
                     </div>

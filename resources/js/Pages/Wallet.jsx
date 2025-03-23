@@ -3,13 +3,12 @@ import { Chart } from 'primereact/chart';
 import React, { useContext, useEffect, useState } from 'react';
 import { LayoutContext } from '@/Layouts/layout/context/layoutcontext';
 import Layout from "@/Layouts/layout/layout.jsx";
-import Doodle from "@/Components/Doodle.jsx";
-import { usePage, Link, Head } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import DashboardInfoCard from "@/Components/DashboardInfoCard.jsx";
+import { usePage, Head } from '@inertiajs/react';
 
-const Dashboard = ({ auth }) => {
+const Wallet = ({ auth }) => {
     // Get data from the page props
-    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor, allProducts } = usePage().props;
+    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor } = usePage().props;
     
     const [lineOptions, setLineOptions] = useState({});
     const { layoutConfig } = useContext(LayoutContext);
@@ -120,28 +119,45 @@ const Dashboard = ({ auth }) => {
             <Head title="Dashboard" />
 
             <div className="grid pt-4">
-            {(allProducts && allProducts.length > 0) ? (
-                allProducts.map((data) => (
-                <Doodle
-                    title={data.name}
-                    value={`KES ${data.amount}`}
-                    icon={data.logo}
+                {roleId === 1 && 
+                <DashboardInfoCard
+                    title="Products"
+                    value={productCount}
+                    icon="map-marker"
                     iconColor="blue"
-                    descriptionValue="Daily income:"
-                    descriptionText={`KES ${data.payout}`}
-                    id={data.id}
-                    days={data.days}
+                    descriptionValue="Total Products"
+                    descriptionText="in the system"
+                />}
+                <DashboardInfoCard
+                    title="Active assets"
+                    value={`${activeAssetsCount} (${activeAssetsValue})`}
+                    icon="map-marker"
+                    iconColor="orange"
+                    descriptionValue="Active assets"
+                    descriptionText="currently active"
                 />
-            ))
-            ) : (
-            <div>
-                <h4>No product available</h4>
+                 {roleId === 1 && 
+                <DashboardInfoCard
+                    title="Paid assets"
+                    value={`${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repaidAssetsValue)}`}
+                    icon="comment"
+                    iconColor="purple"
+                    descriptionValue="Total Repaid"
+                    descriptionText="asset repayments"
+                />}
             </div>
-            )}
+
+            <div className="grid">
+                <div className="col-12 xl:col-6">
+                    <div className="card">
+                        <h5>Assets and Repayment Trends</h5>
+                        <Chart type="line" data={lineData} options={lineOptions} />
+                    </div>
+                </div>
             </div>
 
         </Layout>
     );
 };
 
-export default Dashboard;
+export default Wallet;

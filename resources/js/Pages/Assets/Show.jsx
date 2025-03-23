@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, usePage, Head } from '@inertiajs/react';
+import { Link, usePage, Head, useForm } from '@inertiajs/react';
 import Layout from "@/Layouts/layout/layout.jsx";
 import Swal from 'sweetalert2';
 
@@ -7,6 +7,7 @@ const Show = ({ asset }) => {
 
   const { auth } = usePage().props;
     const roleId = auth.user?.role_id;
+      const { delete: destroy } = useForm();
 
   const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
@@ -89,13 +90,13 @@ const Show = ({ asset }) => {
           {userPermission.includes('Index asset') &&
          <Link 
             href={route('assets.index')} 
-            className="inline-block px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+            className="inline-block px-6 py-1 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
             Back to Assets
           </Link>}
           {userPermission.includes('Edit asset') &&
             <Link
               href={route('assets.edit', asset.id)}
-              className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-200"
+              className="inline-flex items-center px-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-200"
             >
               Edit
             </Link>}
@@ -116,7 +117,7 @@ const Show = ({ asset }) => {
           {((asset.status === 'Pending' || asset.status === 'Declined') && userPermission.includes('Edit asset')) && (
             <Link
               href={route('assets.approval', asset.id)}
-              className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-200"
+              className="inline-flex items-center px-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-200"
             >
               Process advance
             </Link>)}

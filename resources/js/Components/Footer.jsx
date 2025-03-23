@@ -27,7 +27,7 @@ function Footer() {
             <div className="row">
               <div className="col-md-12">
                 <div className="widget-infomation">
-                  <ul className="infomation-footer">
+                  <ul className="infomation-footer space-y-4 space-x-4">
                     <li>
                       <i className="fa fa-envelope" aria-hidden="true" />
                       <a href="mailto:support@themesflat.com" title="Email Support">
@@ -42,7 +42,7 @@ function Footer() {
                     </li>
                     <li>
                       <i className="fa fa-map-marker" aria-hidden="true" />
-                      <a href="https://maps.google.com/?q=PO Box 16122 Collins Street West Victoria 8007 Australia" target="_blank" rel="noopener noreferrer" title="Our Location">
+                      <a href="https://maps.google.com/?q=Khalifa City A, Street 24, Villa 198, Near Adnoc Petrol Station - Abu Dhabi - United Arab Emirates" target="_blank" rel="noopener noreferrer" title="Our Location">
                       Khalifa City A, Street 24, Villa 198, Near Adnoc Petrol Station - Abu Dhabi - United Arab Emirates
                       </a>
                     </li>
@@ -76,38 +76,6 @@ function Footer() {
                       <Link href={route('login')} title="Services">Login</Link>
                     </li>
                   </ul>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="widget widget-subscribe">
-                  <form
-                    id="subscribe-form"
-                    onSubmit={handleSubmit}
-                    method="post"
-                    acceptCharset="utf-8"
-                    data-mailchimp="true"
-                  >
-                    <div id="subscribe-content">
-                      <label htmlFor="subscribe-email">Email address:</label>
-                      <div className="input-email">
-                        <input
-                          type="email"
-                          name="email-form"
-                          id="subscribe-email"
-                          placeholder="Your email address"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        id="subscribe-button"
-                        className="button-subscribe px-4 text-white"
-                      >
-                        SUBMIT
-                      </button>
-                    </div>
-                    <div id="subscribe-msg" />
-                  </form>
                 </div>
               </div>
             </div>

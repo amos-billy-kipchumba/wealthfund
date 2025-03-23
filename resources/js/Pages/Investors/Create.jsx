@@ -121,7 +121,7 @@ const Create = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full mt-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                         Create Investor
                     </button>

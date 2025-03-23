@@ -38,8 +38,8 @@ const Create = () => {
             <textarea
               value={data.message}
               onChange={(e) => setData('message', e.target.value)}
-              className="mt-1 block w-full px-4 py-2"
-              style={{height: '200px'}}
+              className="mt-1 block w-full px-4 py-2 outline"
+              style={{height: '200px', border: '1px solid lightgray'}}
             ></textarea>
             {errors.message && <div className="text-sm text-red-500 mt-1">{errors.message}</div>}
           </div>
