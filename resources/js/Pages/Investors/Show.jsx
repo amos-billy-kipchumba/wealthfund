@@ -9,7 +9,7 @@ const Show = ({ investor, user, product }) => {
     const { auth } = usePage().props;
 
   const roleId = auth.user?.role_id;
-const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
+const userPermission = auth.user?.permissions?.map(perm => perm?.name) || [];
 
   const { processing } = useForm({
     approved: ''
@@ -75,7 +75,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
   return (
     <Layout>
-      <Head title={user.name} />
+      <Head title={user?.name} />
       <div className="max-w-full bg-white shadow-md rounded-lg p-6">
         <h1 className="text-2xl font-bold text-gray-800 text-left mb-6">Investor Details</h1>
         
@@ -93,7 +93,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
             )}
             <div className="flex justify-between">
               <strong className="text-gray-600">Name:</strong> 
-              <span className="text-gray-800">{user.name}</span>
+              <span className="text-gray-800">{user?.name}</span>
             </div>
             <div className="flex justify-between">
               <strong className="text-gray-600">Salary:</strong> 
@@ -114,10 +114,6 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
             <div className="flex justify-between">
               <strong className="text-gray-600">ID number:</strong> 
               <span className="text-gray-800">{investor.id_number}</span>
-            </div>
-            <div className="flex justify-between">
-              <strong className="text-gray-600">Product:</strong> 
-              <span className="text-gray-800">{product.name}</span>
             </div>
             <div className="flex justify-between">
               <strong className="text-gray-600">Approved:</strong> 
