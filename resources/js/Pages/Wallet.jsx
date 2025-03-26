@@ -141,7 +141,7 @@ const Wallet = ({ auth }) => {
                     icon="map-marker"
                     iconColor="orange"
                     descriptionValue="Least amount"
-                    descriptionText="to we withdraw is KES 100"
+                    descriptionText="to withdraw is KES 100"
                 />
                 <DashboardInfoCard
                     title="Referrals"
