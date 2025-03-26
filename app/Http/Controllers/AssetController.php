@@ -170,6 +170,7 @@ class AssetController extends Controller
     
         if ($response->successful()) {
             // Proceed to store the asset
+            $validatedData['status'] = 'Approved';
             $asset = Asset::create($validatedData);
     
             return redirect()->route('assets.index')->with('success', 'Asset created successfully.');

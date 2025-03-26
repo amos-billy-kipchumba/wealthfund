@@ -57,7 +57,7 @@ const Show = ({ asset }) => {
             <span className="text-gray-800">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount)}</span>
           </div>
           <div className="flex justify-between">
-            <strong className="text-gray-600">Charges:</strong> 
+            <strong className="text-gray-600">Interest:</strong> 
             <span className="text-gray-800">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.charges)}</span>
           </div>
           <div className="flex justify-between">

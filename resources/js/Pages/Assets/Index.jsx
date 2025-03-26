@@ -38,7 +38,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
       doc.setFontSize(14);
       doc.text(`Assets Report`, 14, 50);
       
-      const columns = ["Asset number", "Investor name", "Principle","Charges","Asset due","Current balance", "Status"];
+      const columns = ["Asset number", "Investor name", "Principle","Interest","Asset due","Current balance", "Status"];
       
       const rows = assets.map(data => [
         data.number, 
@@ -64,7 +64,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
         Asset_Number:data.number, 
         Investor_Name:data.investor?.user?.name, 
         Principle:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount - data.charges), 
-        Charges:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.charges), 
+        Interest:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.charges), 
         Asset_due: new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.amount),
         Current_balance:new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(data.currentBalance), 
         Status:data.status
@@ -165,7 +165,7 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                 {roleId !== 3 &&
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Investor Name</th>}
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Principle</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Charges</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Interest</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Current balance</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>

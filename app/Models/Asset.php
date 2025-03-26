@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Asset;
+use Carbon\Carbon;
 
 class Asset extends Model
 {
@@ -57,7 +58,12 @@ class Asset extends Model
     
     
         // Fetch related assets
-        $assets = Asset::with(['product'])->where('investor_id', '=', $this->investor->id)->get();
+        $assets = Asset::with(['product'])
+    ->where('investor_id', '=', $this->investor->id)
+    ->whereHas('product', function ($query) {
+        $query->whereRaw('DATE_ADD(assets.created_at, INTERVAL products.days DAY) > ?', [Carbon::now()]);
+    })
+    ->get();
     
         // Compute total asset value
         $totalAssetValue = 0;
