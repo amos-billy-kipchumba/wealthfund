@@ -52,10 +52,9 @@ class Asset extends Model
         // Get total repayments for the investor
         $totalRepayments = $this->investor->repayments()
             ->where('status', 'Paid')
+            ->orWhere('status', 'Pending')
             ->sum('amount');
     
-        // Calculate days since created
-        $daysSinceCreated = now()->diffInDays($this->created_at);
     
         // Fetch related assets
         $assets = Asset::with(['product'])->where('investor_id', '=', $this->investor->id)->get();
@@ -64,6 +63,8 @@ class Asset extends Model
         $totalAssetValue = 0;
         foreach ($assets as $asset) {
             if ($asset->product) {
+                $daysSinceCreated = now()->diffInDays($asset->created_at);
+
                 $totalAssetValue += $asset->product->payout * $daysSinceCreated;
             }
         }
@@ -72,7 +73,7 @@ class Asset extends Model
         $userCount = User::where('referral_number', $this->investor->user->unique_number)->count();
     
         // Calculate final withdrawal float value
-        return round($totalAssetValue - $totalRepayments + ($userCount * 20), 2);
+        return round((($totalAssetValue + ($userCount * 20)) - $totalRepayments), 2);
     }
     
     
