@@ -54,7 +54,7 @@ const Show = ({ asset }) => {
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Principle:</strong> 
-            <span className="text-gray-800">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount - asset.charges)}</span>
+            <span className="text-gray-800">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount)}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Charges:</strong> 
@@ -63,10 +63,6 @@ const Show = ({ asset }) => {
           <div className="flex justify-between">
             <strong className="text-gray-600">Current balance:</strong> 
             <span className="text-gray-800">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.currentBalance)}</span>
-          </div>
-          <div className="flex justify-between">
-            <strong className="text-gray-600">Asset due:</strong> 
-            <span className="text-gray-800">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount)}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Status:</strong> 
@@ -90,7 +86,7 @@ const Show = ({ asset }) => {
           {userPermission.includes('Index asset') &&
          <Link 
             href={route('assets.index')} 
-            className="inline-block px-6 py-1 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+            className="inline-block px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
             Back to Assets
           </Link>}
           {userPermission.includes('Edit asset') &&

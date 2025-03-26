@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->double('amount')->nullable();
             $table->dateTime('payment_date')->nullable();
-            $table->unsignedBigInteger('asset_id');
-            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+            $table->unsignedBigInteger('asset_id')->nullable();
+            $table->unsignedBigInteger('investor_id')->nullable();
+            $table->foreign('investor_id')->references('id')->on('investors')->onDelete('cascade'); // Then add foreign key constraint
             $table->unsignedBigInteger('remittance_id')->nullable();
             $table->foreign('remittance_id')->references('id')->on('remittances')->onDelete('cascade');
             $table->timestamps();

@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('assetProviders', AssetProviderController::class);
     Route::resource('notifications', NotificationController::class);
     Route::resource('repayments', RepaymentController::class);
+    Route::post('/repayments/bulk-repayment', [RepaymentController::class, 'updateStatus'])->name('repayments.updateStatus');
     Route::resource('remittances', RemittanceController::class);
     Route::resource('users', UserController::class);
 

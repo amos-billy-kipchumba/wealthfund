@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRepaymentRequest;
 use App\Http\Requests\UpdateRepaymentRequest;
 use App\Models\Repayment;
 use App\Models\Asset;
+use App\Models\Investor;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,25 +21,19 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Index repayment')) {
+        if (!$user->hasPermissionTo('Index repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
     
         $query = Repayment::with([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product',
+            'investor.user',
+            'investor.product'
         ]);
     
         // Filter based on role
-        if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $query->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('product_id', '=', $user->product_id);
-            });
-        } elseif ($user->role_id == 3) {
-            $query->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('id', '=', $user->id);
+        if ($user->role_id == 3) {
+            $query->whereHas('investor.user', function ($q) use ($user) {
+                $q->where('id', $user->id);
             });
         }
     
@@ -47,19 +42,15 @@ class RepaymentController extends Controller
             $search = trim($request->input('search'));
     
             $query->where(function ($q) use ($search) {
-                $q->where('number', 'LIKE', "%$search%") // Search the 'number' field
-                  ->orWhere('amount', 'LIKE', "%$search%") // Repayment amount
-                  ->orWhereHas('asset', function ($q) use ($search) { // Asset fields
-                      $q->where('amount', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%");
-                  })
-                  ->orWhereHas('asset.investor', function ($q) use ($search) { // Investor and related fields
+                $q->where('number', 'LIKE', "%$search%") 
+                  ->orWhere('amount', 'LIKE', "%$search%") 
+                  ->orWhereHas('investor', function ($q) use ($search) { 
                       $q->where('asset_limit', 'LIKE', "%$search%")
-                        ->orWhereHas('user', function ($q) use ($search) { // User fields
+                        ->orWhereHas('user', function ($q) use ($search) { 
                             $q->where('name', 'LIKE', "%$search%")
                               ->orWhere('email', 'LIKE', "%$search%");
                         })
-                        ->orWhereHas('product', function ($q) use ($search) { // Product name
+                        ->orWhereHas('product', function ($q) use ($search) {
                             $q->where('name', 'LIKE', "%$search%");
                         });
                   });
@@ -83,14 +74,27 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Create repayment')) {
+        $investor = Investor::where('user_id','=', $user->id)->first();
+
+        if (!$user->hasPermissionTo('Create repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 
         $assets = Asset::all();
 
+        $activeAssetsQuery = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
+        ->where('status', '=', 'Approved');
+
+        $activeAssets = $activeAssetsQuery->get();
+
+        $withdrawalFloat = $activeAssets->sum(function ($asset) {
+            return $asset->withdrawalFloat;
+        });
+
         return Inertia::render('Repayments/Create', [
             'assets' => $assets,
+            'withdrawalFloat'=> $withdrawalFloat,
+            'investor'=>$investor
         ]);
     }
 
@@ -98,41 +102,60 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Create repayment')) {
+        if (!$user->hasPermissionTo('Create repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 
+        $validatedData = $request->validated();
+
+        $validatedData['status'] = 'Pending';
+
         // Create repayment and load related data
-        $repayment = Repayment::create($request->validated());
+        $repayment = Repayment::create($validatedData);
     
         // Ensure related data is loaded
         $repayment->load([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product',
+          'investor.user',
+          'investor.product'
         ]);
     
         // Send the repayment email
-        Mail::to($repayment->asset->investor->user->email)
+        Mail::to($repayment->investor->user->email)
             ->send(new AssetRepaymentMail($repayment));
     
         return redirect()->route('repayments.index')->with('success', 'Repayment created successfully.');
     }
 
+    public function updateStatus(Request $request)
+    {
+        $user = Auth::user();
+    
+        if (!$user->hasPermissionTo('Edit repayments')) {
+            return Inertia::render('Auth/Forbidden');
+        }
+    
+        $validated = $request->validate([
+            'repaymentIds' => 'required|array',
+            'repaymentIds.*' => 'exists:repayments,id', 
+        ]);
+
+        Repayment::whereIn('id', $validated['repaymentIds'])->update(['status' => 'Paid']);
+    
+        return redirect()->route('repayments.index')->with('success', 'Repayments updated to paid successfully.');
+    }
+    
+
     public function show(Repayment $repayment)
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('View repayment')) {
+        if (!$user->hasPermissionTo('View repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 
         $repayment->load([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product'
+          'investor.user',
+          'investor.product'
         ]);
 
         return Inertia::render('Repayments/Show', [
@@ -144,7 +167,7 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Edit repayment')) {
+        if (!$user->hasPermissionTo('Edit repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 
@@ -160,7 +183,7 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Edit repayment')) {
+        if (!$user->hasPermissionTo('Edit repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 
@@ -174,7 +197,7 @@ class RepaymentController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('Delete repayment')) {
+        if (!$user->hasPermissionTo('Delete repayments')) {
             return Inertia::render('Auth/Forbidden');
         }
 

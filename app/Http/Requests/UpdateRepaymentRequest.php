@@ -24,7 +24,7 @@ class UpdateRepaymentRequest extends FormRequest
         return [
             'amount' => 'nullable',
             'payment_date' => 'nullable',
-            'asset_id' => 'nullable',
+            'investor_id' => 'nullable',
             'remittance_id' => 'nullable',
             'status' => 'nullable'
         ];

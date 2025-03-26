@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Asset;
+use App\Models\User;
 use App\Models\Investor;
 use App\Models\Repayment;
 use Carbon\Carbon;
@@ -99,23 +100,18 @@ class DashboardController extends Controller
         
         
         $repaidAssetsQuery = Repayment::with([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product',
+            'investor.user',
+            'investor.product'
         ]);
         
-           if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('product_id', '=', $user->product_id);
-            });
-        } elseif ($user->role_id == 3) {
-            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('id', '=', $user->id);
+        if ($user->role_id == 3) {
+            $repaidAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
+                $q->where('id', $user->id);
             });
         }
         
         $repaidAssetsValue = $repaidAssetsQuery->sum('amount');
+        
         
 
         $currentYear = Carbon::now()->year;
@@ -153,19 +149,13 @@ class DashboardController extends Controller
         // Get repayment trends for all months
         $repaymentTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
             $repaymentQuery = Repayment::with([
-                'asset',
-                'asset.assetProvider',
-                'asset.investor.user',
-                'asset.investor.product',
+            'investor.user',
+            'investor.product'
             ])->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $month);
 
-               if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                    $q->where('product_id', '=', $user->product_id);
-                });
-            } elseif ($user->role_id == 3) {
-                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
+            if ($user->role_id == 3) {
+                $repaymentQuery->whereHas('investor.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
@@ -219,7 +209,7 @@ class DashboardController extends Controller
                 'repaymentTrends' => $repaymentTrends,
                 'investorsCount' => $investorsCount,
                 'investor'=>$investor,
-                'allProducts'=>$allProducts
+                'allProducts'=>$allProducts,
             ]);
             
         }
@@ -308,25 +298,24 @@ class DashboardController extends Controller
             return $asset->currentBalance;
         });
         
+
+        $withdrawalFloat = $activeAssets->sum(function ($asset) {
+            return $asset->withdrawalFloat;
+        });
         
         $repaidAssetsQuery = Repayment::with([
-            'asset',
-            'asset.assetProvider',
-            'asset.investor.user',
-            'asset.investor.product',
+            'investor.user',
+            'investor.product'
         ]);
         
-           if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('product_id', '=', $user->product_id);
-            });
-        } elseif ($user->role_id == 3) {
-            $repaidAssetsQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                $q->where('id', '=', $user->id);
+        if ($user->role_id == 3) {
+            $repaidAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
+                $q->where('id', $user->id);
             });
         }
         
         $repaidAssetsValue = $repaidAssetsQuery->sum('amount');
+        
         
 
         $currentYear = Carbon::now()->year;
@@ -351,7 +340,7 @@ class DashboardController extends Controller
             // Fetch assets and compute the total of eventualPay
             $assets = $assetQuery->get();
             $eventualPaySum = $assets->sum(function ($asset) {
-                return $asset->amount; // Access the computed attribute
+                return $asset->product->payout * $asset->product->days; // Access the computed attribute
             });
         
             return [
@@ -364,19 +353,13 @@ class DashboardController extends Controller
         // Get repayment trends for all months
         $repaymentTrends = collect(range(1, 12))->map(function ($month) use ($currentYear, $user) {
             $repaymentQuery = Repayment::with([
-                'asset',
-                'asset.assetProvider',
-                'asset.investor.user',
-                'asset.investor.product',
+            'investor.user',
+            'investor.product'
             ])->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $month);
 
-               if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
-                    $q->where('product_id', '=', $user->product_id);
-                });
-            } elseif ($user->role_id == 3) {
-                $repaymentQuery->whereHas('asset.investor.user', function ($q) use ($user) {
+            if ($user->role_id == 3) {
+                $repaymentQuery->whereHas('investor.user', function ($q) use ($user) {
                     $q->where('id', '=', $user->id);
                 });
             }
@@ -416,6 +399,8 @@ class DashboardController extends Controller
             if ($user->role_id == "1") {
                 $investorsCount = Investor::count();
             }
+
+            $referrals = User::where('referral_number', '=', $user->unique_number)->count();
             
             return Inertia::render('Wallet', [
                 'productCount' => $productCount,
@@ -429,7 +414,9 @@ class DashboardController extends Controller
                 'assetTrends' => $assetTrends,
                 'repaymentTrends' => $repaymentTrends,
                 'investorsCount' => $investorsCount,
-                'investor'=>$investor
+                'investor'=>$investor,
+                'withdrawalFloat'=>$withdrawalFloat,
+                'referrals'=> $referrals
             ]);
             
         }

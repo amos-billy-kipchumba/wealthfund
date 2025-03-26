@@ -51,6 +51,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <div className="title">E-mail address</div>
                         <p>info@nyotafund.com</p>
                       </div>
+                      <div className="info info-address">
+                        <div className="title">Facebook</div>
+                        <a href="https://www.facebook.com/share/1ADV58unu6/" target="_blank">https://www.facebook.com/share/1ADV58unu6/</a>
+                      </div>
                     </div>
                   </div>
                 </div>

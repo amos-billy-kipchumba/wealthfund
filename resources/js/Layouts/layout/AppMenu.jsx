@@ -21,12 +21,8 @@ const AppMenu = () => {
                 { label: 'Investors', icon: 'pi pi-fw pi-users', to: route('investors.index'), permissions: ['Index investor'] },
                 { label: 'Wallet', icon: 'pi pi-fw pi-wallet', to: route('wallet'), permissions: ['Index asset'] },
                 { label: 'Assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index'), permissions: ['Index asset'] },
-                { label: 'Active assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Approved' }), permissions: ['Index asset'] },
-                { label: 'Paid assets', icon: 'pi pi-fw pi-wallet', to: route('assets.index', { status: 'Paid' }), permissions: ['Index asset'] },
-                { label: 'Asset Providers', icon: 'pi pi-fw pi-briefcase', to: route('assetProviders.index'), permissions: ['Index assetProvider'] },
                 { label: 'Notifications', icon: 'pi pi-fw pi-bell', to: route('notifications.index'), permissions: ['Index notification'] },
-                { label: 'Repayments', icon: 'pi pi-fw pi-dollar', to: route('repayments.index'), permissions: ['Index repayment'] },
-                { label: 'Remittances', icon: 'pi pi-wallet', to: route('remittances.index'), permissions: ['Index remittance'] },
+                { label: 'Repayments', icon: 'pi pi-fw pi-dollar', to: route('repayments.index'), permissions: ['Index repayments'] },
                 { label: 'Users', icon: 'pi pi-fw pi-user', to: route('users.index'), permissions: ['Index user'] },
                 { label: 'Profile', icon: 'pi pi-user', to: route('profile.edit'), permissions: ['Edit profile'] },
             ]

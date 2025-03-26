@@ -45,21 +45,17 @@
 
 <div class="container">
     <div class="content">
-        <h2>Dear {{ $repayment->asset->investor->user->name ?? '' }},</h2>
+        <h2>Dear {{ $repayment->investor->user->name ?? '' }},</h2>
 
-        <p>We have received your asset repayment of <strong>{{ $repayment->amount }}</strong> for your advance from {{ $repayment->asset->product->name ?? '' }}.</p>
+        <p>We have received withdrawal request of <strong>KES {{ $repayment->amount }}</strong> for your wealth asset.</p>
 
         <p>Details of your asset repayment:</p>
         <ul>
-            <li><strong>Repayment Number:</strong> {{ $repayment->number }}</li>
-            <li><strong>Investor Product:</strong> {{ $repayment->asset->investor->product->name ?? '' }}</li>
-            <li><strong>Principle:</strong> {{ round(($repayment->asset->amount - $repayment->asset->charges),2) }}</li>
-            <li><strong>Charges:</strong> {{ round(($repayment->asset->charges),2) }}</li>
-            <li><strong>Amount due:</strong> {{$repayment->asset->amount }}</li>
-            <li><strong>Current balance:</strong> {{ $repayment->asset->currentBalance ?? '' }}</li>
+            <li><strong>Withdrawal Number:</strong> {{ $repayment->number }}</li>
+            <li><strong>Amount:</strong> {{$repayment->amount }}</li>
         </ul>
 
-        <p>Your repayment is being processed and will be reflected in your asset balance shortly. Thank you for your timely payment!</p>
+        <p>Your payment is being processed and will be reflected in your asset balance shortly. Thank you for choosing to invest with us!</p>
 
         <p>If you have any questions about this repayment, feel free to contact us.</p>
     </div>
@@ -67,7 +63,7 @@
     <div class="footer">
         <p>Best regards,</p>
         <p><strong>The Nyotafund Team</strong></p>
-        <p><a href="mailto:support@Nyotafund.co.ke">Contact Support</a></p>
+        <p><a href="mailto:info@Nyotafund.com">Contact Support</a></p>
     </div>
 </div>
 

@@ -12,14 +12,16 @@ class Repayment extends Model
     protected $fillable = [
         'amount',
         'payment_date',
-        'asset_id',
+        'user_id',
         'number',
         'remittance_id',
-        'status'
+        'status',
+        'investor_id'
     ];
 
-    public function asset(){
-        return $this->hasOne('App\Models\Asset', 'id', 'asset_id');
+    public function investor()
+    {
+        return $this->belongsTo('App\Models\Investor', 'investor_id');
     }
 
     protected static function boot()
@@ -27,11 +29,15 @@ class Repayment extends Model
         parent::boot();
 
         static::creating(function ($repayment) {
-            // Generate the asset number
             $latestRepayment = static::latest('id')->first();
-            $nextNumber = $latestRepayment ? ((int) substr($latestRepayment->number, strrpos($latestRepayment->number, '-') + 1)) + 1 : 1;
+            $nextNumber = 1;
 
-            $repayment->number = '4hB-P-' . $nextNumber;
+            if ($latestRepayment && preg_match('/\d+$/', $latestRepayment->number, $matches)) {
+                $nextNumber = (int) $matches[0] + 1;
+            }
+
+            $repayment->number = 'NY0TA-P-' . $nextNumber;
         });
     }
 }
+

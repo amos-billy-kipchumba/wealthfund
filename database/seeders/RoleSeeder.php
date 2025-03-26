@@ -41,7 +41,7 @@ class RoleSeeder extends Seeder
             'Create asset', 'Index asset', 'View asset',
             'Index notification', 'View notification',
             'Index remittance', 'View remittance',
-            'Index repayments', 'View repayments'
+            'Index repayments', 'View repayments', 'Create repayments'
         ];
         $investorRole->syncPermissions($investorPermissions);
 

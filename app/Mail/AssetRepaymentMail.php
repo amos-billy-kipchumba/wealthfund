@@ -26,7 +26,7 @@ class AssetRepaymentMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Asset Repayment Received')
+        return $this->subject('Withdrawal Under Approval')
                     ->view('emails.asset_repayment')
                     ->with([
                         'repayment' => $this->repayment,

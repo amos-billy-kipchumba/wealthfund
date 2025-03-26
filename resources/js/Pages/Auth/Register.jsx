@@ -20,6 +20,7 @@ export default function Register() {
         unique_number: '',
         role_id: 3,
         phone: '',
+        referral_number: '',
         password_confirmation: '',
         product_id: product ? product.id : null,
     });
@@ -167,6 +168,23 @@ export default function Register() {
 
                             {renderPasswordInput('password', 'Password', 'Enter your password', showPassword, setShowPassword)}
                             {renderPasswordInput('password_confirmation', 'Confirm Password', 'Confirm your password', showConfirmPassword, setShowConfirmPassword)}
+
+                            <div>
+                                <label htmlFor="referral_number" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Referral number
+                                </label>
+                                <input
+                                    id="referral_number"
+                                    type="text"
+                                    placeholder="Enter referral number"
+                                    value={data.referral_number}
+                                    onChange={(e) => setData('referral_number', e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                                {errors.referral_number && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.referral_number}</p>
+                                )}
+                            </div>
 
                             <div className="flex justify-end mb-4">
                                 <Link 

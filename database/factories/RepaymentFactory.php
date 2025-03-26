@@ -19,7 +19,7 @@ class RepaymentFactory extends Factory
         return [
             'amount' => rand(2, 100099),
             'payment_date' => now(),
-            'asset_id' => rand(1, 9)
+            'investor_id' => rand(1, 9)
         ];
     }
 }

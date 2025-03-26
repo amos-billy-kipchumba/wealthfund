@@ -119,6 +119,15 @@ const Dashboard = ({ auth }) => {
         <Layout>
             <Head title="Dashboard" />
 
+            {roleId === 3 &&
+            <div className="grid pt-4">
+                <div className="col-12 xl:col-6">
+                    <h4>
+                    Referral number: {auth.user?.unique_number}
+                    </h4>
+                </div>
+            </div>}
+
             <div className="grid pt-4">
             {(allProducts && allProducts.length > 0) ? (
                 allProducts.map((data) => (

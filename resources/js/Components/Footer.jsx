@@ -35,6 +35,12 @@ function Footer() {
                       </a>
                     </li>
                     <li>
+                      <i className="fa fa-facebook" aria-hidden="true" />
+                      <a href="https://www.facebook.com/share/1ADV58unu6/" title="Facebook page">
+                        Facebook page
+                      </a>
+                    </li>
+                    <li>
                       <i className="fa fa-phone" aria-hidden="true" />
                       <a href="tel:+61383766284" title="Call Us">
                         +971 52 726 5884

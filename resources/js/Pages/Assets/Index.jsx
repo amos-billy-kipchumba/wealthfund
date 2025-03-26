@@ -18,7 +18,6 @@ const Index = () => {
   const roleId = auth.user?.role_id;
 const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
-  const [selectedAssets, setSelectedAssets] = useState([]);
   const status = params?.status || 'All';
 
 
@@ -76,49 +75,6 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
       XLSX.writeFile(wb, 'assets_report.xlsx');
     };
 
-    const handleSelectAsset = (id) => {
-      setSelectedAssets((prev) =>
-        prev.includes(id) ? prev.filter((assetId) => assetId !== id) : [...prev, id]
-      );
-    };
-  
-    const handleSelectAll = () => {
-      if (selectedAssets.length === assets.length) {
-        setSelectedAssets([]);
-      } else {
-        setSelectedAssets(assets.map((asset) => asset.id));
-      }
-    };
-  
-    const handleBulkAction = () => {
-      if (selectedAssets.length === 0) {
-        Swal.fire('No assets selected', 'Please select at least one asset.', 'warning');
-        return;
-      }
-  
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `This will mark ${selectedAssets.length} asset(s) as Paid and create repayment records.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, mark as Paid!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.post(route('assets.bulkUpdate'), { assetIds: selectedAssets }, {
-            onSuccess: () => {
-              Swal.fire('Success', 'Assets marked as Paid successfully!', 'success');
-              setSelectedAssets([]);
-            },
-            onError: (err) => {
-              console.error('Bulk update error:', err);
-              Swal.fire('Error', 'Failed to update assets.', 'error');
-            },
-          });
-        }
-      });
-    };
 
 
   return (
@@ -176,13 +132,6 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
                     Excel
                   </span>
                 </button>}
-                {userPermission.includes('Edit asset') &&
-                <button
-                  onClick={handleBulkAction}
-                  className="px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Mark as Paid
-                </button>}
               </div>
           </div>
 
@@ -212,20 +161,11 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
               <tr>
-              {userPermission.includes('Edit asset') &&
-                <th className="px-4 py-3">
-                  <input
-                    type="checkbox"
-                    checked={selectedAssets.length === assets.length}
-                    onChange={handleSelectAll}
-                  />
-                </th>}
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset number</th>
                 {roleId !== 3 &&
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Investor Name</th>}
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Principle</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Charges</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Asset due</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Current balance</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
@@ -235,20 +175,11 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
               {assets.length > 0 ? (
                 assets.map((asset) => (
                   <tr key={asset.id}>
-                      {userPermission.includes('Edit asset') &&
-                    <td className="px-4 py-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedAssets.includes(asset.id)}
-                        onChange={() => handleSelectAsset(asset.id)}
-                      />
-                    </td>}
                     <td className="px-6 py-4 whitespace-nowrap">{asset.number}</td>
                     {roleId !== 3 &&
                     <td className="px-6 py-4 whitespace-nowrap">{asset.investor?.user?.name}</td>}
-                    <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount - asset.charges)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.charges)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.amount)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.charges)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">  {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(asset.currentBalance)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{asset.status}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">

@@ -164,7 +164,7 @@ const SelectProduct = () => {
                                         className="flex items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
                                     >
                                         <Camera className="mr-2 h-5 w-5" />
-                                        {allowSelfie ? 'Take Selfie' : 'Take Photo'}
+                                        <p className='flex items-center'>{allowSelfie ? 'Take Selfie' : 'Take Photo'}</p>
                                     </button>
                                 )}
                             </div>
@@ -181,7 +181,7 @@ const SelectProduct = () => {
                             />
                             <button 
                                 onClick={() => removePreview(field)}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors flex items-center justify-center"
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center justify-center"
                             >
                                 <X className="h-8 w-8" />
                             </button>
@@ -245,7 +245,6 @@ const SelectProduct = () => {
             />
             
             <div className="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
                 
                 <div className="relative bg-white shadow-lg sm:rounded-3xl p-6">
                     <div className="flex justify-end mb-4">

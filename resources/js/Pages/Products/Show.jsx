@@ -6,9 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
 
 const Show = ({ product }) => {
-  const [activeTab, setActiveTab] = useState("Details");
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const { delete: destroy } = useForm();
 
   const { auth } = usePage().props; 
@@ -17,12 +14,6 @@ const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
     
 
-  const handleFilter = () => {
-    router.get(route("products.show", product.id), {
-      start_date: startDate ? startDate.toISOString().split("T")[0] : "",
-      end_date: endDate ? endDate.toISOString().split("T")[0] : "",
-    });
-  };
 
   const handleDelete = (productId) => {
     Swal.fire({

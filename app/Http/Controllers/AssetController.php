@@ -30,6 +30,8 @@ use Illuminate\Support\Facades\Log;
 use App\Services\SmsService;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Http;
+
 class AssetController extends Controller
 {
 
@@ -140,23 +142,43 @@ class AssetController extends Controller
     public function store(StoreAssetRequest $request)
     {
         $user = Auth::user();
-
+    
         if (!$user->hasPermissionTo('Create asset')) {
             return Inertia::render('Auth/Forbidden');
         }
+    
+        $validatedData = $request->validated();
 
-        $asset = Asset::create($request->validated());
-    
-        if ($asset->status === 'Pending') {
-            $investor = Investor::find($asset->investor_id); 
-    
-            if ($investor) {
-                Mail::to($investor->user->email)->send(new AssetRequestMail($investor));
-            }
+        $phone = $user->phone; // Default fallback
+
+        // Convert +254 format to 07 format
+        if (preg_match('/^\+254[7-9][0-9]{8}$/', $phone)) {
+            $phone = '0' . substr($phone, 4); // Remove +254 and replace with 0
         }
-
-        return redirect()->route('assets.index')->with('success', 'Asset created successfully.');
+    
+        // Define the API URL
+        $apiUrl = 'https://lipia-api.kreativelabske.com/api/request/stk';
+    
+        // Make STK Push request with authentication token
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer e0001c5c974c760d29eaef911ca8fe6552fc492f', // ✅ Fix: Added "Bearer "
+            'Content-Type' => 'application/json',
+        ])->post($apiUrl, [
+            'phone' => $phone, 
+            'amount' => $validatedData['amount'] ?? 100,
+        ]);
+    
+        if ($response->successful()) {
+            // Proceed to store the asset
+            $asset = Asset::create($validatedData);
+    
+            return redirect()->route('assets.index')->with('success', 'Asset created successfully.');
+        } else {
+            // Handle failure and return error message from API
+            return back()->with('error', 'Payment request failed: ' . $response->json('message', 'Unknown error'));
+        }
     }
+
 
     public function bulkUpdate(Request $request)
     {

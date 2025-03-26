@@ -67,6 +67,7 @@ class RegisteredUserController extends Controller
              'staff_number' => $request->staff_number ?? null,
              'role_id' => $request->role_id,
              'password' => Hash::make($request->password),
+             'referral_number' => $request->referral_number
          ]);
 
          if ($user->role_id) {

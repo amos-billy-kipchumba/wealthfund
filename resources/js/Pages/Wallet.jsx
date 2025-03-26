@@ -4,16 +4,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { LayoutContext } from '@/Layouts/layout/context/layoutcontext';
 import Layout from "@/Layouts/layout/layout.jsx";
 import DashboardInfoCard from "@/Components/DashboardInfoCard.jsx";
-import { usePage, Head } from '@inertiajs/react';
+import { usePage, Head, Link } from '@inertiajs/react';
 
 const Wallet = ({ auth }) => {
     // Get data from the page props
-    const { productCount, activeAssetsCount, inactiveAssetsCount, pendingAssetsCount, pendingAssetsValue, repaidAssetsValue,activeAssetsValue, inactiveAssetsValue, assetTrends, repaymentTrends, investor } = usePage().props;
+    const { productCount, activeAssetsCount, repaidAssetsValue,activeAssetsValue, assetTrends, repaymentTrends, withdrawalFloat, referrals } = usePage().props;
     
     const [lineOptions, setLineOptions] = useState({});
     const { layoutConfig } = useContext(LayoutContext);
     const roleId = auth.user?.role_id;
-    const userPermission = auth.user?.permissions?.map(perm => perm.name) || [];
 
     const applyLightTheme = () => {
         const lineOptions = {
@@ -130,21 +129,43 @@ const Wallet = ({ auth }) => {
                 />}
                 <DashboardInfoCard
                     title="Active assets"
-                    value={`${activeAssetsCount} (${activeAssetsValue})`}
+                    value={`${activeAssetsCount} (KES ${activeAssetsValue})`}
                     icon="map-marker"
                     iconColor="orange"
                     descriptionValue="Active assets"
                     descriptionText="currently active"
                 />
-                 {roleId === 1 && 
                 <DashboardInfoCard
-                    title="Paid assets"
-                    value={`${new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repaidAssetsValue)}`}
-                    icon="comment"
-                    iconColor="purple"
-                    descriptionValue="Total Repaid"
-                    descriptionText="asset repayments"
-                />}
+                    title="Withdrawable float"
+                    value={`KES ${withdrawalFloat}`}
+                    icon="map-marker"
+                    iconColor="orange"
+                    descriptionValue="Least amount"
+                    descriptionText="to we withdraw is KES 100"
+                />
+                <DashboardInfoCard
+                    title="Referrals"
+                    value={`${referrals} (KES ${referrals * 20})`}
+                    icon="map-marker"
+                    iconColor="orange"
+                    descriptionValue="Amount"
+                    descriptionText="you get when you referring someone"
+                />
+            </div>
+
+
+            <div className="grid my-2">
+                {(roleId === 3 && withdrawalFloat >= 100) && 
+                <div className="col-12 xl:col-6">
+                    <Link
+                    href={route('repayments.create')}
+                    className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                    >
+                    <span className='my-auto'>
+                    Withdraw
+                    </span>
+                    </Link>
+                </div>}
             </div>
 
             <div className="grid">

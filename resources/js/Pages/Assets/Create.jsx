@@ -99,7 +99,7 @@ const Create = () => {
                                 <strong className="text-gray-600">Amount to receive:</strong> 
                                 <span className="text-gray-800 font-bold text-2xl">
                                     {new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(
-                                        (parseFloat(selectedProduct?.amount) || 0) + (selectedProduct?.payout * selectedProduct?.days) 
+                                        parseFloat(selectedProduct?.payout * selectedProduct?.days) 
                                     )}
                                 </span>
                             </div>

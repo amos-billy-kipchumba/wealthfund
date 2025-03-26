@@ -52,15 +52,11 @@ const Show = ({ repayment }) => {
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Investor Name:</strong>
-            <span className="text-gray-800">{repayment?.asset?.investor?.user?.name || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.investor?.user?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Name:</strong>
-            <span className="text-gray-800">{repayment?.asset?.investor?.product?.name || 'N/A'}</span>
-          </div>
-          <div className="flex justify-between">
-            <strong className="text-gray-600">Asset Amount:</strong>
-            <span className="text-gray-800">{new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(repayment?.asset?.amount)}</span>
+            <span className="text-gray-800">{repayment?.investor?.product?.name || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Repayment Amount:</strong>
@@ -68,11 +64,11 @@ const Show = ({ repayment }) => {
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Phone:</strong>
-            <span className="text-gray-800">{repayment?.asset?.investor?.product?.phone || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.investor?.product?.phone || 'N/A'}</span>
           </div>
           <div className="flex justify-between">
             <strong className="text-gray-600">Product Email:</strong>
-            <span className="text-gray-800">{repayment?.asset?.investor?.product?.email || 'N/A'}</span>
+            <span className="text-gray-800">{repayment?.investor?.product?.email || 'N/A'}</span>
           </div>
         </div>
 

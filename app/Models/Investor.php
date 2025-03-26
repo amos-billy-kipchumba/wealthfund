@@ -41,6 +41,11 @@ class Investor extends Model
         return $this->hasMany('App\Models\Asset', 'investor_id');
     }
 
+    public function repayments()
+    {
+        return $this->hasMany('App\Models\Repayment', 'investor_id');
+    }
+
     // Accessor for the number of unpaid assets
     public function getUnpaidAssetsCountAttribute()
     {
@@ -52,16 +57,18 @@ class Investor extends Model
 
     public function getTotalAssetBalanceAttribute()
     {
+        if (!$this->assets()->exists()) {
+            return 0; 
+        }
+    
         return round(
             $this->assets()
-                ->where('status', '!=', 'paid')
-                ->where('status', '!=', 'rejected')
+                ->whereNotIn('status', ['paid', 'rejected'])
                 ->get()
-                ->sum(function ($asset) {
-                    return $asset->currentBalance;
-                }),
-            2 
+                ->sum(fn($asset) => $asset->currentBalance),
+            2
         );
     }
+    
     
 }
