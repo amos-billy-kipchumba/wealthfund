@@ -59,11 +59,11 @@ class Asset extends Model
     
         // Fetch related assets
         $assets = Asset::with(['product'])
-    ->where('investor_id', '=', $this->investor->id)
-    ->whereHas('product', function ($query) {
-        $query->whereRaw('DATE_ADD(assets.created_at, INTERVAL products.days DAY) > ?', [Carbon::now()]);
-    })
-    ->get();
+        ->where('investor_id', '=', $this->investor->id)
+        ->whereHas('product', function ($query) {
+            $query->whereRaw('DATE_ADD(assets.created_at, INTERVAL products.days DAY) > ?', [Carbon::now()]);
+        })
+        ->get();
     
         // Compute total asset value
         $totalAssetValue = 0;
@@ -130,32 +130,40 @@ class Asset extends Model
         static::created(function ($repayment) {
             // Fetch all unpaid assets ordered by creation date
             $assets = Asset::where('investor_id', $repayment->investor_id)
-                ->where('status', '!=', 'Paid')
+                ->where('status', '!=', 'Paid') // Only consider unpaid assets
                 ->orderBy('created_at', 'asc')
                 ->get();
-    
+        
             $remainingAmount = $repayment->amount;
-    
+        
             foreach ($assets as $asset) {
-                $assetBalance = $asset->amount - Repayment::where('investor_id', $repayment->investor_id)
+                if ($remainingAmount <= 0) break; // Stop if no money is left to allocate
+        
+                // Get total repayments linked to this specific asset
+                $totalPaidForAsset = Repayment::where('asset_id', $asset->id)
                     ->where('status', 'Paid')
                     ->sum('amount');
-    
-                if ($remainingAmount <= 0) break; // Stop if there's no more amount to allocate
-    
-                if ($remainingAmount >= $assetBalance) {
+        
+                // Calculate how much is still owed for this asset
+                $outstandingBalance = $asset->amount - $totalPaidForAsset;
+        
+                // 🔥 FIX: Ensure new assets aren't mistakenly marked as "Paid"
+                if ($totalPaidForAsset == 0) {
+                    // If no payment exists for this asset, do not change status
+                    $asset->status = 'Approved';
+                } elseif ($remainingAmount >= $outstandingBalance) {
                     // Fully pay this asset
                     $asset->status = 'Paid';
-                    $remainingAmount -= $assetBalance;
-                } else {
-                    // Partially pay this asset
-                    $asset->status = 'Approved';
-                    $remainingAmount = 0;
-                }
-    
+                    $remainingAmount -= $outstandingBalance;
+                } 
+        
                 $asset->save();
             }
+        
+            // Log remaining amount for debugging
+            \Log::info("Remaining amount after asset repayment: " . $remainingAmount);
         });
+        
     }
     
 }

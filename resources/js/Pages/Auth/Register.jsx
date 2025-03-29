@@ -171,7 +171,7 @@ export default function Register() {
 
                             <div>
                                 <label htmlFor="referral_number" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Referral number
+                                    Referral number (not a must)
                                 </label>
                                 <input
                                     id="referral_number"

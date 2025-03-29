@@ -237,11 +237,7 @@ class DashboardController extends Controller
         $activeAssetsQuery = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
         ->where('status', '=', 'Approved');
     
-           if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $activeAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
-                $q->where('product_id', '=', $user->product_id);
-            });
-        } elseif ($user->role_id == 3) {
+        if ($user->role_id == 3) {
             $activeAssetsQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
@@ -259,11 +255,7 @@ class DashboardController extends Controller
         $pendingAssetQuery = Asset::with(['assetProvider', 'investor.user', 'investor.product'])
         ->where('status', '=', 'Pending');
     
-           if ($user->role_id == 2 || $user->role_id == 5 || $user->role_id == 6) {
-            $pendingAssetQuery->whereHas('investor.user', function ($q) use ($user) {
-                $q->where('product_id', '=', $user->product_id);
-            });
-        } elseif ($user->role_id == 3) {
+        if ($user->role_id == 3) {
             $pendingAssetQuery->whereHas('investor.user', function ($q) use ($user) {
                 $q->where('id', '=', $user->id);
             });
